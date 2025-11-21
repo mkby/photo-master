@@ -4,8 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>拼图大师 Pro</title>
+    <title>拼图大师 Pro & 边框大师</title>
+
+    <!-- Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500&family=Roboto+Mono:wght@400&display=swap"
+        rel="stylesheet">
+
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -14,9 +23,16 @@
                     colors: {
                         primary: '#3B82F6',
                         secondary: '#10B981',
+                        brand: {
+                            light: '#60A5FA',
+                            DEFAULT: '#3B82F6',
+                            dark: '#2563EB',
+                        }
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace'],
                     }
                 }
             }
@@ -50,7 +66,7 @@
             background: #64748b;
         }
 
-        /* Range Input Customization */
+        /* Range Input */
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
             height: 16px;
@@ -70,7 +86,7 @@
             border-radius: 4px;
         }
 
-        /* Grid Cell Styles */
+        /* Grid Cell */
         .grid-cell {
             position: relative;
             overflow: hidden;
@@ -88,15 +104,12 @@
 
         .grid-cell img {
             position: absolute;
-            /* transform-origin: center center; */
-            /* Managed by JS */
             will-change: transform;
             user-select: none;
             pointer-events: none;
-            /* Events handled by parent div */
         }
 
-        /* Active Ratio Button */
+        /* Ratio Button */
         .ratio-btn.active {
             background-color: #eff6ff;
             border-color: #3b82f6;
@@ -107,8 +120,35 @@
             background-color: rgba(59, 130, 246, 0.2);
             color: #60a5fa;
         }
+
+        /* Tab Button */
+        .tab-btn {
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: #3B82F6;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #3B82F6;
+            border-radius: 2px 2px 0 0;
+        }
+
+        .dark .tab-btn.active {
+            color: #60A5FA;
+        }
+
+        .dark .tab-btn.active::after {
+            background-color: #60A5FA;
+        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body
@@ -117,34 +157,50 @@
     <!-- Sidebar -->
     <aside
         class="w-full md:w-80 bg-white dark:bg-gray-800 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 flex flex-col shadow-lg z-10 shrink-0">
-        <div class="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-            <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">拼图大师
-                Pro</h1>
-            <button id="themeToggle"
-                class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300">
-                <!-- Sun Icon -->
-                <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
-                    </path>
-                </svg>
-                <!-- Moon Icon -->
-                <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M20.354 24.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
-                    </path>
-                </svg>
-            </button>
+        <!-- Header -->
+        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
+                    影像大师 Pro</h1>
+                <button id="themeToggle"
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300">
+                    <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                    <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20.354 24.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Tab Switcher -->
+            <div class="flex border-b border-gray-200 dark:border-gray-700">
+                <button
+                    class="tab-btn active flex-1 pb-3 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                    data-tab="puzzle">
+                    拼图大师
+                </button>
+                <button
+                    class="tab-btn flex-1 pb-3 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                    data-tab="frame">
+                    边框大师
+                </button>
+            </div>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-6 space-y-8">
-            <!-- Upload Section -->
+        <!-- Puzzle Sidebar Content -->
+        <div id="puzzle-sidebar" class="flex-1 overflow-y-auto p-6 space-y-8">
+            <!-- Upload -->
             <section>
                 <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">图片上传
                 </h2>
-                <div id="dropZone"
+                <div id="puzzleDropZone"
                     class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 dark:bg-gray-700/50">
-                    <input type="file" id="fileInput" multiple accept="image/*" class="hidden">
+                    <input type="file" id="puzzleFileInput" multiple accept="image/*" class="hidden">
                     <svg class="w-10 h-10 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -154,10 +210,10 @@
                     <p class="text-sm text-gray-600 dark:text-gray-300">点击或拖拽上传图片</p>
                     <p class="text-xs text-gray-400 mt-1">支持 3-12 张图片</p>
                 </div>
-                <div id="fileList" class="mt-4 grid grid-cols-4 gap-2"></div>
+                <div id="puzzleFileList" class="mt-4 grid grid-cols-4 gap-2"></div>
             </section>
 
-            <!-- Layout Settings -->
+            <!-- Layout -->
             <section>
                 <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">画布比例
                 </h2>
@@ -190,7 +246,7 @@
                 </div>
             </section>
 
-            <!-- Border Settings -->
+            <!-- Border -->
             <section>
                 <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">边框设置
                 </h2>
@@ -217,164 +273,198 @@
                     </div>
                 </div>
             </section>
+
+            <div class="pt-4">
+                <button id="puzzleDownloadBtn"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    <span>下载高清拼图</span>
+                </button>
+            </div>
         </div>
 
-        <div class="p-6 border-t border-gray-200 dark:border-gray-700">
-            <button id="downloadBtn"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                </svg>
-                <span>下载高清拼图</span>
-            </button>
+        <!-- Frame Sidebar Content -->
+        <div id="frame-sidebar" class="hidden flex-1 overflow-y-auto p-6 space-y-8">
+            <!-- Upload -->
+            <section>
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">照片上传
+                </h2>
+                <div id="frameDropZone"
+                    class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 dark:bg-gray-700/50 relative">
+                    <input type="file" id="frameFileInput" multiple accept="image/*" class="hidden">
+                    <svg class="w-10 h-10 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">点击或拖拽上传图片</p>
+                    <p class="text-xs text-gray-400 mt-1">支持批量处理</p>
+                    <div id="frameFileCount"
+                        class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded hidden">
+                        0</div>
+                </div>
+            </section>
+
+            <!-- Parameters -->
+            <section>
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">参数调整
+                </h2>
+                <div class="space-y-6">
+                    <div>
+                        <label class="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-1">
+                            <span>边框宽度</span>
+                            <span id="frameBorderVal">180</span>
+                        </label>
+                        <input type="range" id="frameBorderRange" min="50" max="400" value="180"
+                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+                    <div>
+                        <label class="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-1">
+                            <span>背景模糊</span>
+                            <span id="frameBlurVal">50</span>
+                        </label>
+                        <input type="range" id="frameBlurRange" min="0" max="100" value="50"
+                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+                    <div>
+                        <label class="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-1">
+                            <span>文字大小</span>
+                            <span id="frameFontVal">1.0x</span>
+                        </label>
+                        <input type="range" id="frameFontRange" min="0.5" max="2.0" step="0.1" value="1.0"
+                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+                </div>
+            </section>
+
+            <!-- EXIF Toggle -->
+            <section>
+                <div class="flex items-center justify-between">
+                    <span class="text-sm text-gray-600 dark:text-gray-300 font-medium">显示拍摄参数 (EXIF)</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="frameExifToggle" checked class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+                        </div>
+                    </label>
+                </div>
+            </section>
+
+            <!-- Actions -->
+            <div class="pt-4 space-y-3">
+                <button id="frameGenerateBtn"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
+                        </path>
+                    </svg>
+                    <span>开始生成</span>
+                </button>
+                <button id="frameDownloadAllBtn" disabled
+                    class="w-full bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 font-medium py-3 px-4 rounded-xl flex items-center justify-center space-x-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    <span>打包下载全部</span>
+                </button>
+            </div>
         </div>
     </aside>
 
-    <!-- Main Canvas Area -->
+    <!-- Main Content Area -->
     <main
-        class="flex-1 bg-gray-100 dark:bg-gray-900/50 relative flex items-center justify-center p-4 md:p-8 overflow-hidden min-h-[400px] md:min-h-0">
-        <!-- Canvas Container -->
-        <div id="canvasContainer" class="relative shadow-2xl transition-all duration-300 bg-white"
-            style="width: 100%; height: 100%;">
-            <!-- Grid will be injected here -->
-            <div id="gridContainer" class="w-full h-full grid gap-0 overflow-hidden">
-                <!-- Placeholder -->
-                <div
-                    class="col-span-full row-span-full flex flex-col items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800">
+        class="flex-1 bg-gray-100 dark:bg-gray-900/50 relative flex flex-col items-center justify-center p-4 md:p-8 overflow-hidden min-h-[400px] md:min-h-0">
+
+        <!-- Puzzle Main -->
+        <div id="puzzle-main" class="w-full h-full flex items-center justify-center relative">
+            <div id="canvasContainer" class="relative shadow-2xl transition-all duration-300 bg-white"
+                style="width: 100%; height: 100%;">
+                <div id="gridContainer" class="w-full h-full grid gap-0 overflow-hidden">
+                    <div
+                        class="col-span-full row-span-full flex flex-col items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800">
+                        <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                            </path>
+                        </svg>
+                        <span class="text-lg font-medium">请上传图片开始拼图</span>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm pointer-events-none opacity-0 transition-opacity duration-300"
+                id="interactionHint">
+                拖拽移动图片 • 滚轮缩放
+            </div>
+        </div>
+
+        <!-- Frame Main -->
+        <div id="frame-main" class="hidden w-full h-full overflow-y-auto custom-scrollbar">
+            <div id="frameGallery" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-12">
+                <div id="frameEmptyState"
+                    class="col-span-full flex flex-col items-center justify-center text-gray-400 h-96 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-2xl">
                     <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                         </path>
                     </svg>
-                    <span class="text-lg font-medium">请上传图片开始拼图</span>
+                    <span class="text-lg font-medium">暂无生成图片，请先上传并生成</span>
                 </div>
             </div>
         </div>
 
-        <!-- Zoom/Pan Hint -->
-        <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm pointer-events-none opacity-0 transition-opacity duration-300"
-            id="interactionHint">
-            拖拽移动图片 • 滚轮缩放
+        <!-- Toast -->
+        <div id="statusMsg"
+            class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-gray-900/90 backdrop-blur-md text-white px-6 py-3 rounded-full shadow-lg z-50 hidden flex items-center gap-3 transition-all duration-300 translate-y-10 opacity-0">
+            <svg class="animate-spin h-5 w-5 text-blue-500 hidden" xmlns="http://www.w3.org/2000/svg" fill="none"
+                viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                </path>
+            </svg>
+            <span id="statusText" class="text-sm font-medium tracking-wide">处理中...</span>
         </div>
+
     </main>
 
     <script>
-        /**
-         * Puzzle Master Pro Logic
-         */
-
-        // State
-        const state = {
-            images: [], // Array of { id, src, x, y, scale }
-            ratio: 1, // width / height
-            borderWidth: 1,
-            borderColor: '#000000',
-            theme: 'light'
-        };
-
-        // DOM Elements
-        const elements = {
-            dropZone: document.getElementById('dropZone'),
-            fileInput: document.getElementById('fileInput'),
-            fileList: document.getElementById('fileList'),
-            canvasContainer: document.getElementById('canvasContainer'),
-            gridContainer: document.getElementById('gridContainer'),
-            themeToggle: document.getElementById('themeToggle'),
-            borderWidth: document.getElementById('borderWidth'),
-            borderWidthVal: document.getElementById('borderWidthVal'),
-            borderColor: document.getElementById('borderColor'),
-            borderColorText: document.getElementById('borderColorText'),
-            borderColorVal: document.getElementById('borderColorVal'),
-            ratioBtns: document.querySelectorAll('.ratio-btn'),
-            customRatioBtn: document.getElementById('customRatioBtn'),
-            customRatioInput: document.getElementById('customRatioInput'),
-            ratioW: document.getElementById('ratioW'),
-            ratioH: document.getElementById('ratioH'),
-            downloadBtn: document.getElementById('downloadBtn'),
-            interactionHint: document.getElementById('interactionHint')
-        };
-
-        // Initialization
+        // --- Global Init ---
         function init() {
-            setupEventListeners();
+            setupTabs();
             loadTheme();
-            updateCanvasSize();
-        }
-
-        function setupEventListeners() {
-            // Theme
-            elements.themeToggle.addEventListener('click', toggleTheme);
-
-            // Upload
-            elements.dropZone.addEventListener('click', () => elements.fileInput.click());
-            elements.dropZone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                elements.dropZone.classList.add('border-blue-500');
-            });
-            elements.dropZone.addEventListener('dragleave', () => {
-                elements.dropZone.classList.remove('border-blue-500');
-            });
-            elements.dropZone.addEventListener('drop', handleDrop);
-            elements.fileInput.addEventListener('change', handleFileSelect);
-
-            // Settings
-            elements.borderWidth.addEventListener('input', updateBorderWidth);
-            elements.borderColor.addEventListener('input', updateBorderColor);
-            elements.borderColorText.addEventListener('input', (e) => {
-                elements.borderColor.value = e.target.value;
-                updateBorderColor(e);
-            });
-
-            // Ratio
-            elements.ratioBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (btn.id === 'customRatioBtn') {
-                        elements.customRatioInput.classList.remove('hidden');
-                        elements.customRatioInput.classList.add('flex');
-                    } else {
-                        elements.customRatioInput.classList.add('hidden');
-                        elements.customRatioInput.classList.remove('flex');
-                        setRatio(btn.dataset.ratio);
-                    }
-                    updateActiveRatioBtn(btn);
-                });
-            });
-
-            elements.ratioW.addEventListener('input', updateCustomRatio);
-            elements.ratioH.addEventListener('input', updateCustomRatio);
-
-            // Download
-            elements.downloadBtn.addEventListener('click', exportImage);
-
-            // Window Resize
-            window.addEventListener('resize', updateCanvasSize);
+            PuzzleApp.init();
+            FrameApp.init();
         }
 
         // --- Theme Logic ---
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', toggleTheme);
+
         function toggleTheme() {
             document.documentElement.classList.toggle('dark');
-            state.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-            localStorage.setItem('theme', state.theme);
-            updateThemeIcons();
+            const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            localStorage.setItem('theme', theme);
+            updateThemeIcons(theme);
         }
 
         function loadTheme() {
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                document.documentElement.classList.add('dark');
-                state.theme = 'dark';
-            } else {
-                document.documentElement.classList.remove('dark');
-                state.theme = 'light';
-            }
-            updateThemeIcons();
+            const theme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            if (theme === 'dark') document.documentElement.classList.add('dark');
+            else document.documentElement.classList.remove('dark');
+            updateThemeIcons(theme);
         }
 
-        function updateThemeIcons() {
+        function updateThemeIcons(theme) {
             const sun = document.getElementById('sunIcon');
             const moon = document.getElementById('moonIcon');
-            if (state.theme === 'dark') {
+            if (theme === 'dark') {
                 sun.classList.remove('hidden');
                 moon.classList.add('hidden');
             } else {
@@ -383,420 +473,662 @@
             }
         }
 
-        // --- Upload Logic ---
-        function handleDrop(e) {
-            e.preventDefault();
-            elements.dropZone.classList.remove('border-blue-500');
-            processFiles(e.dataTransfer.files);
+        // --- Tab Logic ---
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const puzzleSidebar = document.getElementById('puzzle-sidebar');
+            const frameSidebar = document.getElementById('frame-sidebar');
+            const puzzleMain = document.getElementById('puzzle-main');
+            const frameMain = document.getElementById('frame-main');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    const target = tab.dataset.tab;
+                    if (target === 'puzzle') {
+                        puzzleSidebar.classList.remove('hidden');
+                        frameSidebar.classList.add('hidden');
+                        puzzleMain.classList.remove('hidden');
+                        puzzleMain.classList.add('flex');
+                        frameMain.classList.add('hidden');
+                        setTimeout(PuzzleApp.updateCanvasSize, 50); // Resize fix
+                    } else {
+                        puzzleSidebar.classList.add('hidden');
+                        frameSidebar.classList.remove('hidden');
+                        puzzleMain.classList.add('hidden');
+                        puzzleMain.classList.remove('flex');
+                        frameMain.classList.remove('hidden');
+                    }
+                });
+            });
         }
 
-        function handleFileSelect(e) {
-            processFiles(e.target.files);
-        }
+        // --- Puzzle Master Logic ---
+        const PuzzleApp = {
+            state: {
+                images: [],
+                ratio: 1,
+                borderWidth: 1,
+                borderColor: '#000000'
+            },
+            elements: {},
 
-        function processFiles(files) {
-            const validFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
-            if (validFiles.length === 0) return;
-
-            // Limit total images to 12
-            const remainingSlots = 12 - state.images.length;
-            const filesToAdd = validFiles.slice(0, remainingSlots);
-
-            if (filesToAdd.length === 0 && state.images.length >= 12) {
-                alert('最多支持12张图片');
-                return;
-            }
-
-            filesToAdd.forEach(file => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        state.images.push({
-                            id: Date.now() + Math.random(),
-                            src: e.target.result,
-                            originalWidth: img.width,
-                            originalHeight: img.height,
-                            x: 0,
-                            y: 0,
-                            scale: 1
-                        });
-                        renderGrid();
-                        updateFileList();
-                    };
-                    img.src = e.target.result;
+            init() {
+                this.elements = {
+                    dropZone: document.getElementById('puzzleDropZone'),
+                    fileInput: document.getElementById('puzzleFileInput'),
+                    fileList: document.getElementById('puzzleFileList'),
+                    canvasContainer: document.getElementById('canvasContainer'),
+                    gridContainer: document.getElementById('gridContainer'),
+                    borderWidth: document.getElementById('borderWidth'),
+                    borderWidthVal: document.getElementById('borderWidthVal'),
+                    borderColor: document.getElementById('borderColor'),
+                    borderColorText: document.getElementById('borderColorText'),
+                    borderColorVal: document.getElementById('borderColorVal'),
+                    ratioBtns: document.querySelectorAll('.ratio-btn'),
+                    customRatioBtn: document.getElementById('customRatioBtn'),
+                    customRatioInput: document.getElementById('customRatioInput'),
+                    ratioW: document.getElementById('ratioW'),
+                    ratioH: document.getElementById('ratioH'),
+                    downloadBtn: document.getElementById('puzzleDownloadBtn'),
+                    interactionHint: document.getElementById('interactionHint')
                 };
-                reader.readAsDataURL(file);
-            });
-        }
+                this.setupEventListeners();
+                this.updateCanvasSize();
+                window.addEventListener('resize', () => this.updateCanvasSize());
+            },
 
-        function updateFileList() {
-            elements.fileList.innerHTML = '';
-            state.images.forEach((img, index) => {
-                const div = document.createElement('div');
-                div.className = 'relative aspect-square rounded-lg overflow-hidden group';
-                div.innerHTML = `
-                    <img src="${img.src}" class="w-full h-full object-cover">
-                    <button onclick="removeImage(${index})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
-                `;
-                elements.fileList.appendChild(div);
-            });
-        }
+            setupEventListeners() {
+                const els = this.elements;
+                els.dropZone.addEventListener('click', () => els.fileInput.click());
+                els.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); els.dropZone.classList.add('border-blue-500'); });
+                els.dropZone.addEventListener('dragleave', () => els.dropZone.classList.remove('border-blue-500'));
+                els.dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    els.dropZone.classList.remove('border-blue-500');
+                    this.processFiles(e.dataTransfer.files);
+                });
+                els.fileInput.addEventListener('change', (e) => this.processFiles(e.target.files));
 
-        window.removeImage = function (index) {
-            state.images.splice(index, 1);
-            renderGrid();
-            updateFileList();
-        };
+                els.borderWidth.addEventListener('input', (e) => {
+                    this.state.borderWidth = e.target.value;
+                    els.borderWidthVal.textContent = `${this.state.borderWidth}px`;
+                    this.renderGrid();
+                });
+                els.borderColor.addEventListener('input', (e) => this.updateBorderColor(e.target.value));
+                els.borderColorText.addEventListener('input', (e) => {
+                    els.borderColor.value = e.target.value;
+                    this.updateBorderColor(e.target.value);
+                });
 
-        // --- Grid Layout Logic ---
-        function renderGrid() {
-            const count = state.images.length;
-            const container = elements.gridContainer;
-            container.innerHTML = '';
+                els.ratioBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        if (btn.id === 'customRatioBtn') {
+                            els.customRatioInput.classList.remove('hidden');
+                            els.customRatioInput.classList.add('flex');
+                        } else {
+                            els.customRatioInput.classList.add('hidden');
+                            els.customRatioInput.classList.remove('flex');
+                            this.setRatio(btn.dataset.ratio);
+                        }
+                        els.ratioBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                    });
+                });
 
-            if (count === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full row-span-full flex flex-col items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800">
-                        <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        <span class="text-lg font-medium">请上传图片开始拼图</span>
-                    </div>
-                `;
-                return;
-            }
+                els.ratioW.addEventListener('input', () => this.updateCustomRatio());
+                els.ratioH.addEventListener('input', () => this.updateCustomRatio());
+                els.downloadBtn.addEventListener('click', () => this.exportImage());
+            },
 
-            // Apply Grid Template
-            const layout = getGridLayout(count);
-            container.style.gridTemplateColumns = `repeat(${layout.cols}, 1fr)`;
-            container.style.gridTemplateRows = `repeat(${layout.rows}, 1fr)`;
+            updateBorderColor(color) {
+                this.state.borderColor = color;
+                this.elements.borderColorVal.textContent = color;
+                this.elements.borderColorText.value = color;
+                this.renderGrid();
+            },
 
-            // Apply Gap (Border Width)
-            container.style.gap = `${state.borderWidth}px`;
-            container.style.backgroundColor = state.borderColor;
-            container.style.padding = `${state.borderWidth}px`;
+            setRatio(ratioStr) {
+                const [w, h] = ratioStr.split(':').map(Number);
+                this.state.ratio = w / h;
+                this.updateCanvasSize();
+            },
 
-            state.images.forEach((imgData, index) => {
-                const cell = document.createElement('div');
-                cell.className = 'grid-cell bg-gray-200 overflow-hidden relative group';
+            updateCustomRatio() {
+                const w = parseFloat(this.elements.ratioW.value) || 1;
+                const h = parseFloat(this.elements.ratioH.value) || 1;
+                this.state.ratio = w / h;
+                this.updateCanvasSize();
+            },
 
-                // Apply span if defined in layout
-                if (layout.spans && layout.spans[index]) {
-                    const span = layout.spans[index];
-                    if (span.col) cell.style.gridColumn = `span ${span.col}`;
-                    if (span.row) cell.style.gridRow = `span ${span.row}`;
+            updateCanvasSize() {
+                if (!this.elements.canvasContainer) return;
+                const container = this.elements.canvasContainer.parentElement;
+                if (!container || container.clientWidth === 0) return; // Hidden
+
+                const padding = window.innerWidth < 768 ? 32 : 64;
+                const maxWidth = container.clientWidth - padding;
+                const maxHeight = container.clientHeight - padding;
+
+                let w, h;
+                if (maxWidth / maxHeight > this.state.ratio) {
+                    h = maxHeight;
+                    w = h * this.state.ratio;
+                } else {
+                    w = maxWidth;
+                    h = w / this.state.ratio;
                 }
 
-                // Image Element
-                const img = document.createElement('img');
-                img.src = imgData.src;
-                img.className = 'absolute w-full h-full object-cover transition-transform duration-75 ease-out';
-                img.style.transform = `translate(${imgData.x}px, ${imgData.y}px) scale(${imgData.scale})`;
+                this.elements.canvasContainer.style.width = `${w}px`;
+                this.elements.canvasContainer.style.height = `${h}px`;
+            },
 
-                // Interaction Handlers
-                setupImageInteraction(cell, img, imgData);
+            processFiles(files) {
+                const validFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+                if (validFiles.length === 0) return;
+                const remainingSlots = 12 - this.state.images.length;
+                const filesToAdd = validFiles.slice(0, remainingSlots);
 
-                cell.appendChild(img);
-                container.appendChild(cell);
-            });
+                if (filesToAdd.length === 0 && this.state.images.length >= 12) {
+                    alert('最多支持12张图片');
+                    return;
+                }
 
-            // Show hint
-            elements.interactionHint.classList.remove('opacity-0');
-            setTimeout(() => elements.interactionHint.classList.add('opacity-0'), 3000);
-        }
-
-        function getGridLayout(n) {
-            // Define layouts for 3-12 images
-            // Returns { cols, rows, spans: [{col, row}, ...] }
-            // We use a 12-column grid for flexibility where possible, or specific grids
-
-            switch (n) {
-                case 3:
-                    return {
-                        cols: 2, rows: 2,
-                        spans: [
-                            { col: 1, row: 2 }, // Big Left
-                            { col: 1, row: 1 }, // Top Right
-                            { col: 1, row: 1 }  // Bottom Right
-                        ]
+                filesToAdd.forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            this.state.images.push({
+                                id: Date.now() + Math.random(),
+                                src: e.target.result,
+                                x: 0, y: 0, scale: 1
+                            });
+                            this.renderGrid();
+                            this.updateFileList();
+                        };
+                        img.src = e.target.result;
                     };
-                case 4:
-                    return { cols: 2, rows: 2, spans: [] }; // 2x2
-                case 5:
-                    return {
-                        cols: 6, rows: 2,
-                        spans: [
-                            { col: 3, row: 1 }, { col: 3, row: 1 }, // Top 2
-                            { col: 2, row: 1 }, { col: 2, row: 1 }, { col: 2, row: 1 } // Bottom 3
-                        ]
-                    };
-                case 6:
-                    return { cols: 3, rows: 2, spans: [] }; // 3x2
-                case 7:
-                    return {
-                        cols: 12, rows: 3, // Complex layout
-                        spans: [
-                            { col: 8, row: 2 }, // Big Top Left (2/3 width, 2/3 height)
-                            { col: 4, row: 1 }, // Top Right 1
-                            { col: 4, row: 1 }, // Top Right 2
-                            { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 } // Bottom 4
-                        ]
-                    };
-                    // Actually 7 is hard to make perfect with simple spans. Let's try simpler.
-                    // Row 1: 3, Row 2: 4.
-                    // 3 and 4 LCM is 12.
-                    // Row 1 items span 4. Row 2 items span 3.
-                    return {
-                        cols: 12, rows: 2,
-                        spans: [
-                            { col: 4, row: 1 }, { col: 4, row: 1 }, { col: 4, row: 1 },
-                            { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }
-                        ]
-                    };
-                case 8:
-                    return { cols: 4, rows: 2, spans: [] }; // 4x2
-                case 9:
-                    return { cols: 3, rows: 3, spans: [] }; // 3x3
-                case 10:
-                    // 2 rows: 5 and 5
-                    return { cols: 5, rows: 2, spans: [] };
-                case 11:
-                    // Row 1: 5, Row 2: 6? Or 4, 4, 3?
-                    // Let's do 3 rows: 4, 4, 3.
-                    // LCM 12.
-                    return {
-                        cols: 12, rows: 3,
-                        spans: [
-                            { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 },
-                            { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 },
-                            { col: 4, row: 1 }, { col: 4, row: 1 }, { col: 4, row: 1 }
-                        ]
-                    };
-                case 12:
-                    return { cols: 4, rows: 3, spans: [] }; // 4x3
-                default:
-                    // Fallback for < 3 (should be handled by upload limit but just in case)
-                    return { cols: n, rows: 1, spans: [] };
-            }
-        }
+                    reader.readAsDataURL(file);
+                });
+            },
 
-        // --- Interaction Logic ---
-        function setupImageInteraction(cell, img, imgData) {
-            let isDragging = false;
-            let startX, startY;
-            let initialX, initialY;
+            updateFileList() {
+                this.elements.fileList.innerHTML = '';
+                this.state.images.forEach((img, index) => {
+                    const div = document.createElement('div');
+                    div.className = 'relative aspect-square rounded-lg overflow-hidden group';
+                    div.innerHTML = `
+                        <img src="${img.src}" class="w-full h-full object-cover">
+                        <button onclick="PuzzleApp.removeImage(${index})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        </button>
+                    `;
+                    this.elements.fileList.appendChild(div);
+                });
+            },
 
-            cell.addEventListener('mousedown', startDrag);
-            cell.addEventListener('touchstart', startDrag, { passive: false });
+            removeImage(index) {
+                this.state.images.splice(index, 1);
+                this.renderGrid();
+                this.updateFileList();
+            },
 
-            function startDrag(e) {
-                e.preventDefault();
-                isDragging = true;
-                const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
-                const clientY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
-                startX = clientX;
-                startY = clientY;
-                initialX = imgData.x;
-                initialY = imgData.y;
+            renderGrid() {
+                const count = this.state.images.length;
+                const container = this.elements.gridContainer;
+                container.innerHTML = '';
 
-                document.addEventListener('mousemove', onDrag);
-                document.addEventListener('mouseup', stopDrag);
-                document.addEventListener('touchmove', onDrag, { passive: false });
-                document.addEventListener('touchend', stopDrag);
+                if (count === 0) {
+                    container.innerHTML = `<div class="col-span-full row-span-full flex flex-col items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800"><svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span class="text-lg font-medium">请上传图片开始拼图</span></div>`;
+                    return;
+                }
 
-                cell.classList.add('cursor-grabbing');
-            }
+                const layout = this.getGridLayout(count);
+                container.style.gridTemplateColumns = `repeat(${layout.cols}, 1fr)`;
+                container.style.gridTemplateRows = `repeat(${layout.rows}, 1fr)`;
+                container.style.gap = `${this.state.borderWidth}px`;
+                container.style.backgroundColor = this.state.borderColor;
+                container.style.padding = `${this.state.borderWidth}px`;
 
-            function onDrag(e) {
-                if (!isDragging) return;
-                e.preventDefault();
-                const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
-                const clientY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
-
-                const dx = clientX - startX;
-                const dy = clientY - startY;
-
-                imgData.x = initialX + dx;
-                imgData.y = initialY + dy;
-
-                img.style.transform = `translate(${imgData.x}px, ${imgData.y}px) scale(${imgData.scale})`;
-            }
-
-            function stopDrag() {
-                isDragging = false;
-                document.removeEventListener('mousemove', onDrag);
-                document.removeEventListener('mouseup', stopDrag);
-                document.removeEventListener('touchmove', onDrag);
-                document.removeEventListener('touchend', stopDrag);
-                cell.classList.remove('cursor-grabbing');
-            }
-
-            // Zoom
-            cell.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                const delta = e.deltaY > 0 ? 0.9 : 1.1;
-                let newScale = imgData.scale * delta;
-                newScale = Math.max(0.5, Math.min(newScale, 5)); // Clamp scale
-                imgData.scale = newScale;
-                img.style.transform = `translate(${imgData.x}px, ${imgData.y}px) scale(${imgData.scale})`;
-            }, { passive: false });
-        }
-
-        // --- Settings Logic ---
-        function updateBorderWidth(e) {
-            state.borderWidth = e.target.value;
-            elements.borderWidthVal.textContent = `${state.borderWidth}px`;
-            renderGrid(); // Re-render to apply gap
-        }
-
-        function updateBorderColor(e) {
-            state.borderColor = e.target.value;
-            elements.borderColorVal.textContent = state.borderColor;
-            elements.borderColorText.value = state.borderColor;
-            renderGrid();
-        }
-
-        function setRatio(ratioStr) {
-            const [w, h] = ratioStr.split(':').map(Number);
-            state.ratio = w / h;
-            updateCanvasSize();
-        }
-
-        function updateCustomRatio() {
-            const w = parseFloat(elements.ratioW.value) || 1;
-            const h = parseFloat(elements.ratioH.value) || 1;
-            state.ratio = w / h;
-            updateCanvasSize();
-        }
-
-        function updateActiveRatioBtn(activeBtn) {
-            elements.ratioBtns.forEach(btn => btn.classList.remove('active'));
-            activeBtn.classList.add('active');
-        }
-
-        function updateCanvasSize() {
-            const container = elements.canvasContainer.parentElement;
-            const padding = window.innerWidth < 768 ? 32 : 64; // Less padding on mobile
-            const maxWidth = container.clientWidth - padding;
-            const maxHeight = container.clientHeight - padding;
-
-            let w, h;
-
-            if (maxWidth / maxHeight > state.ratio) {
-                h = maxHeight;
-                w = h * state.ratio;
-            } else {
-                w = maxWidth;
-                h = w / state.ratio;
-            }
-
-            elements.canvasContainer.style.width = `${w}px`;
-            elements.canvasContainer.style.height = `${h}px`;
-        }
-
-        // --- Export Logic ---
-        async function exportImage() {
-            if (state.images.length === 0) return;
-
-            const btn = elements.downloadBtn;
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<span>生成中...</span>';
-            btn.disabled = true;
-
-            try {
-                // 1. Create High-Res Canvas (Fixed Target Width)
-                const targetWidth = 2400; // HD Standard
-                const targetHeight = targetWidth / state.ratio;
-
-                const domRect = elements.gridContainer.getBoundingClientRect();
-                const scale = targetWidth / domRect.width;
-
-                const canvas = document.createElement('canvas');
-                canvas.width = targetWidth;
-                canvas.height = targetHeight;
-                const ctx = canvas.getContext('2d');
-
-                // 2. Draw Background (Border)
-                ctx.fillStyle = state.borderColor;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                // 3. Draw Images
-                const cells = Array.from(elements.gridContainer.children);
-
-                for (let i = 0; i < cells.length; i++) {
-                    const cell = cells[i];
-                    const imgData = state.images[i];
-                    const imgEl = cell.querySelector('img');
-
-                    if (!imgEl) continue;
-
-                    // Get cell position relative to container
-                    const cellRect = cell.getBoundingClientRect();
-                    const x = (cellRect.left - domRect.left) * scale;
-                    const y = (cellRect.top - domRect.top) * scale;
-                    const w = cellRect.width * scale;
-                    const h = cellRect.height * scale;
-
-                    ctx.save();
-
-                    // Clip to cell area
-                    ctx.beginPath();
-                    ctx.rect(x, y, w, h);
-                    ctx.clip();
-
-                    // Calculate Image Drawing Params (Simulate object-fit: cover)
-                    const img = new Image();
-                    img.src = imgData.src;
-                    await new Promise(r => img.onload = r);
-
-                    const imgW = img.naturalWidth;
-                    const imgH = img.naturalHeight;
-                    const ratio = imgW / imgH;
-                    const cellRatio = w / h;
-
-                    let renderW, renderH;
-                    if (cellRatio > ratio) {
-                        renderW = w;
-                        renderH = w / ratio;
-                    } else {
-                        renderH = h;
-                        renderW = h * ratio;
+                this.state.images.forEach((imgData, index) => {
+                    const cell = document.createElement('div');
+                    cell.className = 'grid-cell bg-gray-200 overflow-hidden relative group';
+                    if (layout.spans && layout.spans[index]) {
+                        if (layout.spans[index].col) cell.style.gridColumn = `span ${layout.spans[index].col}`;
+                        if (layout.spans[index].row) cell.style.gridRow = `span ${layout.spans[index].row}`;
                     }
+                    const img = document.createElement('img');
+                    img.src = imgData.src;
+                    img.className = 'absolute w-full h-full object-cover transition-transform duration-75 ease-out';
+                    img.style.transform = `translate(${imgData.x}px, ${imgData.y}px) scale(${imgData.scale})`;
+                    this.setupImageInteraction(cell, img, imgData);
+                    cell.appendChild(img);
+                    container.appendChild(cell);
+                });
 
-                    const offsetX = (w - renderW) / 2;
-                    const offsetY = (h - renderH) / 2;
+                this.elements.interactionHint.classList.remove('opacity-0');
+                setTimeout(() => this.elements.interactionHint.classList.add('opacity-0'), 3000);
+            },
 
-                    // Apply User Transforms
-                    // Translate to center of cell
-                    ctx.translate(x + w / 2, y + h / 2);
-                    // Apply user pan (scaled)
-                    ctx.translate(imgData.x * scale, imgData.y * scale);
-                    // Apply user zoom
-                    ctx.scale(imgData.scale, imgData.scale);
-                    // Translate back
-                    ctx.translate(-(x + w / 2), -(y + h / 2));
+            getGridLayout(n) {
+                switch (n) {
+                    case 3: return { cols: 2, rows: 2, spans: [{ col: 1, row: 2 }, { col: 1, row: 1 }, { col: 1, row: 1 }] };
+                    case 4: return { cols: 2, rows: 2, spans: [] };
+                    case 5: return { cols: 6, rows: 2, spans: [{ col: 3, row: 1 }, { col: 3, row: 1 }, { col: 2, row: 1 }, { col: 2, row: 1 }, { col: 2, row: 1 }] };
+                    case 6: return { cols: 3, rows: 2, spans: [] };
+                    case 7: return { cols: 12, rows: 2, spans: [{ col: 4, row: 1 }, { col: 4, row: 1 }, { col: 4, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }] };
+                    case 8: return { cols: 4, rows: 2, spans: [] };
+                    case 9: return { cols: 3, rows: 3, spans: [] };
+                    case 10: return { cols: 5, rows: 2, spans: [] };
+                    case 11: return { cols: 12, rows: 3, spans: [{ col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 4, row: 1 }, { col: 4, row: 1 }, { col: 4, row: 1 }] };
+                    case 12: return { cols: 4, rows: 3, spans: [] };
+                    default: return { cols: n, rows: 1, spans: [] };
+                }
+            },
 
-                    // Draw image centered in cell (base position)
-                    ctx.drawImage(img, x + offsetX, y + offsetY, renderW, renderH);
+            setupImageInteraction(cell, img, imgData) {
+                let isDragging = false, startX, startY, initialX, initialY;
+                let rafId = null;
 
+                const startDrag = (e) => {
+                    e.preventDefault();
+                    isDragging = true;
+                    const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+                    const clientY = e.type === 'mousedown' ? e.clientY : e.touches[0].clientY;
+                    startX = clientX; startY = clientY;
+                    initialX = imgData.x; initialY = imgData.y;
+
+                    document.addEventListener('mousemove', onDrag);
+                    document.addEventListener('mouseup', stopDrag);
+                    document.addEventListener('touchmove', onDrag, { passive: false });
+                    document.addEventListener('touchend', stopDrag);
+                    cell.classList.add('cursor-grabbing');
+                };
+
+                const onDrag = (e) => {
+                    if (!isDragging) return;
+                    e.preventDefault();
+
+                    const clientX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+                    const clientY = e.type === 'mousemove' ? e.clientY : e.touches[0].clientY;
+
+                    // Update data immediately
+                    imgData.x = initialX + (clientX - startX);
+                    imgData.y = initialY + (clientY - startY);
+
+                    // Schedule visual update
+                    if (!rafId) {
+                        rafId = requestAnimationFrame(() => {
+                            img.style.transform = `translate(${imgData.x}px, ${imgData.y}px) scale(${imgData.scale})`;
+                            rafId = null;
+                        });
+                    }
+                };
+
+                const stopDrag = () => {
+                    isDragging = false;
+                    if (rafId) {
+                        cancelAnimationFrame(rafId);
+                        rafId = null;
+                    }
+                    document.removeEventListener('mousemove', onDrag);
+                    document.removeEventListener('mouseup', stopDrag);
+                    document.removeEventListener('touchmove', onDrag);
+                    document.removeEventListener('touchend', stopDrag);
+                    cell.classList.remove('cursor-grabbing');
+                };
+
+                cell.addEventListener('mousedown', startDrag);
+                cell.addEventListener('touchstart', startDrag, { passive: false });
+                cell.addEventListener('wheel', (e) => {
+                    e.preventDefault();
+                    const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                    imgData.scale = Math.max(0.5, Math.min(imgData.scale * delta, 5));
+
+                    // Use rAF for zoom as well
+                    requestAnimationFrame(() => {
+                        img.style.transform = `translate(${imgData.x}px, ${imgData.y}px) scale(${imgData.scale})`;
+                    });
+                }, { passive: false });
+
+                // Double click to reset
+                cell.addEventListener('dblclick', (e) => {
+                    e.preventDefault();
+                    imgData.x = 0;
+                    imgData.y = 0;
+                    imgData.scale = 1;
+                    requestAnimationFrame(() => {
+                        img.style.transform = `translate(0px, 0px) scale(1)`;
+                    });
+                });
+            },
+
+            async exportImage() {
+                if (this.state.images.length === 0) return;
+                const btn = this.elements.downloadBtn;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span>生成中...</span>';
+                btn.disabled = true;
+                try {
+                    const targetWidth = 2400;
+                    const targetHeight = targetWidth / this.state.ratio;
+                    const domRect = this.elements.gridContainer.getBoundingClientRect();
+                    const scale = targetWidth / domRect.width;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = targetWidth; canvas.height = targetHeight;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = this.state.borderColor;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    const cells = Array.from(this.elements.gridContainer.children);
+                    for (let i = 0; i < cells.length; i++) {
+                        const cell = cells[i];
+                        const imgData = this.state.images[i];
+                        const imgEl = cell.querySelector('img');
+                        if (!imgEl) continue;
+                        const cellRect = cell.getBoundingClientRect();
+                        const x = (cellRect.left - domRect.left) * scale;
+                        const y = (cellRect.top - domRect.top) * scale;
+                        const w = cellRect.width * scale;
+                        const h = cellRect.height * scale;
+                        ctx.save();
+                        ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+                        const img = new Image();
+                        img.src = imgData.src;
+                        await new Promise(r => img.onload = r);
+                        const ratio = img.naturalWidth / img.naturalHeight;
+                        const cellRatio = w / h;
+                        let renderW, renderH;
+                        if (cellRatio > ratio) { renderW = w; renderH = w / ratio; }
+                        else { renderH = h; renderW = h * ratio; }
+                        const offsetX = (w - renderW) / 2;
+                        const offsetY = (h - renderH) / 2;
+                        ctx.translate(x + w / 2, y + h / 2);
+                        ctx.translate(imgData.x * scale, imgData.y * scale);
+                        ctx.scale(imgData.scale, imgData.scale);
+                        ctx.translate(-(x + w / 2), -(y + h / 2));
+                        ctx.drawImage(img, x + offsetX, y + offsetY, renderW, renderH);
+                        ctx.restore();
+                    }
+                    const link = document.createElement('a');
+                    link.download = `puzzle-master-${Date.now()}.png`;
+                    link.href = canvas.toDataURL('image/png', 1.0);
+                    link.click();
+                } catch (err) {
+                    console.error(err);
+                    alert('导出失败');
+                } finally {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            }
+        };
+
+        // --- Frame Master Logic ---
+        const FrameApp = {
+            currentFiles: [],
+            generatedImagesData: [],
+            elements: {},
+
+            init() {
+                this.elements = {
+                    dropZone: document.getElementById('frameDropZone'),
+                    fileInput: document.getElementById('frameFileInput'),
+                    fileCount: document.getElementById('frameFileCount'),
+                    gallery: document.getElementById('frameGallery'),
+                    emptyState: document.getElementById('frameEmptyState'),
+                    borderRange: document.getElementById('frameBorderRange'),
+                    borderVal: document.getElementById('frameBorderVal'),
+                    blurRange: document.getElementById('frameBlurRange'),
+                    blurVal: document.getElementById('frameBlurVal'),
+                    fontRange: document.getElementById('frameFontRange'),
+                    fontVal: document.getElementById('frameFontVal'),
+                    exifToggle: document.getElementById('frameExifToggle'),
+                    generateBtn: document.getElementById('frameGenerateBtn'),
+                    downloadAllBtn: document.getElementById('frameDownloadAllBtn'),
+                    statusMsg: document.getElementById('statusMsg'),
+                    statusText: document.getElementById('statusText'),
+                    spinner: document.getElementById('statusMsg').querySelector('svg')
+                };
+                this.setupEventListeners();
+            },
+
+            setupEventListeners() {
+                const els = this.elements;
+                els.dropZone.addEventListener('click', () => els.fileInput.click());
+                els.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); els.dropZone.classList.add('border-blue-500'); });
+                els.dropZone.addEventListener('dragleave', () => els.dropZone.classList.remove('border-blue-500'));
+                els.dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    els.dropZone.classList.remove('border-blue-500');
+                    this.handleFiles(e.dataTransfer.files);
+                });
+                els.fileInput.addEventListener('change', (e) => this.handleFiles(e.target.files));
+
+                els.borderRange.addEventListener('input', (e) => els.borderVal.innerText = e.target.value);
+                els.blurRange.addEventListener('input', (e) => els.blurVal.innerText = e.target.value);
+                els.fontRange.addEventListener('input', (e) => els.fontVal.innerText = e.target.value + 'x');
+
+                els.generateBtn.addEventListener('click', () => this.processFiles());
+                els.downloadAllBtn.addEventListener('click', () => this.downloadAll());
+            },
+
+            handleFiles(files) {
+                this.currentFiles = Array.from(files);
+                const els = this.elements;
+                if (this.currentFiles.length > 0) {
+                    els.fileCount.innerText = `${this.currentFiles.length} 张`;
+                    els.fileCount.classList.remove('hidden');
+                } else {
+                    els.fileCount.classList.add('hidden');
+                }
+            },
+
+            showToast(msg, isLoading = true) {
+                const els = this.elements;
+                els.statusMsg.classList.remove('hidden', 'translate-y-10', 'opacity-0');
+                els.statusText.innerText = msg;
+                if (isLoading) els.spinner.classList.remove('hidden');
+                else els.spinner.classList.add('hidden');
+            },
+
+            hideToast() {
+                const els = this.elements;
+                els.statusMsg.classList.add('translate-y-10', 'opacity-0');
+                setTimeout(() => els.statusMsg.classList.add('hidden'), 500);
+            },
+
+            async processFiles() {
+                if (this.currentFiles.length === 0) { alert("请先上传照片"); return; }
+
+                const els = this.elements;
+                els.gallery.innerHTML = '';
+                els.emptyState.classList.add('hidden');
+                this.generatedImagesData = [];
+                els.downloadAllBtn.disabled = true;
+
+                this.showToast(`准备处理...`);
+
+                const settings = {
+                    padding: parseInt(els.borderRange.value),
+                    blur: parseInt(els.blurRange.value),
+                    fontScale: parseFloat(els.fontRange.value),
+                    showExif: els.exifToggle.checked
+                };
+
+                for (let i = 0; i < this.currentFiles.length; i++) {
+                    els.statusText.innerText = `正在处理 ${i + 1}/${this.currentFiles.length} ...`;
+                    await this.processSingleImage(this.currentFiles[i], settings);
+                }
+
+                this.showToast("全部完成", false);
+                setTimeout(() => this.hideToast(), 2000);
+
+                if (this.generatedImagesData.length > 0) {
+                    els.downloadAllBtn.disabled = false;
+                }
+            },
+
+            processSingleImage(file, settings) {
+                return new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        const img = new Image();
+                        img.onload = () => {
+                            EXIF.getData(img, () => {
+                                const make = EXIF.getTag(img, "Make");
+                                const model = EXIF.getTag(img, "Model");
+                                const fNumber = EXIF.getTag(img, "FNumber");
+                                const focalLen = EXIF.getTag(img, "FocalLength");
+                                const iso = EXIF.getTag(img, "ISOSpeedRatings");
+                                const exposure = EXIF.getTag(img, "ExposureTime");
+
+                                const exifData = {
+                                    hasData: !!(make || model),
+                                    camera: [make, model].filter(Boolean).join(" ").replace("undefined", "").trim(),
+                                    iso: iso,
+                                    fstop: fNumber ? `f/${this.formatNumber(fNumber)}` : null,
+                                    shutter: this.formatShutter(exposure),
+                                    focal: focalLen ? `${this.formatNumber(focalLen)}mm` : null
+                                };
+                                this.createCanvasFrame(img, exifData, settings, file.name, resolve);
+                            });
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                });
+            },
+
+            formatNumber(num) {
+                if (!num && num !== 0) return null;
+                const val = parseFloat(num);
+                if (isNaN(val)) return null;
+                return parseFloat(val.toFixed(2)).toString();
+            },
+
+            formatShutter(exposureTime) {
+                if (!exposureTime) return null;
+                if (exposureTime >= 1) return this.formatNumber(exposureTime) + "s";
+                return "1/" + Math.round(1 / exposureTime) + "s";
+            },
+
+            createCanvasFrame(img, exif, settings, filename, resolveCallback) {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const scaleFactor = Math.max(img.width, img.height) / 2000;
+                const realPadding = settings.padding * scaleFactor;
+                const canvasWidth = img.width + (realPadding * 2);
+                const canvasHeight = img.height + (realPadding * 2);
+
+                canvas.width = canvasWidth;
+                canvas.height = canvasHeight;
+
+                // Background
+                ctx.fillStyle = "#0F172A";
+                ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+                ctx.save();
+                ctx.filter = `blur(${settings.blur * 2}px) brightness(0.6)`;
+                ctx.drawImage(img, -canvasWidth * 0.05, -canvasHeight * 0.05, canvasWidth * 1.1, canvasHeight * 1.1);
+                ctx.restore();
+
+                // Shadow
+                ctx.save();
+                ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
+                ctx.shadowBlur = 60 * scaleFactor;
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 20 * scaleFactor;
+                ctx.drawImage(img, realPadding, realPadding, img.width, img.height);
+                ctx.restore();
+
+                // Text
+                if (settings.showExif && exif.hasData) {
+                    ctx.save();
+                    const baseFontSize = 36 * scaleFactor * settings.fontScale;
+                    ctx.fillStyle = "#FFFFFF";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "middle";
+                    ctx.shadowColor = "rgba(0,0,0,0.9)";
+                    ctx.shadowBlur = 6;
+                    ctx.shadowOffsetY = 2;
+
+                    const centerX = canvasWidth / 2;
+                    const bottomBorderCenterY = canvasHeight - (realPadding / 2);
+                    const lineSpacing = baseFontSize * 1.45;
+
+                    ctx.font = `500 ${baseFontSize}px 'Oswald', sans-serif`;
+                    ctx.fillText(exif.camera, centerX, bottomBorderCenterY - (lineSpacing * 0.35));
+
+                    const paramsParts = [exif.focal, exif.fstop, exif.shutter, exif.iso ? `ISO ${exif.iso}` : null];
+                    const paramText = paramsParts.filter(Boolean).join("  |  ");
+
+                    if (paramText) {
+                        ctx.font = `400 ${baseFontSize * 0.7}px 'Roboto Mono', monospace`;
+                        ctx.globalAlpha = 0.9;
+                        ctx.fillText(paramText, centerX, bottomBorderCenterY + (lineSpacing * 0.5));
+                    }
                     ctx.restore();
                 }
 
-                // 4. Download
-                const link = document.createElement('a');
-                link.download = `puzzle-master-${Date.now()}.png`;
-                link.href = canvas.toDataURL('image/png', 1.0);
-                link.click();
+                canvas.toBlob((blob) => {
+                    const outName = `BorderPro_${filename.replace(/\.[^/.]+$/, "")}.jpg`;
+                    this.generatedImagesData.push({ name: outName, blob: blob });
+                    this.createResultCard(canvas, outName);
+                    resolveCallback();
+                }, 'image/jpeg', 0.95);
+            },
 
-            } catch (err) {
-                console.error('Export failed:', err);
-                alert('导出失败，请重试');
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
+            createResultCard(canvas, filename) {
+                const wrapper = document.createElement('div');
+                wrapper.className = "bg-white dark:bg-gray-800 p-2 rounded-xl shadow-md group hover:shadow-lg transition duration-300 flex flex-col gap-2 animate-[fadeIn_0.5s_ease-out]";
+
+                const imgContainer = document.createElement('div');
+                imgContainer.className = "relative overflow-hidden rounded-lg bg-gray-900 aspect-auto";
+
+                const imgPreview = document.createElement('img');
+                imgPreview.src = canvas.toDataURL('image/jpeg', 0.6);
+                imgPreview.className = "w-full h-auto object-cover";
+
+                const overlay = document.createElement('a');
+                overlay.href = canvas.toDataURL('image/jpeg', 1.0);
+                overlay.download = filename;
+                overlay.className = "absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer";
+                overlay.innerHTML = '<div class="bg-white/20 backdrop-blur rounded-full p-2"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></div>';
+
+                imgContainer.appendChild(imgPreview);
+                imgContainer.appendChild(overlay);
+
+                const info = document.createElement('div');
+                info.className = "flex justify-between items-center px-1";
+                info.innerHTML = `<span class="text-gray-500 dark:text-gray-400 text-xs truncate font-mono">${filename}</span>`;
+
+                wrapper.appendChild(imgContainer);
+                wrapper.appendChild(info);
+                this.elements.gallery.appendChild(wrapper);
+            },
+
+            async downloadAll() {
+                if (this.generatedImagesData.length === 0) return;
+                this.showToast("正在打包压缩...", true);
+                const zip = new JSZip();
+                const folder = zip.folder("BorderMaster_Images");
+                this.generatedImagesData.forEach(item => {
+                    folder.file(item.name, item.blob);
+                });
+                try {
+                    const content = await zip.generateAsync({ type: "blob" });
+                    saveAs(content, "BorderMaster_Output.zip");
+                    this.showToast("开始下载", false);
+                    setTimeout(() => this.hideToast(), 2000);
+                } catch (e) {
+                    console.error(e);
+                    this.showToast("打包失败", false);
+                }
             }
-        }
+        };
 
         // Run
         init();
