@@ -1045,9 +1045,56 @@
                 ctx.fillStyle = "#0F172A";
                 ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
+                // Draw background image for blur
                 ctx.save();
-                ctx.filter = `blur(${settings.blur * 2}px) brightness(0.6)`;
+                // Draw slightly larger to cover edges
                 ctx.drawImage(img, -canvasWidth * 0.05, -canvasHeight * 0.05, canvasWidth * 1.1, canvasHeight * 1.1);
+
+                // Apply Blur (StackBlur)
+                // We need to get ImageData, blur it, and put it back.
+                // Note: This can be slow for very large images.
+                // Optimization: Downscale background, blur, then upscale?
+                // For quality, let's try direct blur first, but maybe on a smaller offscreen canvas if performance is bad.
+                // Given "Pro" requirement, let's try to keep quality but maybe limit blur radius or optimize.
+
+                if (settings.blur > 0) {
+                    try {
+                        // Use a downscaled canvas for blur performance
+                        const blurCanvas = document.createElement('canvas');
+                        const blurCtx = blurCanvas.getContext('2d');
+                        const blurScale = 0.2; // Downscale to 20%
+                        blurCanvas.width = canvasWidth * blurScale;
+                        blurCanvas.height = canvasHeight * blurScale;
+
+                        blurCtx.drawImage(img, -blurCanvas.width * 0.05, -blurCanvas.height * 0.05, blurCanvas.width * 1.1, blurCanvas.height * 1.1);
+
+                        // Apply StackBlur to the small canvas
+                        // Radius needs to be adjusted for scale
+                        // settings.blur is 0-100. Max radius ~ 180?
+                        const radius = Math.round(settings.blur * 2 * blurScale);
+                        if (radius > 0) {
+                            this.stackBlurCanvasRGB(blurCanvas, 0, 0, blurCanvas.width, blurCanvas.height, radius);
+                        }
+
+                        // Draw blurred image back to main canvas
+                        ctx.drawImage(blurCanvas, 0, 0, blurCanvas.width, blurCanvas.height, 0, 0, canvasWidth, canvasHeight);
+
+                        // Apply brightness darken
+                        ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+                        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+                    } catch (e) {
+                        console.error("Blur failed", e);
+                        // Fallback to simple darken
+                        ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+                        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                    }
+                } else {
+                    // No blur, just darken
+                    ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+                    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                }
+
                 ctx.restore();
 
                 // Shadow
@@ -1094,6 +1141,55 @@
                     this.createResultCard(canvas, outName);
                     resolveCallback();
                 }, 'image/jpeg', 0.95);
+            },
+
+            // Simple Box Blur (3 passes)
+            stackBlurCanvasRGB(canvas, top_x, top_y, width, height, radius) {
+                if (isNaN(radius) || radius < 1) return;
+                const ctx = canvas.getContext('2d');
+                let imageData;
+                try { imageData = ctx.getImageData(top_x, top_y, width, height); } catch (e) { return; }
+                const pixels = imageData.data;
+
+                // 3 passes of box blur approximates Gaussian
+                // Horizontal
+                this.boxBlurH(pixels, width, height, radius);
+                this.boxBlurT(pixels, width, height, radius); // Vertical
+                this.boxBlurH(pixels, width, height, radius);
+                this.boxBlurT(pixels, width, height, radius);
+
+                ctx.putImageData(imageData, top_x, top_y);
+            },
+
+            boxBlurH(scl, w, h, r) {
+                for (let i = 0; i < h; i++) {
+                    for (let j = 0; j < w; j++) {
+                        let valR = 0, valG = 0, valB = 0, cnt = 0;
+                        for (let k = j - r; k <= j + r; k++) {
+                            if (k >= 0 && k < w) {
+                                let p = (i * w + k) * 4;
+                                valR += scl[p]; valG += scl[p + 1]; valB += scl[p + 2]; cnt++;
+                            }
+                        }
+                        let p = (i * w + j) * 4;
+                        scl[p] = valR / cnt; scl[p + 1] = valG / cnt; scl[p + 2] = valB / cnt;
+                    }
+                }
+            },
+            boxBlurT(scl, w, h, r) {
+                for (let i = 0; i < w; i++) {
+                    for (let j = 0; j < h; j++) {
+                        let valR = 0, valG = 0, valB = 0, cnt = 0;
+                        for (let k = j - r; k <= j + r; k++) {
+                            if (k >= 0 && k < h) {
+                                let p = (k * w + i) * 4;
+                                valR += scl[p]; valG += scl[p + 1]; valB += scl[p + 2]; cnt++;
+                            }
+                        }
+                        let p = (j * w + i) * 4;
+                        scl[p] = valR / cnt; scl[p + 1] = valG / cnt; scl[p + 2] = valB / cnt;
+                    }
+                }
             },
 
             createResultCard(canvas, filename) {
