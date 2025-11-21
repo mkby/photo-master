@@ -290,8 +290,17 @@
             </section>
 
             <div class="pt-4">
+                <div class="space-y-4 mb-6">
+                    <div class="flex justify-between items-center">
+                        <label class="text-sm font-medium text-gray-700 dark:text-gray-300">导出质量</label>
+                        <span id="puzzleQualityVal" class="text-xs text-gray-500 font-mono">85%</span>
+                    </div>
+                    <input type="range" id="puzzleQuality" min="10" max="100" value="85"
+                        class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                </div>
+
                 <button id="puzzleDownloadBtn"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                    class="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
@@ -368,6 +377,16 @@
                     </label>
                 </div>
             </section>
+
+            <!-- Quality -->
+            <div class="space-y-4 mt-6">
+                <div class="flex justify-between items-center">
+                    <label class="text-sm font-medium text-gray-700 dark:text-gray-300">导出质量</label>
+                    <span id="frameQualityVal" class="text-xs text-gray-500 font-mono">85%</span>
+                </div>
+                <input type="range" id="frameQuality" min="10" max="100" value="85"
+                    class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+            </div>
 
             <!-- Actions -->
             <div class="pt-4 space-y-3">
@@ -526,7 +545,8 @@
                 images: [],
                 ratio: 1,
                 borderWidth: 1,
-                borderColor: '#000000'
+                borderColor: '#000000',
+                quality: 0.85 // Added quality state
             },
             elements: {},
 
@@ -548,7 +568,9 @@
                     ratioW: document.getElementById('ratioW'),
                     ratioH: document.getElementById('ratioH'),
                     downloadBtn: document.getElementById('puzzleDownloadBtn'),
-                    interactionHint: document.getElementById('interactionHint')
+                    interactionHint: document.getElementById('interactionHint'),
+                    puzzleQuality: document.getElementById('puzzleQuality'), // Added quality input
+                    puzzleQualityVal: document.getElementById('puzzleQualityVal') // Added quality value display
                 };
                 this.setupEventListeners();
                 this.updateCanvasSize();
@@ -563,9 +585,9 @@
                 els.dropZone.addEventListener('drop', (e) => {
                     e.preventDefault();
                     els.dropZone.classList.remove('border-blue-500');
-                    this.processFiles(e.dataTransfer.files);
+                    this.handleFiles(e.dataTransfer.files);
                 });
-                els.fileInput.addEventListener('change', (e) => this.processFiles(e.target.files));
+                els.fileInput.addEventListener('change', (e) => this.handleFiles(e.target.files));
 
                 els.borderWidth.addEventListener('input', (e) => {
                     this.state.borderWidth = e.target.value;
@@ -576,6 +598,13 @@
                 els.borderColorText.addEventListener('input', (e) => {
                     els.borderColor.value = e.target.value;
                     this.updateBorderColor(e.target.value);
+                });
+
+                // Added quality slider event listener
+                els.puzzleQuality.addEventListener('input', (e) => {
+                    const val = parseInt(e.target.value);
+                    this.state.quality = val / 100;
+                    els.puzzleQualityVal.textContent = `${val}%`;
                 });
 
                 els.ratioBtns.forEach(btn => {
@@ -640,26 +669,51 @@
                 this.elements.canvasContainer.style.height = `${h}px`;
             },
 
-            processFiles(files) {
+            handleFiles(files) {
                 const validFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
                 if (validFiles.length === 0) return;
-                const remainingSlots = 12 - this.state.images.length;
-                const filesToAdd = validFiles.slice(0, remainingSlots);
 
-                if (filesToAdd.length === 0 && this.state.images.length >= 12) {
-                    alert('最多支持12张图片');
+                if (this.state.images.length + validFiles.length > 12) {
+                    alert('最多只能上传12张图片');
                     return;
                 }
 
-                filesToAdd.forEach(file => {
+                validFiles.forEach(file => {
                     const reader = new FileReader();
                     reader.onload = (e) => {
                         const img = new Image();
                         img.onload = () => {
+                            // Optimization: Resize if too large
+                            const MAX_DIMENSION = 4096;
+                            let src = img.src;
+                            let originalWidth = img.width;
+                            let originalHeight = img.height;
+
+                            if (img.width > MAX_DIMENSION || img.height > MAX_DIMENSION) {
+                                const canvas = document.createElement('canvas');
+                                let width = img.width;
+                                let height = img.height;
+                                if (width > height) {
+                                    height = height * (MAX_DIMENSION / width);
+                                    width = MAX_DIMENSION;
+                                } else {
+                                    width = width * (MAX_DIMENSION / height);
+                                    height = MAX_DIMENSION;
+                                }
+                                canvas.width = width;
+                                canvas.height = height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0, width, height);
+                                // Use high quality for the resized source image, independent of export setting
+                                src = canvas.toDataURL('image/jpeg', 0.92);
+                            }
+
                             this.state.images.push({
                                 id: Date.now() + Math.random(),
-                                src: e.target.result,
-                                x: 0, y: 0, scale: 1
+                                src: src,
+                                x: 0, y: 0, scale: 1,
+                                originalWidth: originalWidth,
+                                originalHeight: originalHeight
                             });
                             this.renderGrid();
                             this.updateFileList();
@@ -827,53 +881,94 @@
                 const originalText = btn.innerHTML;
                 btn.innerHTML = '<span>生成中...</span>';
                 btn.disabled = true;
+
                 try {
-                    const targetWidth = 2400;
+                    // Optimization: Increase to 4096px for Pro quality
+                    const targetWidth = 4096;
                     const targetHeight = targetWidth / this.state.ratio;
+
                     const domRect = this.elements.gridContainer.getBoundingClientRect();
                     const scale = targetWidth / domRect.width;
+
                     const canvas = document.createElement('canvas');
-                    canvas.width = targetWidth; canvas.height = targetHeight;
+                    canvas.width = targetWidth;
+                    canvas.height = targetHeight;
                     const ctx = canvas.getContext('2d');
+
+                    // Background
                     ctx.fillStyle = this.state.borderColor;
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
                     const cells = Array.from(this.elements.gridContainer.children);
+
                     for (let i = 0; i < cells.length; i++) {
                         const cell = cells[i];
                         const imgData = this.state.images[i];
                         const imgEl = cell.querySelector('img');
                         if (!imgEl) continue;
+
                         const cellRect = cell.getBoundingClientRect();
                         const x = (cellRect.left - domRect.left) * scale;
                         const y = (cellRect.top - domRect.top) * scale;
                         const w = cellRect.width * scale;
                         const h = cellRect.height * scale;
+
                         ctx.save();
-                        ctx.beginPath(); ctx.rect(x, y, w, h); ctx.clip();
+                        ctx.beginPath();
+                        ctx.rect(x, y, w, h);
+                        ctx.clip();
+
+                        // Load image for draw
                         const img = new Image();
                         img.src = imgData.src;
                         await new Promise(r => img.onload = r);
-                        const ratio = img.naturalWidth / img.naturalHeight;
-                        const cellRatio = w / h;
-                        let renderW, renderH;
-                        if (cellRatio > ratio) { renderW = w; renderH = w / ratio; }
-                        else { renderH = h; renderW = h * ratio; }
-                        const offsetX = (w - renderW) / 2;
-                        const offsetY = (h - renderH) / 2;
-                        ctx.translate(x + w / 2, y + h / 2);
+
+                        // Calculate transform
+                        // We need to map the DOM transform (translate/scale) to Canvas
+                        // DOM transform is relative to the cell center usually, or top-left?
+                        // Our setupImageInteraction uses translate(x, y) scale(s).
+                        // x, y are pixels relative to initial position.
+
+                        const centerX = x + w / 2;
+                        const centerY = y + h / 2;
+
+                        ctx.translate(centerX, centerY);
                         ctx.translate(imgData.x * scale, imgData.y * scale);
                         ctx.scale(imgData.scale, imgData.scale);
-                        ctx.translate(-(x + w / 2), -(y + h / 2));
-                        ctx.drawImage(img, x + offsetX, y + offsetY, renderW, renderH);
+
+                        // Draw image centered
+                        // We need to figure out the rendered size of the image in the cell
+                        // The img in DOM has object-fit: cover usually? 
+                        // No, in our CSS it's: .grid-cell img { width: 100%; height: 100%; object-fit: cover; }
+                        // So we need to simulate object-fit: cover manually.
+
+                        const imgRatio = img.naturalWidth / img.naturalHeight; // Use natural dimensions for aspect ratio
+                        const cellRatio = w / h;
+
+                        let renderW, renderH;
+                        if (cellRatio > imgRatio) {
+                            renderW = w;
+                            renderH = w / imgRatio;
+                        } else {
+                            renderH = h;
+                            renderW = h * imgRatio;
+                        }
+
+                        ctx.drawImage(img, -renderW / 2, -renderH / 2, renderW, renderH);
+
                         ctx.restore();
                     }
+
+                    // Optimization: JPEG dynamic quality
+                    const dataUrl = canvas.toDataURL('image/jpeg', this.state.quality); // Used this.state.quality
                     const link = document.createElement('a');
-                    link.download = `puzzle-master-${Date.now()}.png`;
-                    link.href = canvas.toDataURL('image/png', 1.0);
+                    link.download = `PuzzlePro_${Date.now()}.jpg`;
+                    link.href = dataUrl;
                     link.click();
+
                 } catch (err) {
                     console.error(err);
-                    alert('导出失败');
+                    alert('生成失败，请重试');
                 } finally {
                     btn.innerHTML = originalText;
                     btn.disabled = false;
@@ -885,6 +980,13 @@
         const FrameApp = {
             currentFiles: [],
             generatedImagesData: [],
+            settings: { // Moved settings here
+                padding: 180,
+                blur: 50,
+                fontScale: 1.0,
+                showExif: true,
+                quality: 0.85 // Added quality setting
+            },
             elements: {},
 
             init() {
@@ -905,7 +1007,9 @@
                     downloadAllBtn: document.getElementById('frameDownloadAllBtn'),
                     statusMsg: document.getElementById('statusMsg'),
                     statusText: document.getElementById('statusText'),
-                    spinner: document.getElementById('statusMsg').querySelector('svg')
+                    spinner: document.getElementById('statusMsg').querySelector('svg'),
+                    qualityInput: document.getElementById('frameQuality'),
+                    qualityVal: document.getElementById('frameQualityVal')
                 };
                 this.setupEventListeners();
             },
@@ -925,6 +1029,12 @@
                 els.borderRange.addEventListener('input', (e) => els.borderVal.innerText = e.target.value);
                 els.blurRange.addEventListener('input', (e) => els.blurVal.innerText = e.target.value);
                 els.fontRange.addEventListener('input', (e) => els.fontVal.innerText = e.target.value + 'x');
+
+                els.qualityInput.addEventListener('input', (e) => {
+                    const val = parseInt(e.target.value);
+                    this.settings.quality = val / 100;
+                    els.qualityVal.innerText = `${val}%`;
+                });
 
                 els.generateBtn.addEventListener('click', () => this.processFiles());
                 els.downloadAllBtn.addEventListener('click', () => this.downloadAll());
@@ -970,7 +1080,8 @@
                     padding: parseInt(els.borderRange.value),
                     blur: parseInt(els.blurRange.value),
                     fontScale: parseFloat(els.fontRange.value),
-                    showExif: els.exifToggle.checked
+                    showExif: els.exifToggle.checked,
+                    quality: this.settings.quality // Include quality setting
                 };
 
                 for (let i = 0; i < this.currentFiles.length; i++) {
@@ -1033,10 +1144,29 @@
             createCanvasFrame(img, exif, settings, filename, resolveCallback) {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
-                const scaleFactor = Math.max(img.width, img.height) / 2000;
+
+                // Optimization: Limit max dimension to 4096px
+                const MAX_DIMENSION = 4096;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+                    const ratio = width / height;
+                    if (width > height) {
+                        width = MAX_DIMENSION;
+                        height = width / ratio;
+                    } else {
+                        height = MAX_DIMENSION;
+                        width = height * ratio;
+                    }
+                }
+
+                // Scale factor for UI elements (border, text) relative to the new size
+                // We use a reference of 2000px for consistent sizing logic
+                const scaleFactor = Math.max(width, height) / 2000;
                 const realPadding = settings.padding * scaleFactor;
-                const canvasWidth = img.width + (realPadding * 2);
-                const canvasHeight = img.height + (realPadding * 2);
+                const canvasWidth = width + (realPadding * 2);
+                const canvasHeight = height + (realPadding * 2);
 
                 canvas.width = canvasWidth;
                 canvas.height = canvasHeight;
@@ -1051,27 +1181,33 @@
                 ctx.drawImage(img, -canvasWidth * 0.05, -canvasHeight * 0.05, canvasWidth * 1.1, canvasHeight * 1.1);
 
                 // Apply Blur (StackBlur)
-                // We need to get ImageData, blur it, and put it back.
-                // Note: This can be slow for very large images.
-                // Optimization: Downscale background, blur, then upscale?
-                // For quality, let's try direct blur first, but maybe on a smaller offscreen canvas if performance is bad.
-                // Given "Pro" requirement, let's try to keep quality but maybe limit blur radius or optimize.
-
                 if (settings.blur > 0) {
                     try {
-                        // Use a downscaled canvas for blur performance
+                        // Use a fixed small size for blur canvas for performance
                         const blurCanvas = document.createElement('canvas');
                         const blurCtx = blurCanvas.getContext('2d');
-                        const blurScale = 0.2; // Downscale to 20%
-                        blurCanvas.width = canvasWidth * blurScale;
-                        blurCanvas.height = canvasHeight * blurScale;
 
-                        blurCtx.drawImage(img, -blurCanvas.width * 0.05, -blurCanvas.height * 0.05, blurCanvas.width * 1.1, blurCanvas.height * 1.1);
+                        // Limit blur source to max 360px for speed
+                        const blurMaxDim = 360;
+                        let bw = canvasWidth;
+                        let bh = canvasHeight;
+                        const bRatio = bw / bh;
+                        if (bw > blurMaxDim || bh > blurMaxDim) {
+                            if (bw > bh) { bw = blurMaxDim; bh = bw / bRatio; }
+                            else { bh = blurMaxDim; bw = bh * bRatio; }
+                        }
+
+                        blurCanvas.width = bw;
+                        blurCanvas.height = bh;
+
+                        blurCtx.drawImage(img, -bw * 0.05, -bh * 0.05, bw * 1.1, bh * 1.1);
 
                         // Apply StackBlur to the small canvas
-                        // Radius needs to be adjusted for scale
-                        // settings.blur is 0-100. Max radius ~ 180?
-                        const radius = Math.round(settings.blur * 2 * blurScale);
+                        // Radius needs to be adjusted relative to the small canvas
+                        // settings.blur (0-100) -> mapped to reasonable radius for 360px image
+                        // A blur of 100 on 360px is HUGE. 
+                        const radius = Math.round(settings.blur * 0.5);
+
                         if (radius > 0) {
                             this.stackBlurCanvasRGB(blurCanvas, 0, 0, blurCanvas.width, blurCanvas.height, radius);
                         }
@@ -1085,12 +1221,10 @@
 
                     } catch (e) {
                         console.error("Blur failed", e);
-                        // Fallback to simple darken
                         ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
                         ctx.fillRect(0, 0, canvasWidth, canvasHeight);
                     }
                 } else {
-                    // No blur, just darken
                     ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
                     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
                 }
@@ -1103,7 +1237,8 @@
                 ctx.shadowBlur = 60 * scaleFactor;
                 ctx.shadowOffsetX = 0;
                 ctx.shadowOffsetY = 20 * scaleFactor;
-                ctx.drawImage(img, realPadding, realPadding, img.width, img.height);
+                // Draw main image with new dimensions
+                ctx.drawImage(img, realPadding, realPadding, width, height);
                 ctx.restore();
 
                 // Text
@@ -1138,9 +1273,9 @@
                 canvas.toBlob((blob) => {
                     const outName = `BorderPro_${filename.replace(/\.[^/.]+$/, "")}.jpg`;
                     this.generatedImagesData.push({ name: outName, blob: blob });
-                    this.createResultCard(canvas, outName);
+                    this.createResultCard(canvas, outName, blob); // Pass blob
                     resolveCallback();
-                }, 'image/jpeg', 0.95);
+                }, 'image/jpeg', settings.quality);
             },
 
             // Simple Box Blur (3 passes)
@@ -1192,7 +1327,7 @@
                 }
             },
 
-            createResultCard(canvas, filename) {
+            createResultCard(canvas, filename, blob) { // Accept blob
                 const wrapper = document.createElement('div');
                 wrapper.className = "bg-white dark:bg-gray-800 p-2 rounded-xl shadow-md group hover:shadow-lg transition duration-300 flex flex-col gap-2 animate-[fadeIn_0.5s_ease-out]";
 
@@ -1204,7 +1339,7 @@
                 imgPreview.className = "w-full h-auto object-cover";
 
                 const overlay = document.createElement('a');
-                overlay.href = canvas.toDataURL('image/jpeg', 1.0);
+                overlay.href = URL.createObjectURL(blob); // Use blob URL
                 overlay.download = filename;
                 overlay.className = "absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer";
                 overlay.innerHTML = '<div class="bg-white/20 backdrop-blur rounded-full p-2"><svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg></div>';
