@@ -14,8 +14,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500&family=Roboto+Mono:wght@400&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@500&family=Roboto+Mono:wght@400&family=Dancing+Script:wght@400;700&family=Great+Vibes&family=Sacramento&family=Parisienne&family=Allura&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
         tailwind.config = {
@@ -35,6 +36,11 @@
                         sans: ['Inter', 'system-ui', 'sans-serif'],
                         display: ['Oswald', 'sans-serif'],
                         mono: ['Roboto Mono', 'monospace'],
+                        'dancing': ['"Dancing Script"', 'cursive'],
+                        'great-vibes': ['"Great Vibes"', 'cursive'],
+                        'sacramento': ['"Sacramento"', 'cursive'],
+                        'parisienne': ['"Parisienne"', 'cursive'],
+                        'allura': ['"Allura"', 'cursive'],
                     }
                 }
             }
@@ -150,6 +156,32 @@
         .dark .tab-btn.active::after {
             background-color: #60A5FA;
         }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        /* Canvas Interaction Classes */
+        .cursor-grab {
+            cursor: grab;
+        }
+
+        .cursor-grabbing {
+            cursor: grabbing;
+        }
     </style>
 </head>
 
@@ -181,12 +213,12 @@
                     class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300">
                     <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+                            d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z">
                         </path>
                     </svg>
                     <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M20.354 24.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+                            d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z">
                         </path>
                     </svg>
                 </button>
@@ -203,6 +235,11 @@
                     class="tab-btn flex-1 pb-3 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                     data-tab="frame">
                     边框大师
+                </button>
+                <button
+                    class="tab-btn flex-1 pb-3 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                    data-tab="watermark">
+                    水印大师
                 </button>
             </div>
         </div>
@@ -409,6 +446,176 @@
                 </button>
             </div>
         </div>
+
+        <!-- Watermark Sidebar Content -->
+        <div id="watermark-sidebar" class="hidden flex-1 overflow-y-auto p-6 space-y-8">
+            <!-- Image Upload -->
+            <section>
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">底图上传
+                </h2>
+                <div id="wmDropZone"
+                    class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 dark:bg-gray-700/50">
+                    <input type="file" id="wmImageInput" accept="image/*" class="hidden">
+                    <svg class="w-10 h-10 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">点击或拖拽上传图片</p>
+                </div>
+            </section>
+
+            <!-- Watermark Controls -->
+            <div id="wmControls" class="space-y-8 animate-fade-in">
+
+                <!-- Toggle Type -->
+                <div class="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+                    <button id="wmTypeImage"
+                        class="flex-1 py-1.5 text-sm font-medium rounded-md bg-white dark:bg-gray-600 shadow-sm text-blue-600 dark:text-blue-400 transition-all">图片水印</button>
+                    <button id="wmTypeText"
+                        class="flex-1 py-1.5 text-sm font-medium rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all">文字签名</button>
+                </div>
+
+                <!-- Image Watermark Section -->
+                <div id="wmSectionImage" class="space-y-4">
+                    <div class="flex gap-3">
+                        <button id="wmUploadBtn"
+                            class="flex-1 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-2 text-gray-600 dark:text-gray-300">
+                            <i class="fa-solid fa-upload"></i> 上传水印图
+                        </button>
+                        <input type="file" id="wmWatermarkInput" accept="image/png" class="hidden">
+                    </div>
+                </div>
+
+                <!-- Text Signature Section -->
+                <div id="wmSectionText" class="hidden space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">签名内容</label>
+                        <input type="text" id="wmSigText" placeholder="输入签名..."
+                            class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-transparent text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200"
+                            value="My Signature">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">字体风格</label>
+                        <select id="wmFontSelect"
+                            class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200">
+                            <option value="Dancing Script">Dancing Script</option>
+                            <option value="Great Vibes">Great Vibes</option>
+                            <option value="Sacramento">Sacramento</option>
+                            <option value="Parisienne">Parisienne</option>
+                            <option value="Allura">Allura</option>
+                            <option value="Inter">Inter (Simple)</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">颜色</label>
+                        <div class="flex gap-2 items-center">
+                            <input type="color" id="wmSigColor" value="#000000"
+                                class="w-8 h-8 rounded cursor-pointer border-0 p-0">
+                            <button class="w-6 h-6 rounded-full bg-black border border-gray-200"
+                                onclick="document.getElementById('wmSigColor').value='#000000'; WatermarkApp.updateSignature()"></button>
+                            <button class="w-6 h-6 rounded-full bg-white border border-gray-200"
+                                onclick="document.getElementById('wmSigColor').value='#ffffff'; WatermarkApp.updateSignature()"></button>
+                            <button class="w-6 h-6 rounded-full bg-gray-500 border border-gray-200"
+                                onclick="document.getElementById('wmSigColor').value='#6b7280'; WatermarkApp.updateSignature()"></button>
+                        </div>
+                    </div>
+                    <button id="wmAddSigBtn"
+                        class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                        生成并添加
+                    </button>
+                    <div class="flex gap-2">
+                        <button id="wmSaveSigBtn"
+                            class="flex-1 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded text-gray-500 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                            保存预设
+                        </button>
+                        <button id="wmDownloadSigBtn"
+                            class="flex-1 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded text-gray-500 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                            导出PNG
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Common Adjustments -->
+                <div class="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">位置预设</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button
+                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                                data-pos="top-left"><i class="fa-solid fa-arrow-up"
+                                    style="transform: rotate(-45deg);"></i></button>
+                            <button
+                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                                data-pos="top-center"><i class="fa-solid fa-arrow-up"></i></button>
+                            <button
+                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                                data-pos="top-right"><i class="fa-solid fa-arrow-up"
+                                    style="transform: rotate(45deg);"></i></button>
+                            <button
+                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                                data-pos="center-left"><i class="fa-solid fa-arrow-left"></i></button>
+                            <button
+                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                                data-pos="center"><i class="fa-solid fa-arrows-to-dot"></i></button>
+                            <button
+                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                                data-pos="center-right"><i class="fa-solid fa-arrow-right"></i></button>
+                            <button
+                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                                data-pos="bottom-left"><i class="fa-solid fa-arrow-down"
+                                    style="transform: rotate(45deg);"></i></button>
+                            <button
+                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                                data-pos="bottom-center"><i class="fa-solid fa-arrow-down"></i></button>
+                            <button
+                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                                data-pos="bottom-right"><i class="fa-solid fa-arrow-down"
+                                    style="transform: rotate(-45deg);"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">大小</label>
+                            <span id="wmScaleVal" class="text-xs text-gray-500">100%</span>
+                        </div>
+                        <input type="range" id="wmScaleRange" min="10" max="200" value="100"
+                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">不透明度</label>
+                            <span id="wmOpacityVal" class="text-xs text-gray-500">100%</span>
+                        </div>
+                        <input type="range" id="wmOpacityRange" min="0" max="100" value="100"
+                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+                </div>
+
+                <!-- Export -->
+                <div class="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">导出质量</label>
+                            <span id="wmQualityVal" class="text-xs text-gray-500">90%</span>
+                        </div>
+                        <input type="range" id="wmQualityRange" min="10" max="100" value="90"
+                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+                    <button id="wmExportBtn"
+                        class="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        <span>导出图片</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </aside>
 
     <!-- Main Content Area -->
@@ -417,18 +624,28 @@
 
         <!-- Puzzle Main -->
         <div id="puzzle-main" class="w-full h-full flex items-center justify-center relative">
-            <div id="canvasContainer" class="relative shadow-2xl transition-all duration-300 bg-white"
+            <div class="absolute inset-0 opacity-10 dark:opacity-5 pointer-events-none"
+                style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+            <div id="puzzleEmptyState" class="text-center relative z-10">
+                <div
+                    class="w-32 h-32 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm text-gray-300 dark:text-gray-600">
+                    <svg class="w-16 h-16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
+                        <path d="M21 15L16 10L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">开始拼图</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-lg">请上传图片开始制作</p>
+            </div>
+
+            <div id="canvasContainer" class="relative shadow-2xl transition-all duration-300 bg-white hidden"
                 style="width: 100%; height: 100%;">
                 <div id="gridContainer" class="w-full h-full grid gap-0 overflow-hidden">
-                    <div
-                        class="col-span-full row-span-full flex flex-col items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800">
-                        <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                            </path>
-                        </svg>
-                        <span class="text-lg font-medium">请上传图片开始拼图</span>
-                    </div>
+                    <!-- Grid cells will be injected here -->
                 </div>
             </div>
             <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm pointer-events-none opacity-0 transition-opacity duration-300"
@@ -438,18 +655,53 @@
         </div>
 
         <!-- Frame Main -->
-        <div id="frame-main" class="hidden w-full h-full overflow-y-auto custom-scrollbar">
-            <div id="frameGallery" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-12">
-                <div id="frameEmptyState"
-                    class="col-span-full flex flex-col items-center justify-center text-gray-400 h-96 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-2xl">
-                    <svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                        </path>
-                    </svg>
-                    <span class="text-lg font-medium">暂无生成图片，请先上传并生成</span>
-                </div>
+        <div id="frame-main" class="hidden w-full h-full relative">
+            <div class="absolute inset-0 opacity-10 dark:opacity-5 pointer-events-none"
+                style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px;">
             </div>
+            <div id="frameEmptyState" class="absolute inset-0 flex flex-col items-center justify-center z-10">
+                <div
+                    class="w-32 h-32 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm text-gray-300 dark:text-gray-600">
+                    <svg class="w-16 h-16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
+                        <path d="M21 15L16 10L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">暂无生成图片</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-lg">请上传图片并生成</p>
+            </div>
+            <div id="frameGallery"
+                class="w-full h-full overflow-y-auto custom-scrollbar grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-12">
+            </div>
+        </div>
+
+        <!-- Watermark Main -->
+        <div id="watermark-main"
+            class="hidden w-full h-full flex items-center justify-center relative p-8 overflow-hidden">
+            <div class="absolute inset-0 opacity-10 dark:opacity-5 pointer-events-none"
+                style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px;">
+            </div>
+
+            <div id="wmEmptyState" class="text-center relative z-10">
+                <div
+                    class="w-32 h-32 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm text-gray-300 dark:text-gray-600">
+                    <svg class="w-16 h-16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
+                        <path d="M21 15L16 10L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未选择图片</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-lg">请从左侧上传底图</p>
+            </div>
+
+            <canvas id="wmMainCanvas"
+                class="hidden shadow-2xl rounded-sm cursor-crosshair max-w-full max-h-full object-contain bg-white relative z-10"></canvas>
         </div>
 
         <!-- Toast -->
@@ -474,6 +726,7 @@
             loadTheme();
             PuzzleApp.init();
             FrameApp.init();
+            WatermarkApp.init();
         }
 
         // --- Theme Logic ---
@@ -514,6 +767,8 @@
             const frameSidebar = document.getElementById('frame-sidebar');
             const puzzleMain = document.getElementById('puzzle-main');
             const frameMain = document.getElementById('frame-main');
+            const watermarkSidebar = document.getElementById('watermark-sidebar');
+            const watermarkMain = document.getElementById('watermark-main');
 
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -521,19 +776,31 @@
                     tab.classList.add('active');
 
                     const target = tab.dataset.tab;
+
+                    // Reset all
+                    puzzleSidebar.classList.add('hidden');
+                    frameSidebar.classList.add('hidden');
+                    watermarkSidebar.classList.add('hidden');
+
+                    puzzleMain.classList.add('hidden');
+                    puzzleMain.classList.remove('flex');
+                    frameMain.classList.add('hidden');
+                    watermarkMain.classList.add('hidden');
+                    watermarkMain.classList.remove('flex');
+
                     if (target === 'puzzle') {
                         puzzleSidebar.classList.remove('hidden');
-                        frameSidebar.classList.add('hidden');
                         puzzleMain.classList.remove('hidden');
                         puzzleMain.classList.add('flex');
-                        frameMain.classList.add('hidden');
-                        setTimeout(PuzzleApp.updateCanvasSize, 50); // Resize fix
-                    } else {
-                        puzzleSidebar.classList.add('hidden');
+                        setTimeout(PuzzleApp.updateCanvasSize, 50);
+                    } else if (target === 'frame') {
                         frameSidebar.classList.remove('hidden');
-                        puzzleMain.classList.add('hidden');
-                        puzzleMain.classList.remove('flex');
                         frameMain.classList.remove('hidden');
+                    } else if (target === 'watermark') {
+                        watermarkSidebar.classList.remove('hidden');
+                        watermarkMain.classList.remove('hidden');
+                        watermarkMain.classList.add('flex');
+                        WatermarkApp.resizeCanvas();
                     }
                 });
             });
@@ -575,7 +842,9 @@
                     downloadBtn: document.getElementById('puzzleDownloadBtn'),
                     interactionHint: document.getElementById('interactionHint'),
                     puzzleQuality: document.getElementById('puzzleQuality'), // Added quality input
-                    puzzleQualityVal: document.getElementById('puzzleQualityVal') // Added quality value display
+                    puzzleQuality: document.getElementById('puzzleQuality'), // Added quality input
+                    puzzleQualityVal: document.getElementById('puzzleQualityVal'), // Added quality value display
+                    puzzleEmptyState: document.getElementById('puzzleEmptyState') // Added empty state element
                 };
                 this.setupEventListeners();
                 this.updateCanvasSize();
@@ -756,9 +1025,13 @@
                 container.innerHTML = '';
 
                 if (count === 0) {
-                    container.innerHTML = `<div class="col-span-full row-span-full flex flex-col items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800"><svg class="w-16 h-16 mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg><span class="text-lg font-medium">请上传图片开始拼图</span></div>`;
+                    this.elements.puzzleEmptyState.classList.remove('hidden');
+                    this.elements.canvasContainer.classList.add('hidden');
                     return;
                 }
+
+                this.elements.puzzleEmptyState.classList.add('hidden');
+                this.elements.canvasContainer.classList.remove('hidden');
 
                 const layout = this.getGridLayout(count);
                 container.style.gridTemplateColumns = `repeat(${layout.cols}, 1fr)`;
@@ -1486,6 +1759,379 @@
                     console.error(e);
                     this.showToast("打包失败", false);
                 }
+            }
+        };
+
+        // --- Watermark Master Logic ---
+        const WatermarkApp = {
+            state: {
+                baseImage: null,
+                watermark: {
+                    type: 'image', // 'image' or 'text'
+                    image: null,
+                    text: '',
+                    font: 'Dancing Script',
+                    color: '#000000',
+                    x: 0, y: 0,
+                    width: 0, height: 0,
+                    scale: 1,
+                    opacity: 1,
+                    isDragging: false,
+                    dragOffsetX: 0,
+                    dragOffsetY: 0
+                },
+                canvas: { width: 0, height: 0 }
+            },
+            elements: {},
+
+            init() {
+                this.elements = {
+                    dropZone: document.getElementById('wmDropZone'),
+                    imageInput: document.getElementById('wmImageInput'),
+                    controls: document.getElementById('wmControls'),
+                    emptyState: document.getElementById('wmEmptyState'),
+                    mainCanvas: document.getElementById('wmMainCanvas'),
+
+                    // Type Toggle
+                    btnTypeImage: document.getElementById('wmTypeImage'),
+                    btnTypeText: document.getElementById('wmTypeText'),
+                    sectionImage: document.getElementById('wmSectionImage'),
+                    sectionText: document.getElementById('wmSectionText'),
+
+                    // Image Watermark
+                    uploadBtn: document.getElementById('wmUploadBtn'),
+                    watermarkInput: document.getElementById('wmWatermarkInput'),
+
+                    // Text Signature
+                    sigText: document.getElementById('wmSigText'),
+                    fontSelect: document.getElementById('wmFontSelect'),
+                    sigColor: document.getElementById('wmSigColor'),
+                    addSigBtn: document.getElementById('wmAddSigBtn'),
+                    saveSigBtn: document.getElementById('wmSaveSigBtn'),
+                    downloadSigBtn: document.getElementById('wmDownloadSigBtn'),
+
+                    // Adjustments
+                    scaleRange: document.getElementById('wmScaleRange'),
+                    scaleVal: document.getElementById('wmScaleVal'),
+                    opacityRange: document.getElementById('wmOpacityRange'),
+                    opacityVal: document.getElementById('wmOpacityVal'),
+                    qualityRange: document.getElementById('wmQualityRange'),
+                    qualityVal: document.getElementById('wmQualityVal'),
+                    exportBtn: document.getElementById('wmExportBtn'),
+
+                    posBtns: document.querySelectorAll('.wm-pos-btn')
+                };
+                this.setupEventListeners();
+                this.loadSignaturePreset();
+            },
+
+            setupEventListeners() {
+                const els = this.elements;
+
+                // Base Image
+                els.dropZone.addEventListener('click', () => els.imageInput.click());
+                els.imageInput.addEventListener('change', (e) => this.handleImageUpload(e));
+                els.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); els.dropZone.classList.add('border-blue-500'); });
+                els.dropZone.addEventListener('dragleave', () => els.dropZone.classList.remove('border-blue-500'));
+                els.dropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    els.dropZone.classList.remove('border-blue-500');
+                    if (e.dataTransfer.files.length) this.handleFile(e.dataTransfer.files[0]);
+                });
+
+                // Type Toggle
+                els.btnTypeImage.addEventListener('click', () => this.switchType('image'));
+                els.btnTypeText.addEventListener('click', () => this.switchType('text'));
+
+                // Watermark Upload
+                els.uploadBtn.addEventListener('click', () => els.watermarkInput.click());
+                els.watermarkInput.addEventListener('change', (e) => this.handleWatermarkUpload(e));
+
+                // Signature
+                els.addSigBtn.addEventListener('click', () => this.addSignatureToCanvas());
+                els.saveSigBtn.addEventListener('click', () => this.saveSignaturePreset());
+                els.downloadSigBtn.addEventListener('click', () => this.downloadSignature());
+                els.sigColor.addEventListener('input', () => this.updateSignature()); // Live update if possible, or just value
+
+                // Controls
+                els.scaleRange.addEventListener('input', (e) => {
+                    this.state.watermark.scale = e.target.value / 100;
+                    els.scaleVal.innerText = `${e.target.value}%`;
+                    this.drawCanvas();
+                });
+                els.opacityRange.addEventListener('input', (e) => {
+                    this.state.watermark.opacity = e.target.value / 100;
+                    els.opacityVal.innerText = `${e.target.value}%`;
+                    this.drawCanvas();
+                });
+                els.qualityRange.addEventListener('input', (e) => els.qualityVal.innerText = `${e.target.value}%`);
+
+                // Position
+                els.posBtns.forEach(btn => {
+                    btn.addEventListener('click', () => this.setWatermarkPosition(btn.dataset.pos));
+                });
+
+                // Canvas Interaction
+                els.mainCanvas.addEventListener('mousedown', (e) => this.handleCanvasMouseDown(e));
+                window.addEventListener('mousemove', (e) => this.handleCanvasMouseMove(e));
+                window.addEventListener('mouseup', () => this.handleCanvasMouseUp());
+
+                els.mainCanvas.addEventListener('touchstart', (e) => { if (e.touches.length === 1) { /*e.preventDefault();*/ this.handleCanvasMouseDown(e); } }, { passive: false });
+                window.addEventListener('touchmove', (e) => { if (this.state.watermark.isDragging) { e.preventDefault(); this.handleCanvasMouseMove(e); } }, { passive: false });
+                window.addEventListener('touchend', () => this.handleCanvasMouseUp());
+
+                // Export
+                els.exportBtn.addEventListener('click', () => this.exportImage());
+
+                window.addEventListener('resize', () => this.resizeCanvas());
+            },
+
+            switchType(type) {
+                const els = this.elements;
+                if (type === 'image') {
+                    els.btnTypeImage.classList.add('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
+                    els.btnTypeImage.classList.remove('text-gray-500', 'dark:text-gray-400');
+                    els.btnTypeText.classList.remove('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
+                    els.btnTypeText.classList.add('text-gray-500', 'dark:text-gray-400');
+
+                    els.sectionImage.classList.remove('hidden');
+                    els.sectionText.classList.add('hidden');
+                } else {
+                    els.btnTypeText.classList.add('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
+                    els.btnTypeText.classList.remove('text-gray-500', 'dark:text-gray-400');
+                    els.btnTypeImage.classList.remove('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
+                    els.btnTypeImage.classList.add('text-gray-500', 'dark:text-gray-400');
+
+                    els.sectionText.classList.remove('hidden');
+                    els.sectionImage.classList.add('hidden');
+                }
+            },
+
+            handleImageUpload(e) {
+                if (e.target.files && e.target.files[0]) this.handleFile(e.target.files[0]);
+            },
+
+            handleFile(file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        this.state.baseImage = img;
+                        this.state.canvas.width = img.width;
+                        this.state.canvas.height = img.height;
+
+                        this.elements.mainCanvas.width = img.width;
+                        this.elements.mainCanvas.height = img.height;
+
+                        this.elements.emptyState.classList.add('hidden');
+                        this.elements.mainCanvas.classList.remove('hidden');
+                        this.elements.controls.classList.remove('hidden');
+
+                        this.drawCanvas();
+                        this.resizeCanvas();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            },
+
+            handleWatermarkUpload(e) {
+                if (e.target.files && e.target.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = (evt) => {
+                        const img = new Image();
+                        img.onload = () => this.setWatermarkImage(img);
+                        img.src = evt.target.result;
+                    };
+                    reader.readAsDataURL(e.target.files[0]);
+                }
+            },
+
+            setWatermarkImage(img) {
+                this.state.watermark.image = img;
+                this.state.watermark.width = img.width;
+                this.state.watermark.height = img.height;
+
+                // Reset defaults
+                this.state.watermark.scale = 1;
+                this.state.watermark.opacity = 1;
+                this.elements.scaleRange.value = 100;
+                this.elements.opacityRange.value = 100;
+                this.elements.scaleVal.innerText = '100%';
+                this.elements.opacityVal.innerText = '100%';
+
+                // Center
+                this.state.watermark.x = (this.state.canvas.width - img.width) / 2;
+                this.state.watermark.y = (this.state.canvas.height - img.height) / 2;
+
+                this.drawCanvas();
+            },
+
+            addSignatureToCanvas() {
+                const text = this.elements.sigText.value || 'Signature';
+                const font = this.elements.fontSelect.value;
+                const color = this.elements.sigColor.value;
+                const fontSize = 100;
+
+                const offCanvas = document.createElement('canvas');
+                const ctx = offCanvas.getContext('2d');
+                ctx.font = `${fontSize}px "${font}"`;
+                const metrics = ctx.measureText(text);
+                const width = Math.ceil(metrics.width);
+                const height = Math.ceil(fontSize * 1.5);
+
+                offCanvas.width = width;
+                offCanvas.height = height;
+
+                ctx.font = `${fontSize}px "${font}"`;
+                ctx.fillStyle = color;
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text, 0, height / 2);
+
+                const img = new Image();
+                img.onload = () => this.setWatermarkImage(img);
+                img.src = offCanvas.toDataURL();
+            },
+
+            updateSignature() {
+                // Optional: live preview logic if needed, currently just relies on clicking "Generate"
+            },
+
+            saveSignaturePreset() {
+                const preset = {
+                    text: this.elements.sigText.value,
+                    font: this.elements.fontSelect.value,
+                    color: this.elements.sigColor.value
+                };
+                localStorage.setItem('wmSigPreset', JSON.stringify(preset));
+                alert('签名预设已保存');
+            },
+
+            loadSignaturePreset() {
+                const saved = localStorage.getItem('wmSigPreset');
+                if (saved) {
+                    const preset = JSON.parse(saved);
+                    this.elements.sigText.value = preset.text || '';
+                    this.elements.fontSelect.value = preset.font || 'Dancing Script';
+                    this.elements.sigColor.value = preset.color || '#000000';
+                }
+            },
+
+            downloadSignature() {
+                const text = this.elements.sigText.value || 'Signature';
+                const font = this.elements.fontSelect.value;
+                const color = this.elements.sigColor.value;
+                const fontSize = 100;
+
+                const offCanvas = document.createElement('canvas');
+                const ctx = offCanvas.getContext('2d');
+                ctx.font = `${fontSize}px "${font}"`;
+                const metrics = ctx.measureText(text);
+                const width = Math.ceil(metrics.width) + 20;
+                const height = Math.ceil(fontSize * 1.5);
+
+                offCanvas.width = width;
+                offCanvas.height = height;
+
+                ctx.font = `${fontSize}px "${font}"`;
+                ctx.fillStyle = color;
+                ctx.textBaseline = 'middle';
+                ctx.fillText(text, 10, height / 2);
+
+                const link = document.createElement('a');
+                link.download = 'signature.png';
+                link.href = offCanvas.toDataURL();
+                link.click();
+            },
+
+            drawCanvas() {
+                if (!this.state.baseImage) return;
+                const ctx = this.elements.mainCanvas.getContext('2d');
+                ctx.clearRect(0, 0, this.state.canvas.width, this.state.canvas.height);
+                ctx.drawImage(this.state.baseImage, 0, 0);
+
+                if (this.state.watermark.image) {
+                    ctx.save();
+                    ctx.globalAlpha = this.state.watermark.opacity;
+                    const w = this.state.watermark.width * this.state.watermark.scale;
+                    const h = this.state.watermark.height * this.state.watermark.scale;
+                    ctx.drawImage(this.state.watermark.image, this.state.watermark.x, this.state.watermark.y, w, h);
+                    ctx.restore();
+                }
+            },
+
+            setWatermarkPosition(pos) {
+                if (!this.state.watermark.image || !this.state.baseImage) return;
+                const w = this.state.watermark.width * this.state.watermark.scale;
+                const h = this.state.watermark.height * this.state.watermark.scale;
+                const padding = 40;
+
+                let x = 0, y = 0;
+                switch (pos) {
+                    case 'top-left': x = padding; y = padding; break;
+                    case 'top-center': x = (this.state.canvas.width - w) / 2; y = padding; break;
+                    case 'top-right': x = this.state.canvas.width - w - padding; y = padding; break;
+                    case 'center-left': x = padding; y = (this.state.canvas.height - h) / 2; break;
+                    case 'center': x = (this.state.canvas.width - w) / 2; y = (this.state.canvas.height - h) / 2; break;
+                    case 'center-right': x = this.state.canvas.width - w - padding; y = (this.state.canvas.height - h) / 2; break;
+                    case 'bottom-left': x = padding; y = this.state.canvas.height - h - padding; break;
+                    case 'bottom-center': x = (this.state.canvas.width - w) / 2; y = this.state.canvas.height - h - padding; break;
+                    case 'bottom-right': x = this.state.canvas.width - w - padding; y = this.state.canvas.height - h - padding; break;
+                }
+                this.state.watermark.x = x;
+                this.state.watermark.y = y;
+                this.drawCanvas();
+            },
+
+            getCanvasCoordinates(e) {
+                const rect = this.elements.mainCanvas.getBoundingClientRect();
+                const scaleX = this.elements.mainCanvas.width / rect.width;
+                const scaleY = this.elements.mainCanvas.height / rect.height;
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+            },
+
+            handleCanvasMouseDown(e) {
+                if (!this.state.watermark.image) return;
+                const pos = this.getCanvasCoordinates(e);
+                const w = this.state.watermark.width * this.state.watermark.scale;
+                const h = this.state.watermark.height * this.state.watermark.scale;
+
+                if (pos.x >= this.state.watermark.x && pos.x <= this.state.watermark.x + w &&
+                    pos.y >= this.state.watermark.y && pos.y <= this.state.watermark.y + h) {
+                    this.state.watermark.isDragging = true;
+                    this.state.watermark.dragOffsetX = pos.x - this.state.watermark.x;
+                    this.state.watermark.dragOffsetY = pos.y - this.state.watermark.y;
+                    this.elements.mainCanvas.classList.add('cursor-grabbing');
+                }
+            },
+
+            handleCanvasMouseMove(e) {
+                if (!this.state.watermark.isDragging) return;
+                const pos = this.getCanvasCoordinates(e);
+                this.state.watermark.x = pos.x - this.state.watermark.dragOffsetX;
+                this.state.watermark.y = pos.y - this.state.watermark.dragOffsetY;
+                this.drawCanvas();
+            },
+
+            handleCanvasMouseUp() {
+                this.state.watermark.isDragging = false;
+                this.elements.mainCanvas.classList.remove('cursor-grabbing');
+            },
+
+            exportImage() {
+                if (!this.state.baseImage) return;
+                const quality = this.elements.qualityRange.value / 100;
+                const dataURL = this.elements.mainCanvas.toDataURL('image/jpeg', quality);
+                const link = document.createElement('a');
+                link.download = 'watermarked-image.jpg';
+                link.href = dataURL;
+                link.click();
+            },
+
+            resizeCanvas() {
+                // Optional: CSS max-w-full handles display size, but we could adjust if needed.
             }
         };
 
