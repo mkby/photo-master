@@ -357,7 +357,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                     </svg>
-                    <span>下载高清拼图</span>
+                    <span>下载图片</span>
                 </button>
             </div>
         </div>
@@ -383,6 +383,7 @@
                         class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-0.5 rounded hidden">
                         0</div>
                 </div>
+                <div id="frameFileList" class="mt-4 grid grid-cols-4 gap-2"></div>
             </section>
 
             <!-- Parameters -->
@@ -478,7 +479,7 @@
                         </path>
                     </svg>
                     <p class="text-sm text-gray-600 dark:text-gray-300">点击或拖拽上传图片</p>
-                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">支持图片水印或文字签名</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">支持多种水印功能</p>
                 </div>
             </section>
 
@@ -673,7 +674,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                         </svg>
-                        <span>导出图片</span>
+                        <span>下载图片</span>
                     </button>
                 </div>
             </div>
@@ -694,7 +695,7 @@
                         </path>
                     </svg>
                     <p class="text-sm text-gray-600 dark:text-gray-300">点击或拖拽上传图片</p>
-                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">支持 JPG, PNG, WebP</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">支持批量处理</p>
                 </div>
                 <input type="file" id="tagFileInput" accept="image/*" multiple class="hidden">
             </section>
@@ -779,7 +780,7 @@
                             stroke-linejoin="round" />
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">开始拼图</h3>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未选择图片</h3>
                 <p class="text-gray-500 dark:text-gray-400 text-lg">请上传图片开始制作</p>
             </div>
 
@@ -811,8 +812,8 @@
                             stroke-linejoin="round" />
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">暂无生成图片</h3>
-                <p class="text-gray-500 dark:text-gray-400 text-lg">请上传图片并生成</p>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未选择图片</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-lg">请上传图片开始制作</p>
             </div>
             <div id="frameGallery"
                 class="w-full h-full overflow-y-auto custom-scrollbar grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-12">
@@ -838,7 +839,7 @@
                     </svg>
                 </div>
                 <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未选择图片</h3>
-                <p class="text-gray-500 dark:text-gray-400 text-lg">请从左侧上传底图</p>
+                <p class="text-gray-500 dark:text-gray-400 text-lg">请上传图片开始制作</p>
             </div>
 
             <canvas id="wmMainCanvas"
@@ -861,8 +862,8 @@
                             stroke-linejoin="round" />
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">开始生成标签</h3>
-                <p class="text-gray-500 dark:text-gray-400 text-lg">支持批量上传多张图片</p>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未选择图片</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-lg">请上传图片开始制作</p>
             </div>
 
             <!-- Grid Container -->
@@ -880,7 +881,7 @@
                 <div class="p-6 space-y-6">
                     <!-- Header -->
                     <div class="flex justify-between items-center">
-                        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">AI API 设置</h2>
+                        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">AI API设置</h2>
                         <button id="tagApiModalClose"
                             class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300">
                             <i class="fa-solid fa-xmark text-xl"></i>
@@ -1051,6 +1052,68 @@
             });
         }
 
+        // --- Shared Utilities ---
+        const Utils = {
+            File: {
+                readImage(file) {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const img = new Image();
+                            img.onload = () => resolve(img);
+                            img.onerror = reject;
+                            img.src = e.target.result;
+                        };
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                }
+            },
+            UI: {
+                setupDragDrop(dropZone, fileInput, activeClass, callback) {
+                    dropZone.addEventListener('click', () => fileInput && fileInput.click());
+                    dropZone.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        dropZone.classList.add(activeClass);
+                    });
+                    dropZone.addEventListener('dragleave', () => {
+                        dropZone.classList.remove(activeClass);
+                    });
+                    dropZone.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        dropZone.classList.remove(activeClass);
+                        if (e.dataTransfer.files.length > 0) {
+                            callback(e.dataTransfer.files);
+                        }
+                    });
+                },
+                bindRange(rangeInput, displayElement, formatFn = (v) => v, callback) {
+                    rangeInput.addEventListener('input', (e) => {
+                        const val = e.target.value;
+                        if (displayElement) displayElement.textContent = formatFn(val);
+                        if (callback) callback(val);
+                    });
+                }
+            },
+            Toast: {
+                show(msg, isLoading = true) {
+                    const el = document.getElementById('statusMsg');
+                    const text = document.getElementById('statusText');
+                    const spinner = el.querySelector('svg');
+
+                    el.classList.remove('hidden', 'translate-y-10', 'opacity-0');
+                    text.innerText = msg;
+                    if (isLoading) spinner.classList.remove('hidden');
+                    else spinner.classList.add('hidden');
+                },
+                hide() {
+                    const el = document.getElementById('statusMsg');
+                    el.classList.add('translate-y-10', 'opacity-0');
+                    setTimeout(() => el.classList.add('hidden'), 500);
+                }
+            }
+        };
+
         // --- Puzzle Master Logic ---
         const PuzzleApp = {
             state: {
@@ -1099,32 +1162,28 @@
 
             setupEventListeners() {
                 const els = this.elements;
-                els.dropZone.addEventListener('click', () => els.fileInput.click());
-                els.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); els.dropZone.classList.add('border-blue-500'); });
-                els.dropZone.addEventListener('dragleave', () => els.dropZone.classList.remove('border-blue-500'));
-                els.dropZone.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    els.dropZone.classList.remove('border-blue-500');
-                    this.handleFiles(e.dataTransfer.files);
+
+                // Use Utils for Drag & Drop
+                Utils.UI.setupDragDrop(els.dropZone, els.fileInput, 'border-blue-500', (files) => {
+                    this.handleFiles(files);
                 });
                 els.fileInput.addEventListener('change', (e) => this.handleFiles(e.target.files));
 
-                els.borderWidth.addEventListener('input', (e) => {
-                    this.state.borderWidth = e.target.value;
-                    els.borderWidthVal.textContent = `${this.state.borderWidth}px`;
+                // Use Utils for Range Inputs
+                Utils.UI.bindRange(els.borderWidth, els.borderWidthVal, (v) => `${v}px`, (v) => {
+                    this.state.borderWidth = v;
                     this.renderGrid();
                 });
+
                 els.borderColor.addEventListener('input', (e) => this.updateBorderColor(e.target.value));
                 els.borderColorText.addEventListener('input', (e) => {
                     els.borderColor.value = e.target.value;
                     this.updateBorderColor(e.target.value);
                 });
 
-                // Added quality slider event listener
-                els.puzzleQuality.addEventListener('input', (e) => {
-                    const val = parseInt(e.target.value);
-                    this.state.quality = val / 100;
-                    els.puzzleQualityVal.textContent = `${val}%`;
+                // Use Utils for Quality Slider
+                Utils.UI.bindRange(els.puzzleQuality, els.puzzleQualityVal, (v) => `${v}%`, (v) => {
+                    this.state.quality = parseInt(v) / 100;
                 });
 
                 els.ratioBtns.forEach(btn => {
@@ -1201,49 +1260,47 @@
                     return;
                 }
 
-                validFiles.forEach(file => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const img = new Image();
-                        img.onload = () => {
-                            // Optimization: Resize if too large
-                            const MAX_DIMENSION = 4096;
-                            let src = img.src;
-                            let originalWidth = img.width;
-                            let originalHeight = img.height;
+                validFiles.forEach(async (file) => {
+                    try {
+                        const img = await Utils.File.readImage(file);
 
-                            if (img.width > MAX_DIMENSION || img.height > MAX_DIMENSION) {
-                                const canvas = document.createElement('canvas');
-                                let width = img.width;
-                                let height = img.height;
-                                if (width > height) {
-                                    height = height * (MAX_DIMENSION / width);
-                                    width = MAX_DIMENSION;
-                                } else {
-                                    width = width * (MAX_DIMENSION / height);
-                                    height = MAX_DIMENSION;
-                                }
-                                canvas.width = width;
-                                canvas.height = height;
-                                const ctx = canvas.getContext('2d');
-                                ctx.drawImage(img, 0, 0, width, height);
-                                // Use high quality for the resized source image, independent of export setting
-                                src = canvas.toDataURL('image/jpeg', 0.92);
+                        // Optimization: Resize if too large
+                        const MAX_DIMENSION = 4096;
+                        let src = img.src;
+                        let originalWidth = img.width;
+                        let originalHeight = img.height;
+
+                        if (img.width > MAX_DIMENSION || img.height > MAX_DIMENSION) {
+                            const canvas = document.createElement('canvas');
+                            let width = img.width;
+                            let height = img.height;
+                            if (width > height) {
+                                height = height * (MAX_DIMENSION / width);
+                                width = MAX_DIMENSION;
+                            } else {
+                                width = width * (MAX_DIMENSION / height);
+                                height = MAX_DIMENSION;
                             }
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            // Use high quality for the resized source image, independent of export setting
+                            src = canvas.toDataURL('image/jpeg', 0.92);
+                        }
 
-                            this.state.images.push({
-                                id: Date.now() + Math.random(),
-                                src: src,
-                                x: 0, y: 0, scale: 1,
-                                originalWidth: originalWidth,
-                                originalHeight: originalHeight
-                            });
-                            this.renderGrid();
-                            this.updateFileList();
-                        };
-                        img.src = e.target.result;
-                    };
-                    reader.readAsDataURL(file);
+                        this.state.images.push({
+                            id: Date.now() + Math.random(),
+                            src: src,
+                            x: 0, y: 0, scale: 1,
+                            originalWidth: originalWidth,
+                            originalHeight: originalHeight
+                        });
+                        this.renderGrid();
+                        this.updateFileList();
+                    } catch (e) {
+                        console.error("Failed to load image", e);
+                    }
                 });
             },
 
@@ -1634,6 +1691,7 @@
                     dropZone: document.getElementById('frameDropZone'),
                     fileInput: document.getElementById('frameFileInput'),
                     fileCount: document.getElementById('frameFileCount'),
+                    fileList: document.getElementById('frameFileList'),
                     gallery: document.getElementById('frameGallery'),
                     emptyState: document.getElementById('frameEmptyState'),
                     borderRange: document.getElementById('frameBorderRange'),
@@ -1656,24 +1714,20 @@
 
             setupEventListeners() {
                 const els = this.elements;
-                els.dropZone.addEventListener('click', () => els.fileInput.click());
-                els.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); els.dropZone.classList.add('border-blue-500'); });
-                els.dropZone.addEventListener('dragleave', () => els.dropZone.classList.remove('border-blue-500'));
-                els.dropZone.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    els.dropZone.classList.remove('border-blue-500');
-                    this.handleFiles(e.dataTransfer.files);
+
+                // Use Utils for Drag & Drop
+                Utils.UI.setupDragDrop(els.dropZone, els.fileInput, 'border-blue-500', (files) => {
+                    this.handleFiles(files);
                 });
                 els.fileInput.addEventListener('change', (e) => this.handleFiles(e.target.files));
 
-                els.borderRange.addEventListener('input', (e) => els.borderVal.innerText = e.target.value);
-                els.blurRange.addEventListener('input', (e) => els.blurVal.innerText = e.target.value);
-                els.fontRange.addEventListener('input', (e) => els.fontVal.innerText = e.target.value + 'x');
+                // Use Utils for Range Inputs
+                Utils.UI.bindRange(els.borderRange, els.borderVal);
+                Utils.UI.bindRange(els.blurRange, els.blurVal);
+                Utils.UI.bindRange(els.fontRange, els.fontVal, (v) => v + 'x');
 
-                els.qualityInput.addEventListener('input', (e) => {
-                    const val = parseInt(e.target.value);
-                    this.settings.quality = val / 100;
-                    els.qualityVal.innerText = `${val}%`;
+                Utils.UI.bindRange(els.qualityInput, els.qualityVal, (v) => `${v}%`, (v) => {
+                    this.settings.quality = parseInt(v) / 100;
                 });
 
                 els.generateBtn.addEventListener('click', () => this.processFiles());
@@ -1695,20 +1749,40 @@
                 } else {
                     els.fileCount.classList.add('hidden');
                 }
+
+                this.updateFileList();
+            },
+
+            updateFileList() {
+                this.elements.fileList.innerHTML = '';
+                this.currentFiles.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const div = document.createElement('div');
+                        div.className = 'relative aspect-square rounded-lg overflow-hidden group';
+                        div.innerHTML = `
+                            <img src="${e.target.result}" class="w-full h-full object-cover">
+                            <button onclick="FrameApp.removeFile(${index})" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                            </button>
+                        `;
+                        this.elements.fileList.appendChild(div);
+                    };
+                    reader.readAsDataURL(file);
+                });
+            },
+
+            removeFile(index) {
+                this.currentFiles.splice(index, 1);
+                this.handleFiles(this.currentFiles);
             },
 
             showToast(msg, isLoading = true) {
-                const els = this.elements;
-                els.statusMsg.classList.remove('hidden', 'translate-y-10', 'opacity-0');
-                els.statusText.innerText = msg;
-                if (isLoading) els.spinner.classList.remove('hidden');
-                else els.spinner.classList.add('hidden');
+                Utils.Toast.show(msg, isLoading);
             },
 
             hideToast() {
-                const els = this.elements;
-                els.statusMsg.classList.add('translate-y-10', 'opacity-0');
-                setTimeout(() => els.statusMsg.classList.add('hidden'), 500);
+                Utils.Toast.hide();
             },
 
             async processFiles() {
@@ -1745,32 +1819,26 @@
 
             processSingleImage(file, settings) {
                 return new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        const img = new Image();
-                        img.onload = () => {
-                            EXIF.getData(img, () => {
-                                const make = EXIF.getTag(img, "Make");
-                                const model = EXIF.getTag(img, "Model");
-                                const fNumber = EXIF.getTag(img, "FNumber");
-                                const focalLen = EXIF.getTag(img, "FocalLength");
-                                const iso = EXIF.getTag(img, "ISOSpeedRatings");
-                                const exposure = EXIF.getTag(img, "ExposureTime");
+                    Utils.File.readImage(file).then(img => {
+                        EXIF.getData(img, () => {
+                            const make = EXIF.getTag(img, "Make");
+                            const model = EXIF.getTag(img, "Model");
+                            const fNumber = EXIF.getTag(img, "FNumber");
+                            const focalLen = EXIF.getTag(img, "FocalLength");
+                            const iso = EXIF.getTag(img, "ISOSpeedRatings");
+                            const exposure = EXIF.getTag(img, "ExposureTime");
 
-                                const exifData = {
-                                    hasData: !!(make || model),
-                                    camera: [make, model].filter(Boolean).join(" ").replace("undefined", "").trim(),
-                                    iso: iso,
-                                    fstop: fNumber ? `f/${this.formatNumber(fNumber)}` : null,
-                                    shutter: this.formatShutter(exposure),
-                                    focal: focalLen ? `${this.formatNumber(focalLen)}mm` : null
-                                };
-                                this.createCanvasFrame(img, exifData, settings, file.name, resolve);
-                            });
-                        };
-                        img.src = event.target.result;
-                    };
-                    reader.readAsDataURL(file);
+                            const exifData = {
+                                hasData: !!(make || model),
+                                camera: [make, model].filter(Boolean).join(" ").replace("undefined", "").trim(),
+                                iso: iso,
+                                fstop: fNumber ? `f/${this.formatNumber(fNumber)}` : null,
+                                shutter: this.formatShutter(exposure),
+                                focal: focalLen ? `${this.formatNumber(focalLen)}mm` : null
+                            };
+                            this.createCanvasFrame(img, exifData, settings, file.name, resolve);
+                        });
+                    });
                 });
             },
 
@@ -2103,15 +2171,10 @@
                 const els = this.elements;
 
                 // Base Image
-                els.dropZone.addEventListener('click', () => els.imageInput.click());
-                els.imageInput.addEventListener('change', (e) => this.handleImageUpload(e));
-                els.dropZone.addEventListener('dragover', (e) => { e.preventDefault(); els.dropZone.classList.add('border-blue-500'); });
-                els.dropZone.addEventListener('dragleave', () => els.dropZone.classList.remove('border-blue-500'));
-                els.dropZone.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    els.dropZone.classList.remove('border-blue-500');
-                    if (e.dataTransfer.files.length) this.handleFile(e.dataTransfer.files[0]);
+                Utils.UI.setupDragDrop(els.dropZone, els.imageInput, 'border-blue-500', (files) => {
+                    if (files.length) this.handleFile(files[0]);
                 });
+                els.imageInput.addEventListener('change', (e) => this.handleImageUpload(e));
 
                 // Type Toggle
                 els.btnTypeImage.addEventListener('click', () => this.switchType('image'));
@@ -2130,24 +2193,22 @@
                 els.sigColor.addEventListener('input', () => this.updateSignature()); // Live update if possible, or just value
 
                 // Palette
-                els.paletteCountRange.addEventListener('input', (e) => els.paletteCountVal.innerText = e.target.value);
+                Utils.UI.bindRange(els.paletteCountRange, els.paletteCountVal);
                 els.generatePaletteBtn.addEventListener('click', () => this.generatePalette());
 
                 // Histogram
                 els.generateHistogramBtn.addEventListener('click', () => this.generateHistogram());
 
                 // Controls
-                els.scaleRange.addEventListener('input', (e) => {
-                    this.state.watermark.scale = e.target.value / 100;
-                    els.scaleVal.innerText = `${e.target.value}%`;
+                Utils.UI.bindRange(els.scaleRange, els.scaleVal, (v) => `${v}%`, (v) => {
+                    this.state.watermark.scale = v / 100;
                     this.drawCanvas();
                 });
-                els.opacityRange.addEventListener('input', (e) => {
-                    this.state.watermark.opacity = e.target.value / 100;
-                    els.opacityVal.innerText = `${e.target.value}%`;
+                Utils.UI.bindRange(els.opacityRange, els.opacityVal, (v) => `${v}%`, (v) => {
+                    this.state.watermark.opacity = v / 100;
                     this.drawCanvas();
                 });
-                els.qualityRange.addEventListener('input', (e) => els.qualityVal.innerText = `${e.target.value}%`);
+                Utils.UI.bindRange(els.qualityRange, els.qualityVal, (v) => `${v}%`);
 
                 // Position
                 els.posBtns.forEach(btn => {
@@ -2203,43 +2264,33 @@
             },
 
             handleFile(file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        this.state.baseImage = img;
-                        this.state.canvas.width = img.width;
-                        this.state.canvas.height = img.height;
+                Utils.File.readImage(file).then(img => {
+                    this.state.baseImage = img;
+                    this.state.canvas.width = img.width;
+                    this.state.canvas.height = img.height;
 
-                        this.elements.mainCanvas.width = img.width;
-                        this.elements.mainCanvas.height = img.height;
+                    this.elements.mainCanvas.width = img.width;
+                    this.elements.mainCanvas.height = img.height;
 
-                        this.elements.emptyState.classList.add('hidden');
-                        this.elements.mainCanvas.classList.remove('hidden');
-                        this.elements.controls.classList.remove('hidden');
+                    this.elements.emptyState.classList.add('hidden');
+                    this.elements.mainCanvas.classList.remove('hidden');
+                    this.elements.controls.classList.remove('hidden');
 
-                        // Enable export button
-                        if (this.elements.exportBtn) {
-                            this.elements.exportBtn.disabled = false;
-                        }
+                    // Enable export button
+                    if (this.elements.exportBtn) {
+                        this.elements.exportBtn.disabled = false;
+                    }
 
-                        this.drawCanvas();
-                        this.resizeCanvas();
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
+                    this.drawCanvas();
+                    this.resizeCanvas();
+                });
             },
 
             handleWatermarkUpload(e) {
                 if (e.target.files && e.target.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = (evt) => {
-                        const img = new Image();
-                        img.onload = () => this.setWatermarkImage(img);
-                        img.src = evt.target.result;
-                    };
-                    reader.readAsDataURL(e.target.files[0]);
+                    Utils.File.readImage(e.target.files[0]).then(img => {
+                        this.setWatermarkImage(img);
+                    });
                 }
             },
 
@@ -2680,20 +2731,8 @@
 
             setupEventListeners() {
                 // Upload
-                this.elements.dropZone.addEventListener('click', () => this.elements.fileInput.click());
-                this.elements.dropZone.addEventListener('dragover', (e) => {
-                    e.preventDefault();
-                    this.elements.dropZone.classList.add('border-blue-500');
-                });
-                this.elements.dropZone.addEventListener('dragleave', () => {
-                    this.elements.dropZone.classList.remove('border-blue-500');
-                });
-                this.elements.dropZone.addEventListener('drop', (e) => {
-                    e.preventDefault();
-                    this.elements.dropZone.classList.remove('border-blue-500');
-                    if (e.dataTransfer.files.length > 0) {
-                        this.handleImageUpload(e.dataTransfer.files);
-                    }
+                Utils.UI.setupDragDrop(this.elements.dropZone, this.elements.fileInput, 'border-blue-500', (files) => {
+                    this.handleImageUpload(files);
                 });
                 this.elements.fileInput.addEventListener('change', (e) => {
                     if (e.target.files.length > 0) {
@@ -2702,9 +2741,8 @@
                 });
 
                 // Settings
-                this.elements.tagCountRange.addEventListener('input', (e) => {
-                    this.state.settings.tagCount = parseInt(e.target.value);
-                    this.elements.tagCountVal.textContent = e.target.value;
+                Utils.UI.bindRange(this.elements.tagCountRange, this.elements.tagCountVal, (v) => v, (v) => {
+                    this.state.settings.tagCount = parseInt(v);
                 });
                 this.elements.tagLanguage.addEventListener('change', (e) => {
                     this.state.settings.language = e.target.value;
@@ -2782,17 +2820,7 @@
             },
 
             loadImage(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const img = new Image();
-                        img.onload = () => resolve(img);
-                        img.onerror = reject;
-                        img.src = e.target.result;
-                    };
-                    reader.onerror = reject;
-                    reader.readAsDataURL(file);
-                });
+                return Utils.File.readImage(file);
             },
 
             async compressAndStripEXIF(img) {
