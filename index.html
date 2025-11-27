@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>影像大师 Pro</title>
+    <title>影像大师</title>
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📸</text></svg>">
 
@@ -149,6 +149,19 @@
             border-radius: 2px 2px 0 0;
         }
 
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .custom-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .custom-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
         .dark .tab-btn.active {
             color: #60A5FA;
         }
@@ -197,8 +210,9 @@
             class="hidden md:block absolute right-0 top-0 bottom-0 w-1 cursor-col-resize hover:bg-blue-500 transition-colors z-50 opacity-0 group-hover:opacity-100">
         </div>
         <!-- Header -->
-        <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-            <div class="flex justify-between items-center mb-6">
+        <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+            <!-- Top Bar -->
+            <div class="px-6 py-5 flex justify-between items-center">
                 <div class="flex items-center gap-3">
                     <div
                         class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-teal-400 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 text-white">
@@ -211,45 +225,57 @@
                         </svg>
                     </div>
                     <h1
-                        class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-teal-400 tracking-tight">
-                        影像大师 Pro</h1>
+                        class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-teal-400 tracking-tight">
+                        影像大师</h1>
                 </div>
-                <button id="themeToggle"
-                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300">
-                    <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z">
-                        </path>
-                    </svg>
-                    <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z">
-                        </path>
-                    </svg>
-                </button>
+                <div class="flex items-center gap-1">
+                    <button id="globalApiSettingsBtn"
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
+                        title="AI API 设置">
+                        <i class="fa-solid fa-gear text-lg"></i>
+                    </button>
+                    <button id="themeToggle"
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-500 dark:text-gray-400 hover:text-yellow-500 dark:hover:text-yellow-400">
+                        <svg id="sunIcon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z">
+                            </path>
+                        </svg>
+                        <svg id="moonIcon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <!-- Tab Switcher -->
-            <div class="flex border-b border-gray-200 dark:border-gray-700">
+            <div class="flex overflow-x-auto custom-scrollbar px-2 pb-0">
                 <button
-                    class="tab-btn active flex-1 pb-3 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                    class="tab-btn active flex-none px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors border-b-2 border-transparent whitespace-nowrap"
                     data-tab="puzzle">
                     拼图大师
                 </button>
                 <button
-                    class="tab-btn flex-1 pb-3 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                    class="tab-btn flex-none px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors border-b-2 border-transparent whitespace-nowrap"
                     data-tab="frame">
                     边框大师
                 </button>
                 <button
-                    class="tab-btn flex-1 pb-3 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                    class="tab-btn flex-none px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors border-b-2 border-transparent whitespace-nowrap"
                     data-tab="watermark">
                     水印大师
                 </button>
                 <button
-                    class="tab-btn flex-1 pb-3 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                    class="tab-btn flex-none px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors border-b-2 border-transparent whitespace-nowrap"
                     data-tab="tag">
                     标签大师
+                </button>
+                <button
+                    class="tab-btn flex-none px-4 py-3 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors border-b-2 border-transparent whitespace-nowrap"
+                    data-tab="content">
+                    文案大师
                 </button>
             </div>
         </div>
@@ -258,7 +284,8 @@
         <div id="puzzle-sidebar" class="flex-1 overflow-y-auto p-6 space-y-8">
             <!-- Upload -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">图片上传
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    图片上传
                 </h2>
                 <div id="puzzleDropZone"
                     class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 dark:bg-gray-700/50">
@@ -277,7 +304,8 @@
 
             <!-- Layout -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">画布比例
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    画布比例
                 </h2>
                 <div class="grid grid-cols-3 gap-2 mb-3">
                     <button
@@ -310,7 +338,8 @@
 
             <!-- Border -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">边框设置
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    边框设置
                 </h2>
                 <div class="space-y-4">
                     <div>
@@ -366,7 +395,8 @@
         <div id="frame-sidebar" class="hidden flex-1 overflow-y-auto p-6 space-y-8">
             <!-- Upload -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">图片上传
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    图片上传
                 </h2>
                 <div id="frameDropZone"
                     class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 dark:bg-gray-700/50 relative">
@@ -388,7 +418,8 @@
 
             <!-- Parameters -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">参数调整
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    参数调整
                 </h2>
                 <div class="space-y-6">
                     <div>
@@ -467,7 +498,8 @@
         <div id="watermark-sidebar" class="hidden flex-1 overflow-y-auto p-6 space-y-8">
             <!-- Image Upload -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">图片上传
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    图片上传
                 </h2>
                 <div id="wmDropZone"
                     class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 dark:bg-gray-700/50">
@@ -684,7 +716,8 @@
         <div id="tag-sidebar" class="hidden flex-1 overflow-y-auto p-6 space-y-8">
             <!-- Upload -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">图片上传
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    图片上传
                 </h2>
                 <div id="tagDropZone"
                     class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 dark:bg-gray-700/50">
@@ -702,13 +735,9 @@
 
             <!-- Settings -->
             <section>
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">API设置</h2>
-                    <button id="tagApiSettingsBtn"
-                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-300">
-                        <i class="fa-solid fa-gear"></i>
-                    </button>
-                </div>
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    标签设置
+                </h2>
 
                 <div class="space-y-4">
                     <!-- Tag Count -->
@@ -756,6 +785,62 @@
                 <div class="text-sm text-gray-500 dark:text-gray-400">
                     已生成标签的图片结果将显示在右侧网格中。
                 </div>
+            </section>
+        </div>
+
+        <!-- Content Master Sidebar -->
+        <div id="content-sidebar" class="hidden flex-1 overflow-y-auto p-6 space-y-8">
+            <!-- Upload Section -->
+            <section>
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    上传图片
+                </h2>
+                <div id="contentDropZone"
+                    class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 dark:bg-gray-700/50 relative">
+                    <input type="file" id="contentFileInput" accept="image/*" class="hidden">
+                    <svg class="w-10 h-10 mx-auto text-gray-400 mb-3" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">点击或拖拽上传图片</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">支持单张图片</p>
+                </div>
+            </section>
+
+            <!-- Context Input -->
+            <section>
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    补充信息
+                    <span class="text-xs font-normal text-gray-400">(可选)</span>
+                </h2>
+                <textarea id="contentUserInput" rows="3" placeholder="输入关键词、产品信息或想要表达的内容..."
+                    class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none resize-none dark:text-gray-200"></textarea>
+            </section>
+
+            <!-- Style Selection -->
+            <section>
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
+                    文案风格
+                </h2>
+                <select id="contentStyle"
+                    class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200">
+                    <option value="general">通用</option>
+                    <option value="zhongcao">种草</option>
+                    <option value="photography">摄影</option>
+                    <option value="tutorial">教程</option>
+                    <option value="daily">日常</option>
+                </select>
+            </section>
+
+            <!-- Actions -->
+            <section class="space-y-3">
+                <button id="contentGenerateBtn" disabled
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>生成文案</span>
+                </button>
             </section>
         </div>
     </aside>
@@ -874,6 +959,79 @@
             </div>
         </div>
 
+        <!-- Content Master Main -->
+        <div id="content-main" class="hidden w-full h-full flex items-center justify-center relative p-8">
+            <div class="absolute inset-0 pointer-events-none dotted-grid"></div>
+
+            <!-- Empty State -->
+            <div id="contentEmptyState" class="text-center relative z-10">
+                <div
+                    class="w-32 h-32 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm text-gray-300 dark:text-gray-600">
+                    <svg class="w-16 h-16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
+                        <path d="M21 15L16 10L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未选择图片</h3>
+                <p class="text-gray-500 dark:text-gray-400 text-lg">请上传图片开始制作</p>
+            </div>
+
+            <!-- Content Container -->
+            <div id="contentContainer" class="hidden w-full h-full overflow-y-auto custom-scrollbar relative z-20">
+                <div class="max-w-4xl mx-auto space-y-6 pb-24">
+                    <!-- Image Preview -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
+                        <div class="aspect-video bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+                            <img id="contentPreviewImage" class="max-w-full max-h-full object-contain" />
+                        </div>
+                    </div>
+
+                    <!-- Generated Title -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                                <i class="fa-solid fa-heading text-blue-500 mr-2"></i>标题
+                            </h3>
+                            <button id="contentCopyTitleBtn"
+                                class="px-3 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded-lg text-gray-500 dark:text-gray-400 hover:text-blue-500 hover:border-blue-500 transition-colors">
+                                <i class="fa-solid fa-copy"></i> 复制
+                            </button>
+                        </div>
+                        <div id="contentTitleDisplay"
+                            class="text-xl font-medium text-gray-700 dark:text-gray-300 min-h-[60px] flex items-center">
+                            <span class="text-gray-400 italic">等待生成...</span>
+                        </div>
+                    </div>
+
+                    <!-- Generated Content -->
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                                <i class="fa-solid fa-align-left text-blue-500 mr-2"></i>正文
+                            </h3>
+                            <div class="flex gap-2">
+                                <button id="contentCopyContentBtn"
+                                    class="px-3 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded-lg text-gray-500 dark:text-gray-400 hover:text-blue-500 hover:border-blue-500 transition-colors">
+                                    <i class="fa-solid fa-copy"></i> 复制
+                                </button>
+                                <button id="contentCopyAllBtn"
+                                    class="px-3 py-1.5 text-xs bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                                    <i class="fa-solid fa-copy"></i> 复制全部
+                                </button>
+                            </div>
+                        </div>
+                        <div id="contentTextDisplay"
+                            class="text-gray-700 dark:text-gray-300 whitespace-pre-wrap min-h-[200px]">
+                            <span class="text-gray-400 italic">等待生成...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- API Settings Modal -->
         <div id="tagApiModal"
             class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -959,10 +1117,12 @@
         function init() {
             setupTabs();
             loadTheme();
+            AISettings.init();
             PuzzleApp.init();
             FrameApp.init();
             WatermarkApp.init();
             TagMasterApp.init();
+            ContentMasterApp.init();
             setupSidebarResize();
         }
 
@@ -1008,6 +1168,8 @@
             const watermarkMain = document.getElementById('watermark-main');
             const tagSidebar = document.getElementById('tag-sidebar');
             const tagMain = document.getElementById('tag-main');
+            const contentSidebar = document.getElementById('content-sidebar');
+            const contentMain = document.getElementById('content-main');
 
             tabs.forEach(tab => {
                 tab.addEventListener('click', () => {
@@ -1021,6 +1183,7 @@
                     frameSidebar.classList.add('hidden');
                     watermarkSidebar.classList.add('hidden');
                     tagSidebar.classList.add('hidden');
+                    contentSidebar.classList.add('hidden');
 
                     puzzleMain.classList.add('hidden');
                     puzzleMain.classList.remove('flex');
@@ -1029,6 +1192,8 @@
                     watermarkMain.classList.remove('flex');
                     tagMain.classList.add('hidden');
                     tagMain.classList.remove('flex');
+                    contentMain.classList.add('hidden');
+                    contentMain.classList.remove('flex');
 
                     if (target === 'puzzle') {
                         puzzleSidebar.classList.remove('hidden');
@@ -1047,6 +1212,10 @@
                         tagSidebar.classList.remove('hidden');
                         tagMain.classList.remove('hidden');
                         tagMain.classList.add('flex');
+                    } else if (target === 'content') {
+                        contentSidebar.classList.remove('hidden');
+                        contentMain.classList.remove('hidden');
+                        contentMain.classList.add('flex');
                     }
                 });
             });
@@ -2690,11 +2859,7 @@
                 imageList: [], // Array of { id, file, processedData, tags, status, error }
                 settings: {
                     tagCount: 15,
-                    language: 'auto',
-                    apiProvider: 'openai',
-                    apiEndpoint: 'https://api.openai.com/v1/chat/completions',
-                    apiKey: '',
-                    modelName: 'gpt-4-vision-preview'
+                    language: 'auto'
                 }
             },
 
@@ -2708,25 +2873,32 @@
                     tagCountVal: document.getElementById('tagCountVal'),
                     tagLanguage: document.getElementById('tagLanguage'),
                     generateBtn: document.getElementById('tagGenerateBtn'),
-                    apiSettingsBtn: document.getElementById('tagApiSettingsBtn'),
                     emptyState: document.getElementById('tagEmptyState'),
                     gridContainer: document.getElementById('tagGridContainer'),
                     grid: document.getElementById('tagGrid'),
                     tagResultSection: document.getElementById('tagResultSection'),
-                    copyAllBtn: document.getElementById('tagCopyAllBtn'),
-                    // Modal
-                    apiModal: document.getElementById('tagApiModal'),
-                    apiModalClose: document.getElementById('tagApiModalClose'),
-                    apiProvider: document.getElementById('tagApiProvider'),
-                    apiEndpoint: document.getElementById('tagApiEndpoint'),
-                    apiKey: document.getElementById('tagApiKey'),
-                    modelName: document.getElementById('tagModelName'),
-                    apiTest: document.getElementById('tagApiTest'),
-                    apiSave: document.getElementById('tagApiSave')
+                    copyAllBtn: document.getElementById('tagCopyAllBtn')
                 };
 
                 this.loadSettings();
                 this.setupEventListeners();
+            },
+
+            loadSettings() {
+                const saved = localStorage.getItem('tagMasterSettings');
+                if (saved) {
+                    try {
+                        const settings = JSON.parse(saved);
+                        if (settings.tagCount) this.state.settings.tagCount = settings.tagCount;
+                        if (settings.language) this.state.settings.language = settings.language;
+
+                        this.elements.tagCountRange.value = this.state.settings.tagCount;
+                        this.elements.tagCountVal.textContent = this.state.settings.tagCount;
+                        this.elements.tagLanguage.value = this.state.settings.language;
+                    } catch (e) {
+                        console.error('Failed to load settings:', e);
+                    }
+                }
             },
 
             setupEventListeners() {
@@ -2753,16 +2925,6 @@
 
                 // Copy All
                 this.elements.copyAllBtn.addEventListener('click', () => this.copyAllTags());
-
-                // API Settings
-                this.elements.apiSettingsBtn.addEventListener('click', () => this.openApiSettings());
-                this.elements.apiModalClose.addEventListener('click', () => this.closeApiSettings());
-                this.elements.apiModal.addEventListener('click', (e) => {
-                    if (e.target === this.elements.apiModal) this.closeApiSettings();
-                });
-                this.elements.apiProvider.addEventListener('change', (e) => this.updateApiDefaults(e.target.value));
-                this.elements.apiSave.addEventListener('click', () => this.saveApiSettings());
-                this.elements.apiTest.addEventListener('click', () => this.testApiConnection());
             },
 
             async handleImageUpload(files) {
@@ -2983,9 +3145,9 @@
             },
 
             async generateTagsBatch() {
-                if (!this.state.settings.apiKey) {
+                if (!AISettings.settings.apiKey) {
                     alert('请先配置AI API设置');
-                    this.openApiSettings();
+                    AISettings.openModal();
                     return;
                 }
 
@@ -3025,7 +3187,7 @@
             },
 
             async callAIAPI(imageData) {
-                const { apiProvider, apiEndpoint, apiKey, modelName } = this.state.settings;
+                const { apiProvider, apiEndpoint, apiKey, modelName } = AISettings.settings;
                 const { tagCount, language } = this.state.settings;
 
                 // Build prompt
@@ -3124,51 +3286,87 @@
                         btn.innerHTML = originalHtml;
                     }, 2000);
                 });
+            }
+        };
+
+        // --- Global AI Settings ---
+        const AISettings = {
+            settings: {
+                apiProvider: 'openai',
+                apiEndpoint: 'https://api.openai.com/v1/chat/completions',
+                apiKey: '',
+                modelName: 'gpt-4-vision-preview'
+            },
+            elements: {},
+
+            init() {
+                this.elements = {
+                    modal: document.getElementById('tagApiModal'),
+                    modalClose: document.getElementById('tagApiModalClose'),
+                    provider: document.getElementById('tagApiProvider'),
+                    endpoint: document.getElementById('tagApiEndpoint'),
+                    key: document.getElementById('tagApiKey'),
+                    modelName: document.getElementById('tagModelName'),
+                    testBtn: document.getElementById('tagApiTest'),
+                    saveBtn: document.getElementById('tagApiSave'),
+                    globalBtn: document.getElementById('globalApiSettingsBtn')
+                };
+
+                this.loadSettings();
+                this.setupEventListeners();
             },
 
-            openApiSettings() {
-                // Load current settings to form
-                this.elements.apiProvider.value = this.state.settings.apiProvider;
-                this.elements.apiEndpoint.value = this.state.settings.apiEndpoint;
-                this.elements.apiKey.value = this.state.settings.apiKey;
-                this.elements.modelName.value = this.state.settings.modelName;
-
-                this.elements.apiModal.classList.remove('hidden');
+            setupEventListeners() {
+                this.elements.modalClose.addEventListener('click', () => this.closeModal());
+                this.elements.modal.addEventListener('click', (e) => {
+                    if (e.target === this.elements.modal) this.closeModal();
+                });
+                this.elements.provider.addEventListener('change', (e) => this.updateDefaults(e.target.value));
+                this.elements.saveBtn.addEventListener('click', () => this.saveSettings());
+                this.elements.testBtn.addEventListener('click', () => this.testConnection());
+                if (this.elements.globalBtn) {
+                    this.elements.globalBtn.addEventListener('click', () => this.openModal());
+                }
             },
 
-            closeApiSettings() {
-                this.elements.apiModal.classList.add('hidden');
+            openModal() {
+                this.elements.provider.value = this.settings.apiProvider;
+                this.elements.endpoint.value = this.settings.apiEndpoint;
+                this.elements.key.value = this.settings.apiKey;
+                this.elements.modelName.value = this.settings.modelName;
+                this.elements.modal.classList.remove('hidden');
             },
 
-            updateApiDefaults(provider) {
+            closeModal() {
+                this.elements.modal.classList.add('hidden');
+            },
+
+            updateDefaults(provider) {
                 if (provider === 'openai') {
-                    this.elements.apiEndpoint.value = 'https://api.openai.com/v1/chat/completions';
+                    this.elements.endpoint.value = 'https://api.openai.com/v1/chat/completions';
                     this.elements.modelName.value = 'gpt-4-vision-preview';
                 } else if (provider === 'gemini') {
-                    this.elements.apiEndpoint.value = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent';
+                    this.elements.endpoint.value = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent';
                     this.elements.modelName.value = 'gemini-pro-vision';
                 }
             },
 
-            saveApiSettings() {
-                this.state.settings.apiProvider = this.elements.apiProvider.value;
-                this.state.settings.apiEndpoint = this.elements.apiEndpoint.value;
-                this.state.settings.apiKey = this.elements.apiKey.value;
-                this.state.settings.modelName = this.elements.modelName.value;
+            saveSettings() {
+                this.settings.apiProvider = this.elements.provider.value;
+                this.settings.apiEndpoint = this.elements.endpoint.value;
+                this.settings.apiKey = this.elements.key.value;
+                this.settings.modelName = this.elements.modelName.value;
 
-                // Save to localStorage
-                localStorage.setItem('tagMasterSettings', JSON.stringify(this.state.settings));
+                localStorage.setItem('aiSettings', JSON.stringify(this.settings));
 
-                // Visual feedback
-                const saveBtn = this.elements.apiSave;
+                const saveBtn = this.elements.saveBtn;
                 const originalText = saveBtn.innerHTML;
                 saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> 已保存';
                 saveBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
                 saveBtn.classList.add('bg-green-600', 'hover:bg-green-700');
 
                 setTimeout(() => {
-                    this.closeApiSettings();
-                    // Reset button style
+                    this.closeModal();
                     setTimeout(() => {
                         saveBtn.innerHTML = originalText;
                         saveBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
@@ -3177,19 +3375,18 @@
                 }, 800);
             },
 
-            async testApiConnection() {
-                const testBtn = this.elements.apiTest;
+            async testConnection() {
+                const testBtn = this.elements.testBtn;
                 const originalText = testBtn.textContent;
                 testBtn.textContent = '测试中...';
                 testBtn.disabled = true;
 
                 try {
-                    // Simple test: just check if endpoint is reachable
-                    const response = await fetch(this.elements.apiEndpoint.value, {
+                    const response = await fetch(this.elements.endpoint.value, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${this.elements.apiKey.value}`
+                            'Authorization': `Bearer ${this.elements.key.value}`
                         },
                         body: JSON.stringify({ test: true })
                     });
@@ -3210,15 +3407,264 @@
             },
 
             loadSettings() {
-                const saved = localStorage.getItem('tagMasterSettings');
+                const saved = localStorage.getItem('aiSettings');
                 if (saved) {
                     try {
-                        const settings = JSON.parse(saved);
-                        this.state.settings = { ...this.state.settings, ...settings };
+                        this.settings = { ...this.settings, ...JSON.parse(saved) };
                     } catch (e) {
-                        console.error('Failed to load settings:', e);
+                        console.error('Failed to load AI settings:', e);
                     }
                 }
+            }
+        };
+
+        // --- Content Master Logic ---
+        const ContentMasterApp = {
+            state: {
+                image: null,
+                imageData: null,
+                userInput: '',
+                style: 'general',
+                generatedTitle: '',
+                generatedContent: '',
+                isGenerating: false
+            },
+            elements: {},
+
+            init() {
+                this.elements = {
+                    dropZone: document.getElementById('contentDropZone'),
+                    fileInput: document.getElementById('contentFileInput'),
+                    userInput: document.getElementById('contentUserInput'),
+                    styleSelect: document.getElementById('contentStyle'),
+                    generateBtn: document.getElementById('contentGenerateBtn'),
+                    emptyState: document.getElementById('contentEmptyState'),
+                    container: document.getElementById('contentContainer'),
+                    previewImage: document.getElementById('contentPreviewImage'),
+                    titleDisplay: document.getElementById('contentTitleDisplay'),
+                    contentDisplay: document.getElementById('contentTextDisplay'),
+                    copyTitleBtn: document.getElementById('contentCopyTitleBtn'),
+                    copyContentBtn: document.getElementById('contentCopyContentBtn'),
+                    copyAllBtn: document.getElementById('contentCopyAllBtn')
+                };
+
+                this.setupEventListeners();
+            },
+
+            setupEventListeners() {
+                Utils.UI.setupDragDrop(this.elements.dropZone, this.elements.fileInput, 'border-blue-500', (files) => {
+                    if (files.length) this.handleImageUpload(files[0]);
+                });
+                this.elements.fileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length) this.handleImageUpload(e.target.files[0]);
+                });
+
+                this.elements.generateBtn.addEventListener('click', () => this.generateContent());
+                this.elements.copyTitleBtn.addEventListener('click', () => this.copyTitle());
+                this.elements.copyContentBtn.addEventListener('click', () => this.copyContent());
+                this.elements.copyAllBtn.addEventListener('click', () => this.copyAll());
+            },
+
+            async handleImageUpload(file) {
+                try {
+                    const img = await Utils.File.readImage(file);
+                    this.state.image = img;
+
+                    // Compress image for API
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const MAX_SIZE = 1024;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_SIZE || height > MAX_SIZE) {
+                        if (width > height) {
+                            height = (height / width) * MAX_SIZE;
+                            width = MAX_SIZE;
+                        } else {
+                            width = (width / height) * MAX_SIZE;
+                            height = MAX_SIZE;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    this.state.imageData = canvas.toDataURL('image/jpeg', 0.7);
+
+                    // Update UI
+                    this.elements.previewImage.src = this.state.imageData;
+                    this.elements.emptyState.classList.add('hidden');
+                    this.elements.container.classList.remove('hidden');
+                    this.elements.generateBtn.disabled = false;
+
+                    // Reset generated content
+                    this.state.generatedTitle = '';
+                    this.state.generatedContent = '';
+                    this.elements.titleDisplay.innerHTML = '<span class="text-gray-400 italic">等待生成...</span>';
+                    this.elements.contentDisplay.innerHTML = '<span class="text-gray-400 italic">等待生成...</span>';
+                } catch (e) {
+                    console.error('Failed to load image:', e);
+                    alert('图片加载失败');
+                }
+            },
+
+            async generateContent() {
+                if (!this.state.imageData || !AISettings.settings.apiKey) {
+                    alert('请先上传图片并配置API设置');
+                    return;
+                }
+
+                this.state.isGenerating = true;
+                const btn = this.elements.generateBtn;
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>生成中...</span>';
+                btn.disabled = true;
+
+                try {
+                    const userInput = this.elements.userInput.value.trim();
+                    const style = this.elements.styleSelect.value;
+
+                    // Build prompt
+                    let stylePrompt = '';
+                    switch (style) {
+                        case 'zhongcao':
+                            stylePrompt = '种草风格，突出产品优点，吸引购买，使用夸张和感叹的语气';
+                            break;
+                        case 'photography':
+                            stylePrompt = '摄影风格，注重画面构图、光影描述，分享拍摄参数和修图思路，情感细腻';
+                            break;
+                        case 'tutorial':
+                            stylePrompt = '教程风格，步骤清晰，干货满满，易于理解';
+                            break;
+                        case 'daily':
+                            stylePrompt = '日常分享风格，轻松自然，生活化';
+                            break;
+                        default:
+                            stylePrompt = '通用风格，吸引人';
+                    }
+
+                    const prompt = `请根据这张图片生成小红书风格的内容。${userInput ? '补充信息：' + userInput + '。' : ''}风格要求：${stylePrompt}。
+
+请按以下格式输出：
+【标题】一行简短吸引人的标题（20-30字，可包含emoji）
+【正文】多段落正文内容（使用emoji、话题标签#，分段清晰）
+
+要求：
+1. 标题要吸引眼球，包含1-3个相关emoji
+2. 正文要有感染力，自然分段，适当使用emoji
+3. 结尾加2-3个相关话题标签
+4. 整体风格符合小红书调性`;
+
+                    const { apiProvider, apiEndpoint, apiKey, modelName } = AISettings.settings;
+
+                    let requestBody;
+                    if (apiProvider === 'openai' || apiProvider === 'custom') {
+                        requestBody = {
+                            model: modelName,
+                            messages: [
+                                {
+                                    role: 'user',
+                                    content: [
+                                        { type: 'text', text: prompt },
+                                        { type: 'image_url', image_url: { url: this.state.imageData } }
+                                    ]
+                                }
+                            ],
+                            max_tokens: 500
+                        };
+                    } else if (apiProvider === 'gemini') {
+                        requestBody = {
+                            contents: [{
+                                parts: [
+                                    { text: prompt },
+                                    { inline_data: { mime_type: 'image/jpeg', data: this.state.imageData.split(',')[1] } }
+                                ]
+                            }]
+                        };
+                    }
+
+                    const response = await fetch(apiEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${apiKey}`
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API请求失败: ${response.status} ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+
+                    let resultText;
+                    if (apiProvider === 'openai' || apiProvider === 'custom') {
+                        resultText = data.choices[0].message.content;
+                    } else if (apiProvider === 'gemini') {
+                        resultText = data.candidates[0].content.parts[0].text;
+                    }
+
+                    // Parse result
+                    const titleMatch = resultText.match(/【标题】(.+?)(?=\n|【|$)/);
+                    const contentMatch = resultText.match(/【正文】([\s\S]+)/);
+
+                    if (titleMatch) {
+                        this.state.generatedTitle = titleMatch[1].trim();
+                        this.elements.titleDisplay.textContent = this.state.generatedTitle;
+                    } else {
+                        this.elements.titleDisplay.innerHTML = '<span class="text-red-400">标题解析失败</span>';
+                    }
+
+                    if (contentMatch) {
+                        this.state.generatedContent = contentMatch[1].trim();
+                        this.elements.contentDisplay.textContent = this.state.generatedContent;
+                    } else {
+                        this.elements.contentDisplay.innerHTML = '<span class="text-red-400">正文解析失败</span>';
+                    }
+
+                } catch (error) {
+                    console.error('Content generation error:', error);
+                    alert('生成失败: ' + error.message);
+                    this.elements.titleDisplay.innerHTML = '<span class="text-red-400">生成失败</span>';
+                    this.elements.contentDisplay.innerHTML = '<span class="text-red-400">生成失败</span>';
+                } finally {
+                    this.state.isGenerating = false;
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                }
+            },
+
+            copyTitle() {
+                if (!this.state.generatedTitle) return;
+                navigator.clipboard.writeText(this.state.generatedTitle).then(() => {
+                    const btn = this.elements.copyTitleBtn;
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
+                    setTimeout(() => btn.innerHTML = originalHtml, 2000);
+                });
+            },
+
+            copyContent() {
+                if (!this.state.generatedContent) return;
+                navigator.clipboard.writeText(this.state.generatedContent).then(() => {
+                    const btn = this.elements.copyContentBtn;
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
+                    setTimeout(() => btn.innerHTML = originalHtml, 2000);
+                });
+            },
+
+            copyAll() {
+                if (!this.state.generatedTitle || !this.state.generatedContent) return;
+                const text = `${this.state.generatedTitle}\n\n${this.state.generatedContent}`;
+                navigator.clipboard.writeText(text).then(() => {
+                    const btn = this.elements.copyAllBtn;
+                    const originalHtml = btn.innerHTML;
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
+                    setTimeout(() => btn.innerHTML = originalHtml, 2000);
+                });
             }
         };
 
