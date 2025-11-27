@@ -324,13 +324,18 @@
                     <div>
                         <label class="flex justify-between text-sm text-gray-600 dark:text-gray-300 mb-1">
                             <span>颜色</span>
-                            <span id="borderColorVal" class="uppercase">#000000</span>
                         </label>
-                        <div class="flex items-center space-x-2">
-                            <input type="color" id="borderColor" value="#000000"
-                                class="w-10 h-10 rounded cursor-pointer border-0 p-0">
+                        <!-- Custom Input Group -->
+                        <div class="flex items-center gap-2">
+                            <div class="relative w-10 h-10">
+                                <input type="color" id="borderColor" value="#000000"
+                                    class="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10">
+                                <div id="borderColorPreview"
+                                    class="w-full h-full rounded-lg border border-gray-200 shadow-sm transition-colors"
+                                    style="background-color: #000000;"></div>
+                            </div>
                             <input type="text" id="borderColorText" value="#000000"
-                                class="flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-transparent text-sm focus:ring-2 focus:ring-blue-500 outline-none uppercase">
+                                class="flex-1 px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-sm font-mono focus:ring-2 focus:ring-blue-500 outline-none uppercase transition-all">
                         </div>
                     </div>
                 </div>
@@ -346,8 +351,8 @@
                         class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
                 </div>
 
-                <button id="puzzleDownloadBtn"
-                    class="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+                <button id="puzzleDownloadBtn" disabled
+                    class="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
@@ -437,8 +442,8 @@
 
             <!-- Actions -->
             <div class="pt-4 space-y-3">
-                <button id="frameGenerateBtn"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-2">
+                <button id="frameGenerateBtn" disabled
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
@@ -481,11 +486,15 @@
             <div id="wmControls" class="space-y-8 animate-fade-in">
 
                 <!-- Toggle Type -->
-                <div class="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
+                <div class="flex bg-gray-100 dark:bg-gray-700 rounded-lg p-1 gap-1">
                     <button id="wmTypeImage"
-                        class="flex-1 py-1.5 text-sm font-medium rounded-md bg-white dark:bg-gray-600 shadow-sm text-blue-600 dark:text-blue-400 transition-all">图片水印</button>
+                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md bg-white dark:bg-gray-600 shadow-sm text-blue-600 dark:text-blue-400 transition-all">图片</button>
                     <button id="wmTypeText"
-                        class="flex-1 py-1.5 text-sm font-medium rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all">文字签名</button>
+                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all">文字</button>
+                    <button id="wmTypePalette"
+                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all">色卡</button>
+                    <button id="wmTypeHistogram"
+                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all">直方图</button>
                 </div>
 
                 <!-- Image Watermark Section -->
@@ -546,6 +555,48 @@
                             导出PNG
                         </button>
                     </div>
+                </div>
+
+                <!-- Palette Section -->
+                <div id="wmSectionPalette" class="hidden space-y-4">
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">颜色数量</label>
+                            <span id="wmPaletteCountVal" class="text-xs text-gray-500">5</span>
+                        </div>
+                        <input type="range" id="wmPaletteCountRange" min="3" max="8" value="5"
+                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">样式</label>
+                        <select id="wmPaletteStyle"
+                            class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200">
+                            <option value="circle">圆形</option>
+                            <option value="square">方形</option>
+                            <option value="strip">长条</option>
+                        </select>
+                    </div>
+                    <button id="wmGeneratePaletteBtn"
+                        class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                        生成色卡
+                    </button>
+                </div>
+
+                <!-- Histogram Section -->
+                <div id="wmSectionHistogram" class="hidden space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">样式</label>
+                        <select id="wmHistogramStyle"
+                            class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200">
+                            <option value="rgb">RGB 重叠</option>
+                            <option value="luminance">亮度 (白色)</option>
+                            <option value="color">彩色分布</option>
+                        </select>
+                    </div>
+                    <button id="wmGenerateHistogramBtn"
+                        class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                        生成直方图
+                    </button>
                 </div>
 
                 <!-- Common Adjustments -->
@@ -616,8 +667,8 @@
                         <input type="range" id="wmQualityRange" min="10" max="100" value="90"
                             class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
                     </div>
-                    <button id="wmExportBtn"
-                        class="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2">
+                    <button id="wmExportBtn" disabled
+                        class="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
@@ -635,14 +686,14 @@
                 <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">图片上传
                 </h2>
                 <div id="tagDropZone"
-                    class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 transition-colors bg-gray-50 dark:bg-gray-800/50">
+                    class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 dark:bg-gray-700/50">
                     <svg class="w-10 h-10 mx-auto mb-3 text-gray-400" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                         </path>
                     </svg>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">点击或拖拽上传图片</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">点击或拖拽上传图片</p>
                     <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">支持 JPG, PNG, WebP</p>
                 </div>
                 <input type="file" id="tagFileInput" accept="image/*" multiple class="hidden">
@@ -1027,7 +1078,11 @@
                     borderWidthVal: document.getElementById('borderWidthVal'),
                     borderColor: document.getElementById('borderColor'),
                     borderColorText: document.getElementById('borderColorText'),
-                    borderColorVal: document.getElementById('borderColorVal'),
+                    borderColorPreview: document.getElementById('borderColorPreview'),
+
+                    // Export
+                    puzzleQuality: document.getElementById('puzzleQuality'),
+                    puzzleQualityVal: document.getElementById('puzzleQualityVal'), // Added quality value display
                     ratioBtns: document.querySelectorAll('.ratio-btn'),
                     customRatioBtn: document.getElementById('customRatioBtn'),
                     customRatioInput: document.getElementById('customRatioInput'),
@@ -1035,9 +1090,6 @@
                     ratioH: document.getElementById('ratioH'),
                     downloadBtn: document.getElementById('puzzleDownloadBtn'),
                     interactionHint: document.getElementById('interactionHint'),
-                    puzzleQuality: document.getElementById('puzzleQuality'), // Added quality input
-                    puzzleQuality: document.getElementById('puzzleQuality'), // Added quality input
-                    puzzleQualityVal: document.getElementById('puzzleQualityVal'), // Added quality value display
                     puzzleEmptyState: document.getElementById('puzzleEmptyState') // Added empty state element
                 };
                 this.setupEventListeners();
@@ -1097,7 +1149,10 @@
 
             updateBorderColor(color) {
                 this.state.borderColor = color;
-                this.elements.borderColorVal.textContent = color;
+                // els.borderColorVal.textContent = color; // Removed as we use text input now
+                if (this.elements.borderColorPreview) {
+                    this.elements.borderColorPreview.style.backgroundColor = color;
+                }
                 this.elements.borderColorText.value = color;
                 this.renderGrid();
             },
@@ -1217,6 +1272,11 @@
                 const count = this.state.images.length;
                 const container = this.elements.gridContainer;
                 container.innerHTML = '';
+
+                // Update button state
+                if (this.elements.downloadBtn) {
+                    this.elements.downloadBtn.disabled = count === 0;
+                }
 
                 if (count === 0) {
                     this.elements.puzzleEmptyState.classList.remove('hidden');
@@ -1623,6 +1683,12 @@
             handleFiles(files) {
                 this.currentFiles = Array.from(files);
                 const els = this.elements;
+
+                // Update button state
+                if (els.generateBtn) {
+                    els.generateBtn.disabled = this.currentFiles.length === 0;
+                }
+
                 if (this.currentFiles.length > 0) {
                     els.fileCount.innerText = `${this.currentFiles.length} 张`;
                     els.fileCount.classList.remove('hidden');
@@ -2013,7 +2079,21 @@
                     qualityVal: document.getElementById('wmQualityVal'),
                     exportBtn: document.getElementById('wmExportBtn'),
 
-                    posBtns: document.querySelectorAll('.wm-pos-btn')
+                    posBtns: document.querySelectorAll('.wm-pos-btn'),
+
+                    // Palette
+                    btnTypePalette: document.getElementById('wmTypePalette'),
+                    sectionPalette: document.getElementById('wmSectionPalette'),
+                    paletteCountRange: document.getElementById('wmPaletteCountRange'),
+                    paletteCountVal: document.getElementById('wmPaletteCountVal'),
+                    paletteStyle: document.getElementById('wmPaletteStyle'),
+                    generatePaletteBtn: document.getElementById('wmGeneratePaletteBtn'),
+
+                    // Histogram
+                    btnTypeHistogram: document.getElementById('wmTypeHistogram'),
+                    sectionHistogram: document.getElementById('wmSectionHistogram'),
+                    histogramStyle: document.getElementById('wmHistogramStyle'),
+                    generateHistogramBtn: document.getElementById('wmGenerateHistogramBtn')
                 };
                 this.setupEventListeners();
                 this.loadSignaturePreset();
@@ -2036,6 +2116,8 @@
                 // Type Toggle
                 els.btnTypeImage.addEventListener('click', () => this.switchType('image'));
                 els.btnTypeText.addEventListener('click', () => this.switchType('text'));
+                els.btnTypePalette.addEventListener('click', () => this.switchType('palette'));
+                els.btnTypeHistogram.addEventListener('click', () => this.switchType('histogram'));
 
                 // Watermark Upload
                 els.uploadBtn.addEventListener('click', () => els.watermarkInput.click());
@@ -2046,6 +2128,13 @@
                 els.saveSigBtn.addEventListener('click', () => this.saveSignaturePreset());
                 els.downloadSigBtn.addEventListener('click', () => this.downloadSignature());
                 els.sigColor.addEventListener('input', () => this.updateSignature()); // Live update if possible, or just value
+
+                // Palette
+                els.paletteCountRange.addEventListener('input', (e) => els.paletteCountVal.innerText = e.target.value);
+                els.generatePaletteBtn.addEventListener('click', () => this.generatePalette());
+
+                // Histogram
+                els.generateHistogramBtn.addEventListener('click', () => this.generateHistogram());
 
                 // Controls
                 els.scaleRange.addEventListener('input', (e) => {
@@ -2082,23 +2171,31 @@
 
             switchType(type) {
                 const els = this.elements;
-                if (type === 'image') {
-                    els.btnTypeImage.classList.add('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
-                    els.btnTypeImage.classList.remove('text-gray-500', 'dark:text-gray-400');
-                    els.btnTypeText.classList.remove('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
-                    els.btnTypeText.classList.add('text-gray-500', 'dark:text-gray-400');
+                const types = ['image', 'text', 'palette', 'histogram'];
+                const buttons = {
+                    'image': els.btnTypeImage,
+                    'text': els.btnTypeText,
+                    'palette': els.btnTypePalette,
+                    'histogram': els.btnTypeHistogram
+                };
+                const sections = {
+                    'image': els.sectionImage,
+                    'text': els.sectionText,
+                    'palette': els.sectionPalette,
+                    'histogram': els.sectionHistogram
+                };
 
-                    els.sectionImage.classList.remove('hidden');
-                    els.sectionText.classList.add('hidden');
-                } else {
-                    els.btnTypeText.classList.add('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
-                    els.btnTypeText.classList.remove('text-gray-500', 'dark:text-gray-400');
-                    els.btnTypeImage.classList.remove('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
-                    els.btnTypeImage.classList.add('text-gray-500', 'dark:text-gray-400');
-
-                    els.sectionText.classList.remove('hidden');
-                    els.sectionImage.classList.add('hidden');
-                }
+                types.forEach(t => {
+                    if (t === type) {
+                        buttons[t].classList.add('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
+                        buttons[t].classList.remove('text-gray-500', 'dark:text-gray-400');
+                        sections[t].classList.remove('hidden');
+                    } else {
+                        buttons[t].classList.remove('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-blue-600', 'dark:text-blue-400');
+                        buttons[t].classList.add('text-gray-500', 'dark:text-gray-400');
+                        sections[t].classList.add('hidden');
+                    }
+                });
             },
 
             handleImageUpload(e) {
@@ -2120,6 +2217,11 @@
                         this.elements.emptyState.classList.add('hidden');
                         this.elements.mainCanvas.classList.remove('hidden');
                         this.elements.controls.classList.remove('hidden');
+
+                        // Enable export button
+                        if (this.elements.exportBtn) {
+                            this.elements.exportBtn.disabled = false;
+                        }
 
                         this.drawCanvas();
                         this.resizeCanvas();
@@ -2143,8 +2245,13 @@
 
             setWatermarkImage(img) {
                 this.state.watermark.image = img;
-                this.state.watermark.width = img.width;
-                this.state.watermark.height = img.height;
+
+                // Auto-scale to ~30% of base image width for visibility
+                const targetWidth = this.state.canvas.width * 0.3;
+                const ratio = img.width / img.height;
+
+                this.state.watermark.width = targetWidth;
+                this.state.watermark.height = targetWidth / ratio;
 
                 // Reset defaults
                 this.state.watermark.scale = 1;
@@ -2161,11 +2268,208 @@
                 this.drawCanvas();
             },
 
+            generatePalette() {
+                if (!this.state.baseImage) return;
+
+                const count = parseInt(this.elements.paletteCountRange.value);
+                const style = this.elements.paletteStyle.value;
+
+                // 1. Extract Colors (Improved Quantization & Distance Filtering)
+                const smallCanvas = document.createElement('canvas');
+                const ctx = smallCanvas.getContext('2d');
+                // Use slightly larger sample for better accuracy
+                smallCanvas.width = 150;
+                smallCanvas.height = 150;
+                ctx.drawImage(this.state.baseImage, 0, 0, 150, 150);
+
+                const imageData = ctx.getImageData(0, 0, 150, 150).data;
+                const colorMap = {};
+
+                // Quantize to reduce color space (round to nearest 16)
+                // This groups similar colors together
+                for (let i = 0; i < imageData.length; i += 4) {
+                    // Ignore fully transparent pixels
+                    if (imageData[i + 3] < 128) continue;
+
+                    const r = (imageData[i] >> 4) << 4;
+                    const g = (imageData[i + 1] >> 4) << 4;
+                    const b = (imageData[i + 2] >> 4) << 4;
+                    const key = `${r},${g},${b}`;
+                    colorMap[key] = (colorMap[key] || 0) + 1;
+                }
+
+                // Sort by frequency
+                const sortedCandidates = Object.entries(colorMap)
+                    .sort((a, b) => b[1] - a[1])
+                    .map(entry => {
+                        const [r, g, b] = entry[0].split(',').map(Number);
+                        return { r, g, b, count: entry[1] };
+                    });
+
+                // Select distinct colors
+                const selectedColors = [];
+                const minDistance = 45; // Minimum Euclidean distance between colors
+
+                for (const candidate of sortedCandidates) {
+                    if (selectedColors.length >= count) break;
+
+                    let isDistinct = true;
+                    for (const selected of selectedColors) {
+                        const d = Math.sqrt(
+                            Math.pow(candidate.r - selected.r, 2) +
+                            Math.pow(candidate.g - selected.g, 2) +
+                            Math.pow(candidate.b - selected.b, 2)
+                        );
+                        if (d < minDistance) {
+                            isDistinct = false;
+                            break;
+                        }
+                    }
+
+                    if (isDistinct) {
+                        selectedColors.push([candidate.r, candidate.g, candidate.b]);
+                    }
+                }
+
+                // Fallback if we didn't find enough distinct colors (fill with next most frequent)
+                if (selectedColors.length < count) {
+                    for (const candidate of sortedCandidates) {
+                        if (selectedColors.length >= count) break;
+                        // Check if already included (exact match)
+                        const exists = selectedColors.some(c => c[0] === candidate.r && c[1] === candidate.g && c[2] === candidate.b);
+                        if (!exists) {
+                            selectedColors.push([candidate.r, candidate.g, candidate.b]);
+                        }
+                    }
+                }
+
+                // 2. Draw Palette
+                const pCanvas = document.createElement('canvas');
+                const pCtx = pCanvas.getContext('2d');
+                const size = 100; // Larger size for better quality
+                const gap = 20;
+
+                if (style === 'strip') {
+                    pCanvas.width = count * size;
+                    pCanvas.height = size;
+                    selectedColors.forEach((rgb, i) => {
+                        pCtx.fillStyle = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+                        pCtx.fillRect(i * size, 0, size, size);
+                    });
+                } else {
+                    pCanvas.width = (count * size) + ((count - 1) * gap);
+                    pCanvas.height = size;
+
+                    selectedColors.forEach((rgb, i) => {
+                        const x = i * (size + gap);
+                        pCtx.fillStyle = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+
+                        if (style === 'circle') {
+                            pCtx.beginPath();
+                            pCtx.arc(x + size / 2, size / 2, size / 2, 0, Math.PI * 2);
+                            pCtx.fill();
+                        } else {
+                            pCtx.fillRect(x, 0, size, size);
+                        }
+
+                        // Border
+                        pCtx.strokeStyle = 'rgba(255,255,255,0.5)';
+                        pCtx.lineWidth = 4;
+                        pCtx.stroke();
+                    });
+                }
+
+                const img = new Image();
+                img.onload = () => this.setWatermarkImage(img);
+                img.src = pCanvas.toDataURL();
+            },
+
+            generateHistogram() {
+                if (!this.state.baseImage) return;
+
+                const style = this.elements.histogramStyle.value;
+
+                // 1. Calculate Histogram
+                const smallCanvas = document.createElement('canvas');
+                const ctx = smallCanvas.getContext('2d');
+                // Use a reasonable size for histogram accuracy
+                smallCanvas.width = 256;
+                smallCanvas.height = 256;
+                ctx.drawImage(this.state.baseImage, 0, 0, 256, 256);
+
+                const imageData = ctx.getImageData(0, 0, 256, 256).data;
+                const rHist = new Array(256).fill(0);
+                const gHist = new Array(256).fill(0);
+                const bHist = new Array(256).fill(0);
+                const lHist = new Array(256).fill(0);
+
+                for (let i = 0; i < imageData.length; i += 4) {
+                    const r = imageData[i];
+                    const g = imageData[i + 1];
+                    const b = imageData[i + 2];
+                    const l = Math.round(0.299 * r + 0.587 * g + 0.114 * b);
+
+                    rHist[r]++;
+                    gHist[g]++;
+                    bHist[b]++;
+                    lHist[l]++;
+                }
+
+                const maxCount = Math.max(...rHist, ...gHist, ...bHist, ...lHist);
+
+                // 2. Draw Histogram
+                const hCanvas = document.createElement('canvas');
+                const hCtx = hCanvas.getContext('2d');
+                const hW = 1024; // High res
+                const hH = 400;
+                hCanvas.width = hW;
+                hCanvas.height = hH;
+
+                // Background (semi-transparent black)
+                hCtx.fillStyle = 'rgba(0,0,0,0.5)';
+                hCtx.fillRect(0, 0, hW, hH);
+
+                const drawChannel = (hist, color) => {
+                    hCtx.fillStyle = color;
+                    hCtx.beginPath();
+                    hCtx.moveTo(0, hH);
+                    for (let i = 0; i < 256; i++) {
+                        const h = (hist[i] / maxCount) * hH;
+                        const x = (i / 255) * hW;
+                        hCtx.lineTo(x, hH - h);
+                    }
+                    hCtx.lineTo(hW, hH);
+                    hCtx.fill();
+                };
+
+                hCtx.globalCompositeOperation = 'screen';
+
+                if (style === 'rgb') {
+                    drawChannel(rHist, 'rgba(255,0,0,0.6)');
+                    drawChannel(gHist, 'rgba(0,255,0,0.6)');
+                    drawChannel(bHist, 'rgba(0,0,255,0.6)');
+                } else if (style === 'luminance') {
+                    drawChannel(lHist, 'rgba(255,255,255,0.8)');
+                } else if (style === 'color') {
+                    // Simple approximation: just draw RGB
+                    drawChannel(rHist, 'rgba(255,0,0,0.6)');
+                    drawChannel(gHist, 'rgba(0,255,0,0.6)');
+                    drawChannel(bHist, 'rgba(0,0,255,0.6)');
+                }
+
+                const img = new Image();
+                img.onload = () => this.setWatermarkImage(img);
+                img.src = hCanvas.toDataURL();
+            },
+
             addSignatureToCanvas() {
                 const text = this.elements.sigText.value || 'Signature';
                 const font = this.elements.fontSelect.value;
                 const color = this.elements.sigColor.value;
-                const fontSize = 100;
+
+                // Dynamic font size based on canvas width to ensure quality
+                const baseWidth = this.state.canvas.width || 1000;
+                const fontSize = Math.max(100, Math.floor(baseWidth * 0.15)); // ~15% of width
 
                 const offCanvas = document.createElement('canvas');
                 const ctx = offCanvas.getContext('2d');
@@ -2516,8 +2820,8 @@
                 // Draw image (this strips EXIF data)
                 ctx.drawImage(img, 0, 0, width, height);
 
-                // Convert to base64 with quality 0.85
-                return canvas.toDataURL('image/jpeg', 0.85);
+                // Convert to base64 with quality 0.7
+                return canvas.toDataURL('image/jpeg', 0.7);
             },
 
             renderGrid() {
