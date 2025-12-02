@@ -432,6 +432,14 @@
                         class="border-type-btn py-2 px-3 text-sm rounded-lg border-2 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-500 transition-all">
                         纯色边框
                     </button>
+                    <button id="frameBorderTypeGradient"
+                        class="border-type-btn py-2 px-3 text-sm rounded-lg border-2 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-500 transition-all">
+                        渐变背景
+                    </button>
+                    <button id="frameBorderTypeMatte"
+                        class="border-type-btn py-2 px-3 text-sm rounded-lg border-2 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-gray-300 dark:hover:border-gray-500 transition-all">
+                        双层卡纸
+                    </button>
                 </div>
             </section>
 
@@ -566,187 +574,188 @@
                     <button id="wmTypeHistogram"
                         class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all">直方图</button>
                 </div>
+            </div>
 
-                <!-- Image Watermark Section -->
-                <div id="wmSectionImage" class="space-y-4">
-                    <div class="flex gap-3">
-                        <button id="wmUploadBtn"
-                            class="flex-1 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-2 text-gray-600 dark:text-gray-300">
-                            <i class="fa-solid fa-upload"></i> 上传水印图
-                        </button>
-                        <input type="file" id="wmWatermarkInput" accept="image/png" class="hidden">
-                    </div>
-                </div>
-
-                <!-- Text Signature Section -->
-                <div id="wmSectionText" class="hidden space-y-4">
-                    <div class="space-y-2">
-                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">签名内容</label>
-                        <input type="text" id="wmSigText" placeholder="输入签名..."
-                            class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-transparent text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200"
-                            value="My Signature">
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">字体风格</label>
-                        <select id="wmFontSelect"
-                            class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200">
-                            <option value="Dancing Script">Dancing Script</option>
-                            <option value="Great Vibes">Great Vibes</option>
-                            <option value="Sacramento">Sacramento</option>
-                            <option value="Parisienne">Parisienne</option>
-                            <option value="Allura">Allura</option>
-                            <option value="Inter">Inter (Simple)</option>
-                        </select>
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">颜色</label>
-                        <div class="flex gap-2 items-center">
-                            <input type="color" id="wmSigColor" value="#000000"
-                                class="w-8 h-8 rounded cursor-pointer border-0 p-0">
-                            <button class="w-6 h-6 rounded-full bg-black border border-gray-200"
-                                onclick="document.getElementById('wmSigColor').value='#000000'; WatermarkApp.updateSignature()"></button>
-                            <button class="w-6 h-6 rounded-full bg-white border border-gray-200"
-                                onclick="document.getElementById('wmSigColor').value='#ffffff'; WatermarkApp.updateSignature()"></button>
-                            <button class="w-6 h-6 rounded-full bg-gray-500 border border-gray-200"
-                                onclick="document.getElementById('wmSigColor').value='#6b7280'; WatermarkApp.updateSignature()"></button>
-                        </div>
-                    </div>
-                    <button id="wmAddSigBtn"
-                        class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
-                        生成并添加
+            <!-- Image Watermark Section -->
+            <div id="wmSectionImage" class="space-y-4">
+                <div class="flex gap-3">
+                    <button id="wmUploadBtn"
+                        class="flex-1 py-2.5 border border-gray-200 dark:border-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-all flex items-center justify-center gap-2 text-gray-600 dark:text-gray-300">
+                        <i class="fa-solid fa-upload"></i> 上传水印图
                     </button>
-                    <div class="flex gap-2">
-                        <button id="wmSaveSigBtn"
-                            class="flex-1 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded text-gray-500 dark:text-gray-400 hover:text-blue-500 transition-colors">
-                            保存预设
-                        </button>
-                        <button id="wmDownloadSigBtn"
-                            class="flex-1 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded text-gray-500 dark:text-gray-400 hover:text-blue-500 transition-colors">
-                            导出PNG
-                        </button>
+                    <input type="file" id="wmWatermarkInput" accept="image/png" class="hidden">
+                </div>
+            </div>
+
+            <!-- Text Signature Section -->
+            <div id="wmSectionText" class="hidden space-y-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">签名内容</label>
+                    <input type="text" id="wmSigText" placeholder="输入签名..."
+                        class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-transparent text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200"
+                        value="My Signature">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">字体风格</label>
+                    <select id="wmFontSelect"
+                        class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200">
+                        <option value="Dancing Script">Dancing Script</option>
+                        <option value="Great Vibes">Great Vibes</option>
+                        <option value="Sacramento">Sacramento</option>
+                        <option value="Parisienne">Parisienne</option>
+                        <option value="Allura">Allura</option>
+                        <option value="Inter">Inter (Simple)</option>
+                    </select>
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">颜色</label>
+                    <div class="flex gap-2 items-center">
+                        <input type="color" id="wmSigColor" value="#000000"
+                            class="w-8 h-8 rounded cursor-pointer border-0 p-0">
+                        <button class="w-6 h-6 rounded-full bg-black border border-gray-200"
+                            onclick="document.getElementById('wmSigColor').value='#000000'; WatermarkApp.updateSignature()"></button>
+                        <button class="w-6 h-6 rounded-full bg-white border border-gray-200"
+                            onclick="document.getElementById('wmSigColor').value='#ffffff'; WatermarkApp.updateSignature()"></button>
+                        <button class="w-6 h-6 rounded-full bg-gray-500 border border-gray-200"
+                            onclick="document.getElementById('wmSigColor').value='#6b7280'; WatermarkApp.updateSignature()"></button>
                     </div>
                 </div>
-
-                <!-- Palette Section -->
-                <div id="wmSectionPalette" class="hidden space-y-4">
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">颜色数量</label>
-                            <span id="wmPaletteCountVal" class="text-xs text-gray-500">5</span>
-                        </div>
-                        <input type="range" id="wmPaletteCountRange" min="3" max="8" value="5"
-                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                    </div>
-                    <div class="space-y-2">
-                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">样式</label>
-                        <select id="wmPaletteStyle"
-                            class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200">
-                            <option value="circle">圆形</option>
-                            <option value="square">方形</option>
-                            <option value="strip">长条</option>
-                        </select>
-                    </div>
-                    <button id="wmGeneratePaletteBtn"
-                        class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
-                        生成色卡
+                <button id="wmAddSigBtn"
+                    class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                    生成并添加
+                </button>
+                <div class="flex gap-2">
+                    <button id="wmSaveSigBtn"
+                        class="flex-1 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded text-gray-500 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                        保存预设
                     </button>
-                </div>
-
-                <!-- Histogram Section -->
-                <div id="wmSectionHistogram" class="hidden space-y-4">
-                    <div class="space-y-2">
-                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">样式</label>
-                        <select id="wmHistogramStyle"
-                            class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200">
-                            <option value="rgb">RGB 重叠</option>
-                            <option value="luminance">亮度 (白色)</option>
-                            <option value="color">彩色分布</option>
-                        </select>
-                    </div>
-                    <button id="wmGenerateHistogramBtn"
-                        class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
-                        生成直方图
-                    </button>
-                </div>
-
-                <!-- Common Adjustments -->
-                <div class="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
-                    <div class="space-y-2">
-                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">位置预设</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button
-                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
-                                data-pos="top-left"><i class="fa-solid fa-arrow-up"
-                                    style="transform: rotate(-45deg);"></i></button>
-                            <button
-                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
-                                data-pos="top-center"><i class="fa-solid fa-arrow-up"></i></button>
-                            <button
-                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
-                                data-pos="top-right"><i class="fa-solid fa-arrow-up"
-                                    style="transform: rotate(45deg);"></i></button>
-                            <button
-                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
-                                data-pos="center-left"><i class="fa-solid fa-arrow-left"></i></button>
-                            <button
-                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
-                                data-pos="center"><i class="fa-solid fa-arrows-to-dot"></i></button>
-                            <button
-                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
-                                data-pos="center-right"><i class="fa-solid fa-arrow-right"></i></button>
-                            <button
-                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
-                                data-pos="bottom-left"><i class="fa-solid fa-arrow-down"
-                                    style="transform: rotate(45deg);"></i></button>
-                            <button
-                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
-                                data-pos="bottom-center"><i class="fa-solid fa-arrow-down"></i></button>
-                            <button
-                                class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
-                                data-pos="bottom-right"><i class="fa-solid fa-arrow-down"
-                                    style="transform: rotate(-45deg);"></i></button>
-                        </div>
-                    </div>
-
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">大小</label>
-                            <span id="wmScaleVal" class="text-xs text-gray-500">100%</span>
-                        </div>
-                        <input type="range" id="wmScaleRange" min="10" max="200" value="100"
-                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                    </div>
-
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">不透明度</label>
-                            <span id="wmOpacityVal" class="text-xs text-gray-500">100%</span>
-                        </div>
-                        <input type="range" id="wmOpacityRange" min="0" max="100" value="100"
-                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                    </div>
-                </div>
-
-                <!-- Export -->
-                <div class="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
-                    <div class="space-y-2">
-                        <div class="flex justify-between">
-                            <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">导出质量</label>
-                            <span id="wmQualityVal" class="text-xs text-gray-500">90%</span>
-                        </div>
-                        <input type="range" id="wmQualityRange" min="10" max="100" value="90"
-                            class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
-                    </div>
-                    <button id="wmExportBtn" disabled
-                        class="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                        </svg>
-                        <span>下载图片</span>
+                    <button id="wmDownloadSigBtn"
+                        class="flex-1 py-1.5 text-xs border border-gray-200 dark:border-gray-600 rounded text-gray-500 dark:text-gray-400 hover:text-blue-500 transition-colors">
+                        导出PNG
                     </button>
                 </div>
             </div>
+
+            <!-- Palette Section -->
+            <div id="wmSectionPalette" class="hidden space-y-4">
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">颜色数量</label>
+                        <span id="wmPaletteCountVal" class="text-xs text-gray-500">5</span>
+                    </div>
+                    <input type="range" id="wmPaletteCountRange" min="3" max="8" value="5"
+                        class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                </div>
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">样式</label>
+                    <select id="wmPaletteStyle"
+                        class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200">
+                        <option value="circle">圆形</option>
+                        <option value="square">方形</option>
+                        <option value="strip">长条</option>
+                    </select>
+                </div>
+                <button id="wmGeneratePaletteBtn"
+                    class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                    生成色卡
+                </button>
+            </div>
+
+            <!-- Histogram Section -->
+            <div id="wmSectionHistogram" class="hidden space-y-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">样式</label>
+                    <select id="wmHistogramStyle"
+                        class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200">
+                        <option value="rgb">RGB 重叠</option>
+                        <option value="luminance">亮度 (白色)</option>
+                        <option value="color">彩色分布</option>
+                    </select>
+                </div>
+                <button id="wmGenerateHistogramBtn"
+                    class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-medium transition-colors">
+                    生成直方图
+                </button>
+            </div>
+
+            <!-- Common Adjustments -->
+            <div class="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
+                <div class="space-y-2">
+                    <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">位置预设</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button
+                            class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                            data-pos="top-left"><i class="fa-solid fa-arrow-up"
+                                style="transform: rotate(-45deg);"></i></button>
+                        <button
+                            class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                            data-pos="top-center"><i class="fa-solid fa-arrow-up"></i></button>
+                        <button
+                            class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                            data-pos="top-right"><i class="fa-solid fa-arrow-up"
+                                style="transform: rotate(45deg);"></i></button>
+                        <button
+                            class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                            data-pos="center-left"><i class="fa-solid fa-arrow-left"></i></button>
+                        <button
+                            class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                            data-pos="center"><i class="fa-solid fa-arrows-to-dot"></i></button>
+                        <button
+                            class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                            data-pos="center-right"><i class="fa-solid fa-arrow-right"></i></button>
+                        <button
+                            class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                            data-pos="bottom-left"><i class="fa-solid fa-arrow-down"
+                                style="transform: rotate(45deg);"></i></button>
+                        <button
+                            class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                            data-pos="bottom-center"><i class="fa-solid fa-arrow-down"></i></button>
+                        <button
+                            class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-400"
+                            data-pos="bottom-right"><i class="fa-solid fa-arrow-down"
+                                style="transform: rotate(-45deg);"></i></button>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">大小</label>
+                        <span id="wmScaleVal" class="text-xs text-gray-500">100%</span>
+                    </div>
+                    <input type="range" id="wmScaleRange" min="10" max="200" value="100"
+                        class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">不透明度</label>
+                        <span id="wmOpacityVal" class="text-xs text-gray-500">100%</span>
+                    </div>
+                    <input type="range" id="wmOpacityRange" min="0" max="100" value="100"
+                        class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                </div>
+            </div>
+
+            <!-- Export -->
+            <div class="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-4">
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <label class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">导出质量</label>
+                        <span id="wmQualityVal" class="text-xs text-gray-500">90%</span>
+                    </div>
+                    <input type="range" id="wmQualityRange" min="10" max="100" value="90"
+                        class="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-lg appearance-none cursor-pointer accent-blue-500">
+                </div>
+                <button id="wmExportBtn" disabled
+                    class="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white rounded-xl font-medium shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    <span>下载图片</span>
+                </button>
+            </div>
+        </div>
         </div>
 
         <!-- Tag Master Sidebar Content -->
@@ -923,27 +932,18 @@
                     </select>
                 </section>
 
-                <!-- Phone Model Selection -->
+                <!-- Aspect Ratio Selection -->
                 <section>
                     <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
-                        手机型号
+                        尺寸比例
                     </h2>
-                    <select id="wallpaperPhoneModel"
+                    <select id="wallpaperAspectRatio"
                         class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-blue-500 outline-none dark:text-gray-200">
-                        <optgroup label="iPhone">
-                            <option value="iphone15promax">iPhone 15 Pro Max (1290x2796)</option>
-                            <option value="iphone15pro">iPhone 15 Pro (1179x2556)</option>
-                            <option value="iphone15">iPhone 15 (1179x2556)</option>
-                            <option value="iphone14pro">iPhone 14 Pro (1179x2556)</option>
-                            <option value="iphone14">iPhone 14 (1170x2532)</option>
-                            <option value="iphone13">iPhone 13 (1170x2532)</option>
-                            <option value="iphonese">iPhone SE (750x1334)</option>
-                        </optgroup>
-                        <optgroup label="通用尺寸">
-                            <option value="fhd">FHD (1080x1920)</option>
-                            <option value="qhd">QHD (1440x2560)</option>
-                            <option value="4k">4K (2160x3840)</option>
-                        </optgroup>
+                        <option value="16:9">16:9 横屏 (1664×928)</option>
+                        <option value="4:3">4:3 横屏 (1472×1140)</option>
+                        <option value="1:1">1:1 正方形 (1328×1328)</option>
+                        <option value="3:4">3:4 竖屏 (1140×1472)</option>
+                        <option value="9:16" selected>9:16 竖屏 (928×1664)</option>
                     </select>
                 </section>
 
@@ -951,19 +951,11 @@
                 <section>
                     <button id="wallpaperGenerateBtn"
                         class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        <span>生成壁纸</span>
+                        <i id="wallpaperGenerateBtnIcon" class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span id="wallpaperGenerateBtnText">生成壁纸</span>
                     </button>
                 </section>
 
-                <!-- Regenerate Button (hidden initially) -->
-                <section id="wallpaperRegenerateSection" class="hidden">
-                    <button id="wallpaperRegenerateBtn"
-                        class="w-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium py-2.5 px-4 rounded-lg flex items-center justify-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
-                        <i class="fa-solid fa-rotate-right"></i>
-                        <span>重新生成</span>
-                    </button>
-                </section>
             </div>
 
             <!-- Custom Image Mode -->
@@ -1246,53 +1238,58 @@
         </div>
 
         <!-- Wallpaper Master Main -->
-        <div id="wallpaper-main" class="hidden w-full h-full flex items-center justify-center relative p-8">
+        <div id="wallpaper-main" class="hidden w-full h-full relative">
             <div class="absolute inset-0 opacity-10 dark:opacity-5 pointer-events-none"
                 style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 20px 20px;">
             </div>
 
-            <!-- Empty State -->
-            <div id="wallpaperEmptyState" class="text-center relative z-10">
-                <div
-                    class="w-32 h-32 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm text-gray-300 dark:text-gray-600">
-                    <svg class="w-16 h-16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                        <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
-                        <path d="M21 15L16 10L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未生成壁纸</h3>
-                <p class="text-gray-500 dark:text-gray-400 text-lg">选择AI生成或上传自定义图片</p>
-            </div>
-
-            <!-- Canvas for Custom Image -->
-            <div id="wallpaperCanvasContainer" class="hidden relative">
-                <canvas id="wallpaperCanvas"
-                    class="shadow-2xl rounded-lg cursor-move max-w-full max-h-full bg-white dark:bg-gray-800"></canvas>
-                <div id="wallpaperCanvasHint"
-                    class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm pointer-events-none opacity-0 transition-opacity duration-300">
-                    拖拽移动 • 滚轮缩放
-                </div>
-            </div>
-
-            <!-- AI Generated Wallpaper Preview -->
-            <div id="wallpaperPreviewContainer" class="hidden relative max-w-full max-h-full">
-                <img id="wallpaperPreviewImage"
-                    class="shadow-2xl rounded-lg max-w-full max-h-full object-contain bg-white dark:bg-gray-800" />
-                <div id="wallpaperLoadingOverlay"
-                    class="absolute inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center rounded-lg">
-                    <div class="text-center text-white">
-                        <svg class="animate-spin h-12 w-12 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
-                            </circle>
-                            <path class="opacity-75" fill="currentColor"
-                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-                            </path>
+            <!-- Inner container for centering content -->
+            <div class="w-full h-full flex items-center justify-center p-8">
+                <!-- Empty State -->
+                <div id="wallpaperEmptyState" class="text-center relative z-10">
+                    <div
+                        class="w-32 h-32 bg-white dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm text-gray-300 dark:text-gray-600">
+                        <svg class="w-16 h-16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="8.5" cy="8.5" r="1.5" fill="currentColor" />
+                            <path d="M21 15L16 10L5 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
                         </svg>
-                        <p id="wallpaperLoadingText" class="text-sm font-medium">正在生成壁纸...</p>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未生成壁纸</h3>
+                    <p class="text-gray-500 dark:text-gray-400 text-lg">选择AI生成或上传自定义图片</p>
+                </div>
+
+                <!-- Canvas for Custom Image -->
+                <div id="wallpaperCanvasContainer" class="hidden relative">
+                    <canvas id="wallpaperCanvas"
+                        class="shadow-2xl rounded-lg cursor-move max-w-full max-h-full bg-white dark:bg-gray-800"></canvas>
+                    <div id="wallpaperCanvasHint"
+                        class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm pointer-events-none opacity-0 transition-opacity duration-300">
+                        拖拽移动 • 滚轮缩放
+                    </div>
+                </div>
+
+                <!-- AI Generated Wallpaper Preview -->
+                <div id="wallpaperPreviewContainer" class="hidden relative w-full h-full">
+                    <img id="wallpaperPreviewImage" class="w-full h-full object-contain" />
+                    <div id="wallpaperLoadingOverlay"
+                        class="absolute inset-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md flex items-center justify-center rounded-lg">
+                        <div class="text-center bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 max-w-xs">
+                            <!-- Elegant spinner -->
+                            <div class="relative w-20 h-20 mx-auto mb-6">
+                                <div
+                                    class="absolute inset-0 border-4 border-blue-200 dark:border-blue-900 rounded-full">
+                                </div>
+                                <div
+                                    class="absolute inset-0 border-4 border-transparent border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin">
+                                </div>
+                            </div>
+                            <p id="wallpaperLoadingText" class="text-base font-medium text-gray-800 dark:text-gray-200">
+                                正在生成壁纸...</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">请稍候</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2282,6 +2279,8 @@
                     qualityVal: document.getElementById('frameQualityVal'),
                     borderTypeBlur: document.getElementById('frameBorderTypeBlur'),
                     borderTypeSolid: document.getElementById('frameBorderTypeSolid'),
+                    borderTypeGradient: document.getElementById('frameBorderTypeGradient'),
+                    borderTypeMatte: document.getElementById('frameBorderTypeMatte'),
                     borderColorInput: document.getElementById('frameBorderColor'),
                     borderColorPreview: document.getElementById('frameBorderColorPreview'),
                     borderColorText: document.getElementById('frameBorderColorText'),
@@ -2315,6 +2314,8 @@
                 // Border type switching
                 els.borderTypeBlur.addEventListener('click', () => this.switchBorderType('blur'));
                 els.borderTypeSolid.addEventListener('click', () => this.switchBorderType('solid'));
+                els.borderTypeGradient.addEventListener('click', () => this.switchBorderType('gradient'));
+                els.borderTypeMatte.addEventListener('click', () => this.switchBorderType('matte'));
 
                 // Color picker
                 els.borderColorInput.addEventListener('input', (e) => {
@@ -2351,23 +2352,31 @@
             switchBorderType(type) {
                 this.settings.borderType = type;
                 const els = this.elements;
+                const types = ['Blur', 'Solid', 'Gradient', 'Matte'];
 
                 // Update button states
+                types.forEach(t => {
+                    const btn = els[`borderType${t}`];
+                    const isActive = t.toLowerCase() === type;
+                    if (isActive) {
+                        btn.classList.add('active', 'border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20', 'text-blue-600', 'dark:text-blue-400');
+                        btn.classList.remove('border-gray-200', 'dark:border-gray-600', 'hover:border-gray-300', 'dark:hover:border-gray-500', 'text-gray-600', 'dark:text-gray-400');
+                    } else {
+                        btn.classList.remove('active', 'border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20', 'text-blue-600', 'dark:text-blue-400');
+                        btn.classList.add('border-gray-200', 'dark:border-gray-600', 'hover:border-gray-300', 'dark:hover:border-gray-500', 'text-gray-600', 'dark:text-gray-400');
+                    }
+                });
+
+                // Update controls visibility
+                els.blurSection.classList.add('hidden');
+                els.solidColorSection.classList.add('hidden');
+
                 if (type === 'blur') {
-                    els.borderTypeBlur.classList.add('active', 'border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20', 'text-blue-600', 'dark:text-blue-400');
-                    els.borderTypeBlur.classList.remove('border-gray-200', 'dark:border-gray-600', 'text-gray-600', 'dark:text-gray-400');
-                    els.borderTypeSolid.classList.remove('active', 'border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20', 'text-blue-600', 'dark:text-blue-400');
-                    els.borderTypeSolid.classList.add('border-gray-200', 'dark:border-gray-600', 'text-gray-600', 'dark:text-gray-400');
-                    els.solidColorSection.classList.add('hidden');
                     els.blurSection.classList.remove('hidden');
-                } else {
-                    els.borderTypeSolid.classList.add('active', 'border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20', 'text-blue-600', 'dark:text-blue-400');
-                    els.borderTypeSolid.classList.remove('border-gray-200', 'dark:border-gray-600', 'text-gray-600', 'dark:text-gray-400');
-                    els.borderTypeBlur.classList.remove('active', 'border-blue-500', 'bg-blue-50', 'dark:bg-blue-900/20', 'text-blue-600', 'dark:text-blue-400');
-                    els.borderTypeBlur.classList.add('border-gray-200', 'dark:border-gray-600', 'text-gray-600', 'dark:text-gray-400');
+                } else if (type === 'solid' || type === 'matte') {
                     els.solidColorSection.classList.remove('hidden');
-                    els.blurSection.classList.add('hidden');
                 }
+                // Gradient has no extra controls for now
             },
 
             handleFiles(files) {
@@ -2524,10 +2533,32 @@
                 canvas.height = canvasHeight;
 
                 // Background - check border type
-                if (settings.borderType === 'solid') {
+                if (settings.borderType === 'solid' || settings.borderType === 'matte') {
                     // Solid color background
                     ctx.fillStyle = settings.borderColor;
                     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                } else if (settings.borderType === 'gradient') {
+                    // Gradient background
+                    try {
+                        const tempCanvas = document.createElement('canvas');
+                        tempCanvas.width = 2;
+                        tempCanvas.height = 2;
+                        const tCtx = tempCanvas.getContext('2d');
+                        tCtx.drawImage(img, 0, 0, 2, 2);
+                        const data = tCtx.getImageData(0, 0, 2, 2).data;
+                        // TL: 0-3, TR: 4-7, BL: 8-11, BR: 12-15
+
+                        const gradient = ctx.createLinearGradient(0, 0, canvasWidth, canvasHeight);
+                        gradient.addColorStop(0, `rgb(${data[0]},${data[1]},${data[2]})`);
+                        gradient.addColorStop(1, `rgb(${data[12]},${data[13]},${data[14]})`);
+
+                        ctx.fillStyle = gradient;
+                        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                    } catch (e) {
+                        console.error("Gradient generation failed", e);
+                        ctx.fillStyle = "#333";
+                        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+                    }
                 } else {
                     // Blurred background (original behavior)
                     ctx.fillStyle = "#0F172A";
@@ -2593,6 +2624,17 @@
                 ctx.shadowOffsetY = 20 * scaleFactor;
                 // Draw main image with new dimensions
                 ctx.drawImage(img, realPadding, realPadding, width, height);
+
+                // Matte Inner Border
+                if (settings.borderType === 'matte') {
+                    const innerWidth = Math.max(1, realPadding * 0.08);
+                    const offset = innerWidth / 2;
+                    ctx.strokeStyle = "rgba(255, 255, 255, 0.9)";
+                    ctx.lineWidth = innerWidth;
+                    // Draw slightly outside the image
+                    ctx.strokeRect(realPadding - offset, realPadding - offset, width + innerWidth, height + innerWidth);
+                }
+
                 ctx.restore();
 
                 // Text
@@ -4246,8 +4288,8 @@
             state: {
                 mode: 'ai', // 'ai' or 'custom'
                 style: 'nature',
-                phoneModel: 'iphone15promax',
-                deviceSize: 'iphone15promax',
+                aspectRatio: '9:16', // For AI generation
+                deviceSize: 'iphone15promax', // For custom image mode
                 customImage: null,
                 canvasScale: 1,
                 canvasX: 0,
@@ -4260,6 +4302,15 @@
                 lastY: 0
             },
             elements: {},
+            // API-allowed sizes mapped to aspect ratios
+            sizePresets: {
+                '16:9': { width: 1664, height: 928, label: '16:9 横屏' },
+                '4:3': { width: 1472, height: 1140, label: '4:3 横屏' },
+                '1:1': { width: 1328, height: 1328, label: '1:1 正方形' },
+                '3:4': { width: 1140, height: 1472, label: '3:4 竖屏' },
+                '9:16': { width: 928, height: 1664, label: '9:16 竖屏' }
+            },
+            // Legacy presets for custom image mode
             phonePresets: {
                 'iphone15promax': { width: 1290, height: 2796 },
                 'iphone15pro': { width: 1179, height: 2556 },
@@ -4281,10 +4332,10 @@
                     // AI section
                     aiSection: document.getElementById('wallpaperAISection'),
                     styleSelect: document.getElementById('wallpaperStyle'),
-                    phoneModelSelect: document.getElementById('wallpaperPhoneModel'),
+                    aspectRatioSelect: document.getElementById('wallpaperAspectRatio'),
                     generateBtn: document.getElementById('wallpaperGenerateBtn'),
-                    regenerateSection: document.getElementById('wallpaperRegenerateSection'),
-                    regenerateBtn: document.getElementById('wallpaperRegenerateBtn'),
+                    generateBtnText: document.getElementById('wallpaperGenerateBtnText'),
+                    generateBtnIcon: document.getElementById('wallpaperGenerateBtnIcon'),
                     // Custom section
                     customSection: document.getElementById('wallpaperCustomSection'),
                     dropZone: document.getElementById('wallpaperDropZone'),
@@ -4323,11 +4374,10 @@
                 this.elements.styleSelect.addEventListener('change', (e) => {
                     this.state.style = e.target.value;
                 });
-                this.elements.phoneModelSelect.addEventListener('change', (e) => {
-                    this.state.phoneModel = e.target.value;
+                this.elements.aspectRatioSelect.addEventListener('change', (e) => {
+                    this.state.aspectRatio = e.target.value;
                 });
                 this.elements.generateBtn.addEventListener('click', () => this.generateAIWallpaper());
-                this.elements.regenerateBtn.addEventListener('click', () => this.generateAIWallpaper());
 
                 // Custom mode
                 Utils.UI.setupUpload(this.elements.dropZone, this.elements.fileInput, 'border-blue-500', (files) => {
@@ -4413,7 +4463,11 @@
                     // Step 3: Load and display the image
                     await this.loadGeneratedImage(imageUrl);
 
-                    this.elements.regenerateSection.classList.remove('hidden');
+                    // Update button state to "Regenerate"
+                    this.elements.generateBtnText.textContent = '重新生成';
+                    this.elements.generateBtnIcon.className = 'fa-solid fa-rotate-right';
+                    this.elements.generateBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                    this.elements.generateBtn.classList.add('bg-green-600', 'hover:bg-green-700');
                     this.elements.downloadBtn.disabled = false;
                     Utils.Toast.show('壁纸生成成功！', false);
                     setTimeout(() => Utils.Toast.hide(), 2000);
@@ -4429,19 +4483,119 @@
 
             async generatePrompt() {
                 const { textModelEndpoint, textModelKey, textModelName } = AISettings.settings;
-                const styleDescriptions = {
-                    'nature': '自然风光，包含山川、湖泊、森林等自然景观',
-                    'cityscape': '城市风光，包含建筑、街道、夜景等城市景观',
-                    'abstract': '抽象艺术，包含几何图形、色彩渐变等抽象元素',
-                    'minimalist': '极简主义，简洁的设计、单色或少量颜色',
-                    'anime': '动漫二次元风格，日系动漫插画',
-                    'space': '宇宙星空，包含星系、行星、星云等太空元素',
-                    'gradient': '渐变色彩，流畅的颜色过渡和渐变效果',
-                    'pattern': '几何图案，重复的几何形状和图案'
+
+                // 1. Random Modifiers (Atmosphere & Lighting)
+                const timeOfDay = ['dawn', 'morning', 'noon', 'golden hour', 'sunset', 'blue hour', 'starry night', 'moonlight'];
+                const weather = ['clear and sunny', 'partly cloudy', 'dramatic storm clouds', 'misty and ethereal', 'foggy', 'light rain', 'snowy', 'windy'];
+                const lighting = ['soft diffused light', 'dramatic shadows', 'cinematic lighting', 'volumetric lighting', 'bioluminescent glow', 'neon lights', 'natural sunlight'];
+                const colorPalettes = ['vibrant and saturated', 'pastel and soft', 'moody and dark', 'monochromatic', 'warm earth tones', 'cool aquatic tones', 'cyberpunk neon'];
+
+                // 2. Rich Sub-themes for each Style
+                const styleThemes = {
+                    'nature': [
+                        'Majestic mountains with snow peaks reflecting in a crystal clear lake',
+                        'Deep ancient forest with sunlight filtering through leaves (god rays)',
+                        'Tropical beach with turquoise water and palm trees at sunset',
+                        'Vast desert dunes under a starry sky',
+                        'Cascading waterfall in a lush jungle',
+                        'Autumn forest with colorful red and orange leaves',
+                        'Blooming flower field in spring with butterflies',
+                        'Northern lights (Aurora Borealis) over a snowy landscape',
+                        'Underwater coral reef teeming with marine life'
+                    ],
+                    'cityscape': [
+                        'Futuristic cyberpunk city with neon lights and flying cars',
+                        'Modern metropolis skyline at night with city lights',
+                        'Quiet european cobblestone street in the morning rain',
+                        'Busy intersection in Tokyo with colorful signboards',
+                        'Ancient lost city ruins overgrown with nature',
+                        'Steampunk industrial city with gears and steam',
+                        'Floating city in the clouds',
+                        'Rainy noir city street with reflections'
+                    ],
+                    'abstract': [
+                        'Fluid acrylic paint pouring art with swirling colors',
+                        'Geometric 3D shapes floating in zero gravity',
+                        'Fractal patterns with infinite complexity',
+                        'Smoke dispersion in colorful lighting',
+                        'Liquid metal flowing textures',
+                        'Digital glitch art aesthetic',
+                        'Kaleidoscope of crystals and light'
+                    ],
+                    'minimalist': [
+                        'Single tree on a rolling hill, minimal composition',
+                        'Zen garden with sand raked patterns and one stone',
+                        'Gradient sky fading from blue to pink',
+                        'Abstract architectural curves and shadows',
+                        'White marble texture with subtle gold veins',
+                        'Foggy landscape with silhouette of a mountain',
+                        'Paper cut art style landscape'
+                    ],
+                    'anime': [
+                        'Studio Ghibli style lush meadow with fluffy clouds',
+                        'Cyberpunk anime girl looking at city skyline (back view)',
+                        'Magical fantasy forest with glowing spirits',
+                        'Slice of life school rooftop at sunset',
+                        'Epic fantasy battleground with magic effects',
+                        'Cozy anime bedroom with lo-fi vibe',
+                        'Mecha robot in a futuristic hangar'
+                    ],
+                    'space': [
+                        'Nebula with vibrant pink and blue gas clouds',
+                        'View of Earth from the moon surface',
+                        'Black hole with accretion disk bending light',
+                        'Alien planet landscape with double suns',
+                        'Astronaut floating in deep space',
+                        'Galaxy spiral with millions of stars',
+                        'Space station orbiting a gas giant'
+                    ],
+                    'gradient': [
+                        'Holographic iridescent foil texture',
+                        'Soft mesh gradient with pastel colors',
+                        'Dark moody gradient with grain texture',
+                        'Sunset sky gradient from orange to purple',
+                        'Aurora borealis color gradient',
+                        'Liquid glass dispersion gradient'
+                    ],
+                    'pattern': [
+                        'Japanese wave pattern (Seigaiha) modern interpretation',
+                        'Art Deco geometric gold and black pattern',
+                        'Seamless floral pattern vintage style',
+                        'Memphis design style 80s pattern',
+                        'Islamic geometric tile pattern',
+                        'Bauhaus style abstract shapes pattern'
+                    ]
                 };
 
-                const systemPrompt = '你是一个专业的AI图像生成prompt工程师。根据用户选择的风格，生成一个详细的英文图像描述prompt，用于DALL-E或Stable Diffusion等AI图像生成模型。prompt应该详细描述构图、色彩、氛围、细节等，并且适合作为手机壁纸使用（竖屏比例）。只返回prompt文本，不要有其他说明。';
-                const userPrompt = `生成一个${styleDescriptions[this.state.style]}风格的手机壁纸描述prompt。要求：1) 竖屏比例 2) 高分辨率 3) 适合作为手机壁纸 4) 视觉冲击力强`;
+                // Helper to get random item
+                const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+                // Select random elements
+                const selectedStyle = this.state.style;
+                const randomTheme = getRandom(styleThemes[selectedStyle] || styleThemes['nature']);
+                const randomTime = getRandom(timeOfDay);
+                const randomWeather = getRandom(weather);
+                const randomLighting = getRandom(lighting);
+                const randomPalette = getRandom(colorPalettes);
+
+                const systemPrompt = 'You are a professional AI Art Prompt Engineer. Create a highly detailed, vivid, and creative prompt for DALL-E 3 based on the user\'s request. Focus on visual descriptions, composition, textures, and lighting. Return ONLY the prompt text.';
+
+                const userPrompt = `Create a wallpaper prompt based on this theme: "${randomTheme}".
+                
+Style: ${selectedStyle}
+Modifiers to include:
+- Time: ${randomTime}
+- Weather: ${randomWeather}
+- Lighting: ${randomLighting}
+- Color Palette: ${randomPalette}
+
+Requirements:
+1. NO text, NO phones, NO devices, NO borders. Pure background image.
+2. High resolution, 8k, masterpiece, highly detailed.
+3. Aspect ratio suitable for wallpaper.
+4. Composition should be balanced and suitable for a background.
+
+Make the description vivid and artistic. Combine the theme with the modifiers naturally.`;
 
                 const response = await fetch(textModelEndpoint, {
                     method: 'POST',
@@ -4455,7 +4609,7 @@
                             { role: 'system', content: systemPrompt },
                             { role: 'user', content: userPrompt }
                         ],
-                        temperature: 0.8
+                        temperature: 0.95 // High creativity
                     })
                 });
 
@@ -4469,9 +4623,12 @@
 
             async generateImage(prompt) {
                 const { imageGenEndpoint, imageGenKey, imageGenModelName } = AISettings.settings;
-                const preset = this.phonePresets[this.state.phoneModel];
+                const preset = this.sizePresets[this.state.aspectRatio];
 
-                // DALL-E 3 API call
+                // Build size string in format "WIDTHxHEIGHT"
+                const sizeString = `${preset.width}x${preset.height}`;
+
+                // Image generation API call
                 const response = await fetch(imageGenEndpoint, {
                     method: 'POST',
                     headers: {
@@ -4482,7 +4639,7 @@
                         model: imageGenModelName,
                         prompt: prompt,
                         n: 1,
-                        size: '1024x1792', // Portrait orientation for DALL-E 3
+                        size: sizeString,
                         quality: 'hd'
                     })
                 });
@@ -4496,16 +4653,21 @@
             },
 
             async loadGeneratedImage(imageUrl) {
+                // Directly load image without fetch to avoid CORS issues
+                // Browsers allow <img> tags to display cross-origin images
                 return new Promise((resolve, reject) => {
                     const img = new Image();
-                    img.crossOrigin = 'anonymous';
                     img.onload = () => {
                         this.state.generatedWallpaper = img;
                         this.elements.previewImage.src = imageUrl;
                         this.showPreview();
                         resolve();
                     };
-                    img.onerror = reject;
+                    img.onerror = (error) => {
+                        console.error('Failed to load image:', error);
+                        reject(new Error('Failed to load generated image'));
+                    };
+                    // Don't set crossOrigin to avoid CORS preflight
                     img.src = imageUrl;
                 });
             },
@@ -4643,11 +4805,12 @@
                 const quality = parseInt(this.elements.qualityRange.value) / 100;
 
                 if (this.state.mode === 'ai' && this.state.generatedWallpaper) {
-                    // Download AI generated wallpaper
-                    const link = document.createElement('a');
-                    link.href = this.elements.previewImage.src;
-                    link.download = `wallpaper_${this.state.style}_${Date.now()}.png`;
-                    link.click();
+                    // For AI generated wallpapers, open in new tab for manual download
+                    // (CORS prevents direct download)
+                    const imageUrl = this.elements.previewImage.src;
+                    window.open(imageUrl, '_blank');
+                    Utils.Toast.show('图片已在新标签页打开，请右键保存', false);
+                    setTimeout(() => Utils.Toast.hide(), 3000);
                 } else if (this.state.mode === 'custom' && this.state.customImage) {
                     // Download custom wallpaper from canvas
                     const canvas = this.elements.canvas;
