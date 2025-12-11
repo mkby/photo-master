@@ -225,8 +225,8 @@
                                 d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
                         </svg>
                     </div>
-                    <h1
-                        class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-cyan-400 tracking-tight">
+                    <h1 class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-cyan-400 tracking-tight"
+                        data-i18n="brand">
                         影像大师</h1>
                 </div>
                 <div class="flex items-center gap-1">
@@ -234,6 +234,11 @@
                         class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors text-gray-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400"
                         title="AI API 设置">
                         <i class="fa-solid fa-gear text-lg"></i>
+                    </button>
+                    <button id="langToggle"
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors text-gray-500 dark:text-slate-400 hover:text-violet-600 dark:hover:text-violet-400 font-bold"
+                        title="Switch Language">
+                        <span id="langToggleText">EN</span>
                     </button>
                     <button id="themeToggle"
                         class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors text-gray-500 dark:text-slate-400 hover:text-yellow-500 dark:hover:text-yellow-400">
@@ -255,32 +260,32 @@
             <div class="grid grid-cols-3 gap-2 px-4 pb-4">
                 <button
                     class="tab-btn active w-full py-2 text-xs font-medium text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-300 transition-all rounded-lg border border-transparent hover:bg-gray-50 dark:hover:bg-slate-800/50"
-                    data-tab="puzzle">
+                    data-tab="puzzle" data-i18n="tab.puzzle">
                     拼图大师
                 </button>
                 <button
                     class="tab-btn w-full py-2 text-xs font-medium text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-300 transition-all rounded-lg border border-transparent hover:bg-gray-50 dark:hover:bg-slate-800/50"
-                    data-tab="frame">
+                    data-tab="frame" data-i18n="tab.frame">
                     边框大师
                 </button>
                 <button
                     class="tab-btn w-full py-2 text-xs font-medium text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-300 transition-all rounded-lg border border-transparent hover:bg-gray-50 dark:hover:bg-slate-800/50"
-                    data-tab="watermark">
+                    data-tab="watermark" data-i18n="tab.watermark">
                     水印大师
                 </button>
                 <button
                     class="tab-btn w-full py-2 text-xs font-medium text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-300 transition-all rounded-lg border border-transparent hover:bg-gray-50 dark:hover:bg-slate-800/50"
-                    data-tab="tag">
+                    data-tab="tag" data-i18n="tab.tag">
                     标签大师
                 </button>
                 <button
                     class="tab-btn w-full py-2 text-xs font-medium text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-300 transition-all rounded-lg border border-transparent hover:bg-gray-50 dark:hover:bg-slate-800/50"
-                    data-tab="content">
+                    data-tab="content" data-i18n="tab.content">
                     文案大师
                 </button>
                 <button
                     class="tab-btn w-full py-2 text-xs font-medium text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-300 transition-all rounded-lg border border-transparent hover:bg-gray-50 dark:hover:bg-slate-800/50"
-                    data-tab="wallpaper">
+                    data-tab="wallpaper" data-i18n="tab.wallpaper">
                     壁纸大师
                 </button>
             </div>
@@ -290,7 +295,8 @@
         <div id="puzzle-sidebar" class="flex-1 overflow-y-auto p-6 space-y-8">
             <!-- Upload -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="upload.title">
                     图片上传
                 </h2>
                 <div id="puzzleDropZone"
@@ -302,15 +308,15 @@
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                         </path>
                     </svg>
-                    <p class="text-sm text-gray-600 dark:text-slate-300">点击或拖拽上传图片</p>
-                    <p class="text-xs text-gray-400 mt-1">支持 3-12 张图片</p>
+                    <p class="text-sm text-gray-600 dark:text-slate-300" data-i18n="upload.drag">点击或拖拽上传图片</p>
+                    <p class="text-xs text-gray-400 mt-1" data-i18n="upload.sub">支持 3-12 张图片</p>
                 </div>
                 <div id="puzzleFileList" class="mt-4 grid grid-cols-4 gap-2"></div>
             </section>
 
-            <!-- Layout Selector (Hidden by default) -->
             <section id="puzzleLayoutSection" class="hidden">
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="puzzle.layout">
                     选择版式
                 </h2>
                 <div id="layoutSelector" class="grid grid-cols-4 gap-2">
@@ -319,9 +325,9 @@
                 <div class="border-b border-gray-200 dark:border-slate-800 my-4"></div>
             </section>
 
-            <!-- Layout Ratio -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="puzzle.ratio">
                     画布比例
                 </h2>
                 <div class="grid grid-cols-3 gap-2 mb-3">
@@ -342,7 +348,7 @@
                         data-ratio="9:16">9:16</button>
                     <button
                         class="ratio-btn px-3 py-2 text-sm rounded-lg border border-gray-200 dark:border-slate-700 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
-                        id="customRatioBtn">自定义</button>
+                        id="customRatioBtn" data-i18n="puzzle.custom">自定义</button>
                 </div>
                 <div id="customRatioInput" class="hidden flex items-center space-x-2">
                     <input type="number" id="ratioW" placeholder="W"
@@ -353,15 +359,15 @@
                 </div>
             </section>
 
-            <!-- Border -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="puzzle.border">
                     边框设置
                 </h2>
                 <div class="space-y-4">
                     <div>
                         <label class="flex justify-between text-sm text-gray-600 dark:text-slate-300 mb-1">
-                            <span>粗细</span>
+                            <span data-i18n="puzzle.border.width">粗细</span>
                             <span id="borderWidthVal">1px</span>
                         </label>
                         <input type="range" id="borderWidth" min="0" max="20" value="1"
@@ -369,7 +375,7 @@
                     </div>
                     <div>
                         <label class="flex justify-between text-sm text-gray-600 dark:text-slate-300 mb-1">
-                            <span>颜色</span>
+                            <span data-i18n="puzzle.border.color">颜色</span>
                         </label>
                         <!-- Custom Input Group -->
                         <div class="flex items-center gap-2">
@@ -390,7 +396,8 @@
             <div class="pt-4">
                 <div class="space-y-4 mb-6">
                     <div class="flex justify-between items-center">
-                        <label class="text-sm font-medium text-gray-700 dark:text-slate-300">导出质量</label>
+                        <label class="text-sm font-medium text-gray-700 dark:text-slate-300"
+                            data-i18n="quality.label">导出质量</label>
                         <span id="puzzleQualityVal" class="text-xs text-gray-500 font-mono">85%</span>
                     </div>
                     <input type="range" id="puzzleQuality" min="10" max="100" value="85"
@@ -403,7 +410,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                     </svg>
-                    <span>下载图片</span>
+                    <span data-i18n="btn.download">下载图片</span>
                 </button>
             </div>
         </div>
@@ -412,7 +419,8 @@
         <div id="frame-sidebar" class="hidden flex-1 overflow-y-auto p-6 space-y-8">
             <!-- Upload -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="upload.title">
                     图片上传
                 </h2>
                 <div id="frameDropZone"
@@ -424,8 +432,8 @@
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                         </path>
                     </svg>
-                    <p class="text-sm text-gray-600 dark:text-slate-300">点击或拖拽上传图片</p>
-                    <p class="text-xs text-gray-400 mt-1">支持批量处理</p>
+                    <p class="text-sm text-gray-600 dark:text-slate-300" data-i18n="upload.drag">点击或拖拽上传图片</p>
+                    <p class="text-xs text-gray-400 mt-1" data-i18n="upload.batch">支持批量处理</p>
                     <div id="frameFileCount"
                         class="absolute top-2 right-2 bg-violet-500 text-white text-xs font-bold px-2 py-0.5 rounded hidden">
                         0</div>
@@ -435,32 +443,37 @@
 
             <!-- Border Type Selection -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="frame.type">
                     边框类型
                 </h2>
                 <div class="grid grid-cols-2 gap-2">
                     <button id="frameBorderTypeBlur"
-                        class="border-type-btn active py-2 px-3 text-sm rounded-lg border-2 border-violet-500 bg-violet-50 dark:bg-blue-900/20 text-violet-600 dark:text-blue-400 font-medium transition-all">
+                        class="border-type-btn active py-2 px-3 text-sm rounded-lg border-2 border-violet-500 bg-violet-50 dark:bg-blue-900/20 text-violet-600 dark:text-blue-400 font-medium transition-all"
+                        data-i18n="frame.type.blur">
                         模糊背景
                     </button>
                     <button id="frameBorderTypeSolid"
-                        class="border-type-btn py-2 px-3 text-sm rounded-lg border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-gray-300 dark:hover:border-gray-500 transition-all">
+                        class="border-type-btn py-2 px-3 text-sm rounded-lg border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-gray-300 dark:hover:border-gray-500 transition-all"
+                        data-i18n="frame.type.solid">
                         纯色边框
                     </button>
                     <button id="frameBorderTypeGradient"
-                        class="border-type-btn py-2 px-3 text-sm rounded-lg border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-gray-300 dark:hover:border-gray-500 transition-all">
+                        class="border-type-btn py-2 px-3 text-sm rounded-lg border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-gray-300 dark:hover:border-gray-500 transition-all"
+                        data-i18n="frame.type.gradient">
                         渐变背景
                     </button>
                     <button id="frameBorderTypeMatte"
-                        class="border-type-btn py-2 px-3 text-sm rounded-lg border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-gray-300 dark:hover:border-gray-500 transition-all">
+                        class="border-type-btn py-2 px-3 text-sm rounded-lg border-2 border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-400 hover:border-gray-300 dark:hover:border-gray-500 transition-all"
+                        data-i18n="frame.type.matte">
                         双层卡纸
                     </button>
                 </div>
             </section>
 
-            <!-- Solid Color Picker -->
             <section id="frameSolidColorSection" class="hidden">
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="frame.color">
                     边框颜色
                 </h2>
                 <div class="flex items-center gap-2">
@@ -476,15 +489,15 @@
                 </div>
             </section>
 
-            <!-- Parameters -->
             <section id="frameParametersSection">
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="frame.params">
                     参数调整
                 </h2>
                 <div class="space-y-6">
                     <div>
                         <label class="flex justify-between text-sm text-gray-600 dark:text-slate-300 mb-1">
-                            <span>边框宽度</span>
+                            <span data-i18n="frame.param.width">边框宽度</span>
                             <span id="frameBorderVal">120</span>
                         </label>
                         <input type="range" id="frameBorderRange" min="50" max="400" value="120"
@@ -492,7 +505,7 @@
                     </div>
                     <div id="frameBlurSection">
                         <label class="flex justify-between text-sm text-gray-600 dark:text-slate-300 mb-1">
-                            <span>背景模糊</span>
+                            <span data-i18n="frame.param.blur">背景模糊</span>
                             <span id="frameBlurVal">20</span>
                         </label>
                         <input type="range" id="frameBlurRange" min="0" max="100" value="20"
@@ -500,7 +513,7 @@
                     </div>
                     <div>
                         <label class="flex justify-between text-sm text-gray-600 dark:text-slate-300 mb-1">
-                            <span>文字大小</span>
+                            <span data-i18n="frame.param.font">文字大小</span>
                             <span id="frameFontVal">1.0x</span>
                         </label>
                         <input type="range" id="frameFontRange" min="0.5" max="2.0" step="0.1" value="1.0"
@@ -512,7 +525,8 @@
             <!-- EXIF Toggle -->
             <section>
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-600 dark:text-slate-300 font-medium">显示拍摄参数 (EXIF)</span>
+                    <span class="text-sm text-gray-600 dark:text-slate-300 font-medium" data-i18n="frame.exif">显示拍摄参数
+                        (EXIF)</span>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" id="frameExifToggle" checked class="sr-only peer">
                         <div
@@ -525,7 +539,8 @@
             <!-- Quality -->
             <div class="space-y-4 mt-6">
                 <div class="flex justify-between items-center">
-                    <label class="text-sm font-medium text-gray-700 dark:text-slate-300">导出质量</label>
+                    <label class="text-sm font-medium text-gray-700 dark:text-slate-300"
+                        data-i18n="quality.label">导出质量</label>
                     <span id="frameQualityVal" class="text-xs text-gray-500 font-mono">85%</span>
                 </div>
                 <input type="range" id="frameQuality" min="10" max="100" value="85"
@@ -541,7 +556,7 @@
                             d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z">
                         </path>
                     </svg>
-                    <span>开始生成</span>
+                    <span data-i18n="btn.generate">开始生成</span>
                 </button>
                 <button id="frameDownloadAllBtn" disabled
                     class="w-full bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-slate-400 font-medium py-3 px-4 rounded-xl flex items-center justify-center space-x-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-200 dark:hover:bg-slate-700">
@@ -549,7 +564,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                     </svg>
-                    <span>打包下载全部</span>
+                    <span data-i18n="btn.download_all">打包下载全部</span>
                 </button>
             </div>
         </div>
@@ -558,7 +573,8 @@
         <div id="watermark-sidebar" class="hidden flex-1 overflow-y-auto p-6 space-y-8">
             <!-- Image Upload -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="upload.title">
                     图片上传
                 </h2>
                 <div id="wmDropZone"
@@ -570,8 +586,8 @@
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                         </path>
                     </svg>
-                    <p class="text-sm text-gray-600 dark:text-slate-300">点击或拖拽上传图片</p>
-                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">支持多种水印功能</p>
+                    <p class="text-sm text-gray-600 dark:text-slate-300" data-i18n="upload.drag">点击或拖拽上传图片</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1" data-i18n="wm.upload.sub">支持多种水印功能</p>
                 </div>
             </section>
 
@@ -581,13 +597,17 @@
                 <!-- Toggle Type -->
                 <div class="flex bg-gray-100 dark:bg-slate-800 rounded-lg p-1 gap-1">
                     <button id="wmTypeImage"
-                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md bg-white dark:bg-gray-600 shadow-sm text-violet-600 dark:text-blue-400 transition-all">图片</button>
+                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md bg-white dark:bg-gray-600 shadow-sm text-violet-600 dark:text-blue-400 transition-all"
+                        data-i18n="wm.type.image">图片</button>
                     <button id="wmTypeText"
-                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all">文字</button>
+                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all"
+                        data-i18n="wm.type.text">文字</button>
                     <button id="wmTypePalette"
-                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all">色卡</button>
+                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all"
+                        data-i18n="wm.type.palette">色卡</button>
                     <button id="wmTypeHistogram"
-                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all">直方图</button>
+                        class="flex-1 py-1.5 text-xs sm:text-sm font-medium rounded-md text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all"
+                        data-i18n="wm.type.histogram">直方图</button>
                 </div>
             </div>
 
@@ -596,7 +616,7 @@
                 <div class="flex gap-3">
                     <button id="wmUploadBtn"
                         class="flex-1 py-2.5 border border-gray-200 dark:border-slate-700 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-slate-800 transition-all flex items-center justify-center gap-2 text-gray-600 dark:text-slate-300">
-                        <i class="fa-solid fa-upload"></i> 上传水印图
+                        <i class="fa-solid fa-upload"></i> <span data-i18n="wm.btn.upload">上传水印图</span>
                     </button>
                     <input type="file" id="wmWatermarkInput" accept="image/png" class="hidden">
                 </div>
@@ -605,13 +625,15 @@
             <!-- Text Signature Section -->
             <div id="wmSectionText" class="hidden space-y-4">
                 <div class="space-y-2">
-                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">签名内容</label>
-                    <input type="text" id="wmSigText" placeholder="输入签名..."
+                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                        data-i18n="wm.text.content">签名内容</label>
+                    <input type="text" id="wmSigText" placeholder="输入签名..." data-i18n="wm.text.placeholder"
                         class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-transparent text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200"
                         value="My Signature">
                 </div>
                 <div class="space-y-2">
-                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">字体风格</label>
+                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                        data-i18n="wm.text.font">字体风格</label>
                     <select id="wmFontSelect"
                         class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
                         <option value="Dancing Script">Dancing Script</option>
@@ -623,7 +645,8 @@
                     </select>
                 </div>
                 <div class="space-y-2">
-                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">颜色</label>
+                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                        data-i18n="wm.text.color">颜色</label>
                     <div class="flex gap-2 items-center">
                         <input type="color" id="wmSigColor" value="#000000"
                             class="w-8 h-8 rounded cursor-pointer border-0 p-0">
@@ -636,16 +659,19 @@
                     </div>
                 </div>
                 <button id="wmAddSigBtn"
-                    class="w-full py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
+                    class="w-full py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
+                    data-i18n="wm.btn.add">
                     生成并添加
                 </button>
                 <div class="flex gap-2">
                     <button id="wmSaveSigBtn"
-                        class="flex-1 py-1.5 text-xs border border-gray-200 dark:border-slate-700 rounded text-gray-500 dark:text-slate-400 hover:text-blue-500 transition-colors">
+                        class="flex-1 py-1.5 text-xs border border-gray-200 dark:border-slate-700 rounded text-gray-500 dark:text-slate-400 hover:text-blue-500 transition-colors"
+                        data-i18n="wm.btn.save">
                         保存预设
                     </button>
                     <button id="wmDownloadSigBtn"
-                        class="flex-1 py-1.5 text-xs border border-gray-200 dark:border-slate-700 rounded text-gray-500 dark:text-slate-400 hover:text-blue-500 transition-colors">
+                        class="flex-1 py-1.5 text-xs border border-gray-200 dark:border-slate-700 rounded text-gray-500 dark:text-slate-400 hover:text-blue-500 transition-colors"
+                        data-i18n="wm.btn.export">
                         导出PNG
                     </button>
                 </div>
@@ -655,23 +681,26 @@
             <div id="wmSectionPalette" class="hidden space-y-4">
                 <div class="space-y-2">
                     <div class="flex justify-between">
-                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">颜色数量</label>
+                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                            data-i18n="wm.palette.count">颜色数量</label>
                         <span id="wmPaletteCountVal" class="text-xs text-gray-500">5</span>
                     </div>
                     <input type="range" id="wmPaletteCountRange" min="3" max="8" value="5"
                         class="w-full h-2 bg-gray-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-violet-600">
                 </div>
                 <div class="space-y-2">
-                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">样式</label>
+                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                        data-i18n="wm.palette.style">样式</label>
                     <select id="wmPaletteStyle"
                         class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
-                        <option value="circle">圆形</option>
-                        <option value="square">方形</option>
-                        <option value="strip">长条</option>
+                        <option value="circle" data-i18n="wm.palette.circle">圆形</option>
+                        <option value="square" data-i18n="wm.palette.square">方形</option>
+                        <option value="strip" data-i18n="wm.palette.strip">长条</option>
                     </select>
                 </div>
                 <button id="wmGeneratePaletteBtn"
-                    class="w-full py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
+                    class="w-full py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
+                    data-i18n="wm.btn.generate_palette">
                     生成色卡
                 </button>
             </div>
@@ -679,16 +708,18 @@
             <!-- Histogram Section -->
             <div id="wmSectionHistogram" class="hidden space-y-4">
                 <div class="space-y-2">
-                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">样式</label>
+                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                        data-i18n="wm.palette.style">样式</label>
                     <select id="wmHistogramStyle"
                         class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
-                        <option value="rgb">RGB 重叠</option>
-                        <option value="luminance">亮度 (白色)</option>
-                        <option value="color">彩色分布</option>
+                        <option value="rgb" data-i18n="wm.histogram.rgb">RGB 重叠</option>
+                        <option value="luminance" data-i18n="wm.histogram.luminance">亮度 (白色)</option>
+                        <option value="color" data-i18n="wm.histogram.color">彩色分布</option>
                     </select>
                 </div>
                 <button id="wmGenerateHistogramBtn"
-                    class="w-full py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
+                    class="w-full py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-lg text-sm font-medium transition-colors"
+                    data-i18n="wm.btn.generate_histogram">
                     生成直方图
                 </button>
             </div>
@@ -696,7 +727,8 @@
             <!-- Common Adjustments -->
             <div class="pt-4 border-t border-gray-200 dark:border-slate-800 space-y-4">
                 <div class="space-y-2">
-                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">位置预设</label>
+                    <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                        data-i18n="wm.pos">位置预设</label>
                     <div class="grid grid-cols-3 gap-2">
                         <button
                             class="wm-pos-btn p-2 rounded border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-400"
@@ -734,7 +766,8 @@
 
                 <div class="space-y-2">
                     <div class="flex justify-between">
-                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">大小</label>
+                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                            data-i18n="wm.size">大小</label>
                         <span id="wmScaleVal" class="text-xs text-gray-500">100%</span>
                     </div>
                     <input type="range" id="wmScaleRange" min="10" max="200" value="100"
@@ -743,7 +776,8 @@
 
                 <div class="space-y-2">
                     <div class="flex justify-between">
-                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">不透明度</label>
+                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                            data-i18n="wm.opacity">不透明度</label>
                         <span id="wmOpacityVal" class="text-xs text-gray-500">100%</span>
                     </div>
                     <input type="range" id="wmOpacityRange" min="0" max="100" value="100"
@@ -755,7 +789,8 @@
             <div class="pt-4 border-t border-gray-200 dark:border-slate-800 space-y-4">
                 <div class="space-y-2">
                     <div class="flex justify-between">
-                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">导出质量</label>
+                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                            data-i18n="quality.label">导出质量</label>
                         <span id="wmQualityVal" class="text-xs text-gray-500">90%</span>
                     </div>
                     <input type="range" id="wmQualityRange" min="10" max="100" value="90"
@@ -767,7 +802,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                     </svg>
-                    <span>下载图片</span>
+                    <span data-i18n="btn.download">下载图片</span>
                 </button>
             </div>
         </div>
@@ -777,7 +812,8 @@
         <div id="tag-sidebar" class="hidden flex-1 overflow-y-auto p-6 space-y-8">
             <!-- Upload -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="upload.title">
                     图片上传
                 </h2>
                 <div id="tagDropZone"
@@ -788,15 +824,16 @@
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                         </path>
                     </svg>
-                    <p class="text-sm text-gray-600 dark:text-slate-300">点击或拖拽上传图片</p>
-                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">支持批量处理</p>
+                    <p class="text-sm text-gray-600 dark:text-slate-300" data-i18n="upload.drag">点击或拖拽上传图片</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1" data-i18n="upload.batch">支持批量处理</p>
                 </div>
                 <input type="file" id="tagFileInput" accept="image/*" multiple class="hidden">
             </section>
 
             <!-- Settings -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="tag.settings">
                     标签设置
                 </h2>
 
@@ -804,7 +841,8 @@
                     <!-- Tag Count -->
                     <div class="space-y-2">
                         <div class="flex justify-between">
-                            <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">标签数量</label>
+                            <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                                data-i18n="tag.count">标签数量</label>
                             <span id="tagCountVal" class="text-xs text-gray-500">15</span>
                         </div>
                         <input type="range" id="tagCountRange" min="5" max="30" value="15"
@@ -813,12 +851,13 @@
 
                     <!-- Language -->
                     <div class="space-y-2">
-                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">标签语言</label>
+                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                            data-i18n="tag.lang">标签语言</label>
                         <select id="tagLanguage"
                             class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
-                            <option value="auto">自动检测</option>
-                            <option value="zh">中文</option>
-                            <option value="en">English</option>
+                            <option value="auto" data-i18n="tag.lang.auto">自动检测</option>
+                            <option value="zh" data-i18n="tag.lang.zh">中文</option>
+                            <option value="en" data-i18n="tag.lang.en">English</option>
                         </select>
                     </div>
                 </div>
@@ -830,26 +869,26 @@
                     class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white rounded-xl font-medium shadow-lg shadow-violet-600/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                     disabled>
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>生成标签</span>
+                    <span data-i18n="tag.btn.generate">生成标签</span>
                 </button>
             </section>
 
             <!-- Batch Actions -->
             <section id="tagResultSection" class="hidden">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100">批量操作</h2>
+                    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-100" data-i18n="tag.batch">批量操作</h2>
                     <div class="flex gap-2">
                         <button id="tagClearAllBtn"
                             class="px-3 py-1.5 text-xs border border-red-200 dark:border-red-900/50 rounded text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-                            <i class="fa-solid fa-trash"></i> 清空历史
+                            <i class="fa-solid fa-trash"></i> <span data-i18n="tag.btn.clear">清空历史</span>
                         </button>
                         <button id="tagCopyAllBtn"
                             class="px-3 py-1.5 text-xs border border-gray-200 dark:border-slate-700 rounded text-gray-500 dark:text-slate-400 hover:text-blue-500 hover:border-violet-500 transition-colors">
-                            <i class="fa-solid fa-copy"></i> 复制全部结果
+                            <i class="fa-solid fa-copy"></i> <span data-i18n="tag.btn.copy">复制全部结果</span>
                         </button>
                     </div>
                 </div>
-                <div class="text-sm text-gray-500 dark:text-slate-400">
+                <div class="text-sm text-gray-500 dark:text-slate-400" data-i18n="tag.hint">
                     已生成标签的图片结果将显示在右侧网格中。
                 </div>
             </section>
@@ -859,8 +898,9 @@
         <div id="content-sidebar" class="hidden flex-1 overflow-y-auto p-6 space-y-8">
             <!-- Upload Section -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
-                    上传图片
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="upload.title">
+                    图片上传
                 </h2>
                 <div id="contentDropZone"
                     class="border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-xl p-6 text-center hover:border-violet-500 dark:hover:border-blue-400 transition-colors cursor-pointer bg-gray-50 dark:bg-slate-800/50 relative">
@@ -871,33 +911,35 @@
                             d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                         </path>
                     </svg>
-                    <p class="text-sm text-gray-600 dark:text-slate-300">点击或拖拽上传图片</p>
-                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">支持单张图片</p>
+                    <p class="text-sm text-gray-600 dark:text-slate-300" data-i18n="upload.drag">点击或拖拽上传图片</p>
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1" data-i18n="upload.single">支持单张图片</p>
                 </div>
             </section>
 
             <!-- Context Input -->
             <section>
                 <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
-                    补充信息
-                    <span class="text-xs font-normal text-gray-400">(可选)</span>
+                    <span data-i18n="content.info">补充信息</span>
+                    <span class="text-xs font-normal text-gray-400" data-i18n="content.optional">(可选)</span>
                 </h2>
                 <textarea id="contentUserInput" rows="3" placeholder="输入关键词、产品信息或想要表达的内容..."
+                    data-i18n="content.placeholder"
                     class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none resize-none dark:text-gray-200"></textarea>
             </section>
 
             <!-- Style Selection -->
             <section>
-                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                    data-i18n="content.style">
                     文案风格
                 </h2>
                 <select id="contentStyle"
                     class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
-                    <option value="general">通用</option>
-                    <option value="zhongcao">种草</option>
-                    <option value="photography">摄影</option>
-                    <option value="tutorial">教程</option>
-                    <option value="daily">日常</option>
+                    <option value="general" data-i18n="content.style.general">通用</option>
+                    <option value="zhongcao" data-i18n="content.style.zhongcao">种草</option>
+                    <option value="photography" data-i18n="content.style.photography">摄影</option>
+                    <option value="tutorial" data-i18n="content.style.tutorial">教程</option>
+                    <option value="daily" data-i18n="content.style.daily">日常</option>
                 </select>
             </section>
 
@@ -906,7 +948,7 @@
                 <button id="contentGenerateBtn" disabled
                     class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-violet-600/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>生成文案</span>
+                    <span data-i18n="content.btn.generate">生成文案</span>
                 </button>
             </section>
         </div>
@@ -917,11 +959,13 @@
             <section>
                 <div class="flex bg-gray-100 dark:bg-slate-800 rounded-lg p-1 gap-1">
                     <button id="wallpaperModeAI"
-                        class="flex-1 py-2 text-sm font-medium rounded-md bg-white dark:bg-gray-600 shadow-sm text-violet-600 dark:text-blue-400 transition-all">
+                        class="flex-1 py-2 text-sm font-medium rounded-md bg-white dark:bg-gray-600 shadow-sm text-violet-600 dark:text-blue-400 transition-all"
+                        data-i18n="wp.mode.ai">
                         AI生成
                     </button>
                     <button id="wallpaperModeCustom"
-                        class="flex-1 py-2 text-sm font-medium rounded-md text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all">
+                        class="flex-1 py-2 text-sm font-medium rounded-md text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-gray-200 transition-all"
+                        data-i18n="wp.mode.custom">
                         自定义图片
                     </button>
                 </div>
@@ -931,34 +975,36 @@
             <div id="wallpaperAISection" class="space-y-6">
                 <!-- Style Selection -->
                 <section>
-                    <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                    <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                        data-i18n="wp.style">
                         壁纸风格
                     </h2>
                     <select id="wallpaperStyle"
                         class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
-                        <option value="nature">自然风光</option>
-                        <option value="cityscape">城市风光</option>
-                        <option value="abstract">抽象艺术</option>
-                        <option value="minimalist">极简主义</option>
-                        <option value="anime">动漫二次元</option>
-                        <option value="space">宇宙星空</option>
-                        <option value="gradient">渐变色彩</option>
-                        <option value="pattern">几何图案</option>
+                        <option value="nature" data-i18n="wp.style.nature">自然风光</option>
+                        <option value="cityscape" data-i18n="wp.style.cityscape">城市风光</option>
+                        <option value="abstract" data-i18n="wp.style.abstract">抽象艺术</option>
+                        <option value="minimalist" data-i18n="wp.style.minimalist">极简主义</option>
+                        <option value="anime" data-i18n="wp.style.anime">动漫二次元</option>
+                        <option value="space" data-i18n="wp.style.space">宇宙星空</option>
+                        <option value="gradient" data-i18n="wp.style.gradient">渐变色彩</option>
+                        <option value="pattern" data-i18n="wp.style.pattern">几何图案</option>
                     </select>
                 </section>
 
                 <!-- Aspect Ratio Selection -->
                 <section>
-                    <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                    <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                        data-i18n="wp.ratio">
                         尺寸比例
                     </h2>
                     <select id="wallpaperAspectRatio"
                         class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
-                        <option value="16:9">16:9 横屏 (1664×928)</option>
-                        <option value="4:3">4:3 横屏 (1472×1140)</option>
-                        <option value="1:1">1:1 正方形 (1328×1328)</option>
-                        <option value="3:4">3:4 竖屏 (1140×1472)</option>
-                        <option value="9:16" selected>9:16 竖屏 (928×1664)</option>
+                        <option value="16:9" data-i18n="wp.ratio.16_9">16:9 横屏 (1664×928)</option>
+                        <option value="4:3" data-i18n="wp.ratio.4_3">4:3 横屏 (1472×1140)</option>
+                        <option value="1:1" data-i18n="wp.ratio.1_1">1:1 正方形 (1328×1328)</option>
+                        <option value="3:4" data-i18n="wp.ratio.3_4">3:4 竖屏 (1140×1472)</option>
+                        <option value="9:16" selected data-i18n="wp.ratio.9_16">9:16 竖屏 (928×1664)</option>
                     </select>
                 </section>
 
@@ -967,7 +1013,7 @@
                     <button id="wallpaperGenerateBtn"
                         class="w-full bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white font-semibold py-3 px-4 rounded-xl shadow-lg shadow-violet-600/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
                         <i id="wallpaperGenerateBtnIcon" class="fa-solid fa-wand-magic-sparkles"></i>
-                        <span id="wallpaperGenerateBtnText">生成壁纸</span>
+                        <span id="wallpaperGenerateBtnText" data-i18n="wp.btn.generate">生成壁纸</span>
                     </button>
                 </section>
 
@@ -977,7 +1023,8 @@
             <div id="wallpaperCustomSection" class="hidden space-y-6">
                 <!-- Upload Section -->
                 <section>
-                    <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                    <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                        data-i18n="upload.title">
                         图片上传
                     </h2>
                     <div id="wallpaperDropZone"
@@ -989,19 +1036,20 @@
                                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
                             </path>
                         </svg>
-                        <p class="text-sm text-gray-600 dark:text-slate-300">点击或拖拽上传图片</p>
-                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">支持拖拽缩放调整</p>
+                        <p class="text-sm text-gray-600 dark:text-slate-300" data-i18n="upload.drag">点击或拖拽上传图片</p>
+                        <p class="text-xs text-gray-400 dark:text-gray-500 mt-1" data-i18n="wp.drag.hint">支持拖拽缩放调整</p>
                     </div>
                 </section>
 
                 <!-- Device Size Presets -->
                 <section id="wallpaperDeviceSection" class="hidden">
-                    <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3">
+                    <h2 class="text-sm font-semibold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-3"
+                        data-i18n="wp.device">
                         设备尺寸
                     </h2>
                     <select id="wallpaperDeviceSize"
                         class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
-                        <optgroup label="iPhone">
+                        <optgroup label="iPhone" data-i18n="wp.device.group.iphone">
                             <option value="iphone15promax">iPhone 15 Pro Max (1290x2796)</option>
                             <option value="iphone15pro">iPhone 15 Pro (1179x2556)</option>
                             <option value="iphone15">iPhone 15 (1179x2556)</option>
@@ -1010,10 +1058,10 @@
                             <option value="iphone13">iPhone 13 (1170x2532)</option>
                             <option value="iphonese">iPhone SE (750x1334)</option>
                         </optgroup>
-                        <optgroup label="通用尺寸">
-                            <option value="fhd">FHD (1080x1920)</option>
-                            <option value="qhd">QHD (1440x2560)</option>
-                            <option value="4k">4K (2160x3840)</option>
+                        <optgroup label="通用尺寸" data-i18n="wp.device.group.common">
+                            <option value="fhd" data-i18n="wp.device.fhd">FHD (1080x1920)</option>
+                            <option value="qhd" data-i18n="wp.device.qhd">QHD (1440x2560)</option>
+                            <option value="4k" data-i18n="wp.device.4k">4K (2160x3840)</option>
                         </optgroup>
                     </select>
                 </section>
@@ -1022,7 +1070,8 @@
                 <section id="wallpaperScaleSection" class="hidden">
                     <div class="space-y-2">
                         <div class="flex justify-between">
-                            <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">缩放</label>
+                            <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                                data-i18n="wp.scale">缩放</label>
                             <span id="wallpaperScaleVal" class="text-xs text-gray-500">100%</span>
                         </div>
                         <input type="range" id="wallpaperScaleRange" min="50" max="500" value="100"
@@ -1034,7 +1083,7 @@
                 <section id="wallpaperResetSection" class="hidden">
                     <button id="wallpaperResetBtn"
                         class="w-full py-2 border border-gray-200 dark:border-slate-700 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
-                        <i class="fa-solid fa-arrows-to-dot mr-2"></i>重置位置
+                        <i class="fa-solid fa-arrows-to-dot mr-2"></i><span data-i18n="wp.btn.reset">重置位置</span>
                     </button>
                 </section>
             </div>
@@ -1043,7 +1092,8 @@
             <section class="pt-4 border-t border-gray-200 dark:border-slate-800">
                 <div class="space-y-2">
                     <div class="flex justify-between">
-                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase">导出质量</label>
+                        <label class="text-xs font-medium text-gray-500 dark:text-slate-400 uppercase"
+                            data-i18n="quality.label">导出质量</label>
                         <span id="wallpaperQualityVal" class="text-xs text-gray-500">90%</span>
                     </div>
                     <input type="range" id="wallpaperQuality" min="10" max="100" value="90"
@@ -1059,7 +1109,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
                     </svg>
-                    <span>下载壁纸</span>
+                    <span data-i18n="wp.btn.download">下载壁纸</span>
                 </button>
             </section>
         </div>
@@ -1085,8 +1135,8 @@
                             stroke-linejoin="round" />
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未选择图片</h3>
-                <p class="text-gray-500 dark:text-slate-400 text-lg">请上传图片开始制作</p>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2" data-i18n="empty.title">未选择图片</h3>
+                <p class="text-gray-500 dark:text-slate-400 text-lg" data-i18n="empty.desc">请上传图片开始制作</p>
             </div>
 
             <div id="canvasContainer" class="relative shadow-2xl transition-all duration-300 bg-white hidden"
@@ -1096,7 +1146,7 @@
                 </div>
             </div>
             <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm pointer-events-none opacity-0 transition-opacity duration-300"
-                id="interactionHint">
+                id="interactionHint" data-i18n="empty.hint">
                 拖拽移动图片 • 滚轮缩放
             </div>
         </div>
@@ -1117,8 +1167,8 @@
                             stroke-linejoin="round" />
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未选择图片</h3>
-                <p class="text-gray-500 dark:text-slate-400 text-lg">请上传图片开始制作</p>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2" data-i18n="empty.title">未选择图片</h3>
+                <p class="text-gray-500 dark:text-slate-400 text-lg" data-i18n="empty.desc">请上传图片开始制作</p>
             </div>
             <div id="frameGallery"
                 class="w-full h-full overflow-y-auto custom-scrollbar grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 pb-12">
@@ -1143,8 +1193,8 @@
                             stroke-linejoin="round" />
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未选择图片</h3>
-                <p class="text-gray-500 dark:text-slate-400 text-lg">请上传图片开始制作</p>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2" data-i18n="empty.title">未选择图片</h3>
+                <p class="text-gray-500 dark:text-slate-400 text-lg" data-i18n="empty.desc">请上传图片开始制作</p>
             </div>
 
             <canvas id="wmMainCanvas"
@@ -1167,8 +1217,8 @@
                             stroke-linejoin="round" />
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未选择图片</h3>
-                <p class="text-gray-500 dark:text-slate-400 text-lg">请上传图片开始制作</p>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2" data-i18n="empty.title">未选择图片</h3>
+                <p class="text-gray-500 dark:text-slate-400 text-lg" data-i18n="empty.desc">请上传图片开始制作</p>
             </div>
 
             <!-- Grid Container -->
@@ -1195,8 +1245,8 @@
                             stroke-linejoin="round" />
                     </svg>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未选择图片</h3>
-                <p class="text-gray-500 dark:text-slate-400 text-lg">请上传图片开始制作</p>
+                <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2" data-i18n="empty.title">未选择图片</h3>
+                <p class="text-gray-500 dark:text-slate-400 text-lg" data-i18n="empty.desc">请上传图片开始制作</p>
             </div>
 
             <!-- Content Container -->
@@ -1272,8 +1322,9 @@
                                 stroke-linejoin="round" />
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2">未生成壁纸</h3>
-                    <p class="text-gray-500 dark:text-slate-400 text-lg">选择AI生成或上传自定义图片</p>
+                    <h3 class="text-2xl font-bold text-gray-700 dark:text-gray-200 mb-2" data-i18n="wp.empty.title">
+                        未生成壁纸</h3>
+                    <p class="text-gray-500 dark:text-slate-400 text-lg" data-i18n="wp.empty.desc">选择AI生成或上传自定义图片</p>
                 </div>
 
                 <!-- Canvas for Custom Image -->
@@ -1281,7 +1332,8 @@
                     <canvas id="wallpaperCanvas"
                         class="shadow-2xl rounded-lg cursor-move max-w-full max-h-full bg-white dark:bg-slate-900"></canvas>
                     <div id="wallpaperCanvasHint"
-                        class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm pointer-events-none opacity-0 transition-opacity duration-300">
+                        class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm pointer-events-none opacity-0 transition-opacity duration-300"
+                        data-i18n="empty.hint">
                         拖拽移动 • 滚轮缩放
                     </div>
                 </div>
@@ -1301,9 +1353,10 @@
                                     class="absolute inset-0 border-4 border-transparent border-t-blue-600 dark:border-t-blue-400 rounded-full animate-spin">
                                 </div>
                             </div>
-                            <p id="wallpaperLoadingText" class="text-base font-medium text-gray-800 dark:text-gray-200">
+                            <p id="wallpaperLoadingText" class="text-base font-medium text-gray-800 dark:text-gray-200"
+                                data-i18n="wp.loading">
                                 正在生成壁纸...</p>
-                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">请稍候</p>
+                            <p class="text-sm text-gray-500 dark:text-slate-400 mt-2" data-i18n="wp.wait">请稍候</p>
                         </div>
                     </div>
                 </div>
@@ -1317,7 +1370,8 @@
                 <div class="p-6 space-y-6">
                     <!-- Header -->
                     <div class="flex justify-between items-center">
-                        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">AI API设置</h2>
+                        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200" data-i18n="setting.title">AI
+                            API设置</h2>
                         <button id="tagApiModalClose"
                             class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors text-gray-600 dark:text-slate-300">
                             <i class="fa-solid fa-xmark text-xl"></i>
@@ -1330,17 +1384,19 @@
                         <div class="border-b border-gray-200 dark:border-slate-800 pb-4">
                             <h3 class="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3 flex items-center">
                                 <i class="fa-solid fa-eye mr-2 text-blue-500"></i>
-                                视觉模型 (标签/文案大师)
+                                <span data-i18n="setting.vision_section">视觉模型 (标签/文案大师)</span>
                             </h3>
 
                             <!-- Provider -->
                             <div class="space-y-2 mb-3">
-                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300">API 提供商</label>
+                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300"
+                                    data-i18n="setting.provider">API 提供商</label>
                                 <select id="tagApiProvider"
                                     class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
-                                    <option value="openai">OpenAI (GPT-4 Vision)</option>
-                                    <option value="gemini">Google Gemini</option>
-                                    <option value="custom">自定义</option>
+                                    <option value="openai" data-i18n="setting.provider.openai">OpenAI (GPT-4 Vision)
+                                    </option>
+                                    <option value="gemini" data-i18n="setting.provider.gemini">Google Gemini</option>
+                                    <option value="custom" data-i18n="setting.provider.custom">自定义</option>
                                 </select>
                             </div>
 
@@ -1384,14 +1440,16 @@
 
                             <!-- Text Model Key -->
                             <div class="space-y-2 mb-3">
-                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300">API 密钥</label>
+                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300"
+                                    data-i18n="setting.key">API 密钥</label>
                                 <input type="password" id="textModelKey" placeholder="sk-..."
                                     class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
                             </div>
 
                             <!-- Text Model Name -->
                             <div class="space-y-2">
-                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300">模型名称</label>
+                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300"
+                                    data-i18n="setting.model_name">模型名称</label>
                                 <input type="text" id="textModelName" placeholder="gpt-4"
                                     class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
                             </div>
@@ -1401,12 +1459,13 @@
                         <div class="pb-2">
                             <h3 class="text-sm font-semibold text-gray-700 dark:text-slate-300 mb-3 flex items-center">
                                 <i class="fa-solid fa-image mr-2 text-purple-500"></i>
-                                图像生成模型 (壁纸生成)
+                                <span data-i18n="setting.image_section">图像生成模型 (壁纸生成)</span>
                             </h3>
 
                             <!-- Image Gen Endpoint -->
                             <div class="space-y-2 mb-3">
-                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300">API 端点</label>
+                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300"
+                                    data-i18n="setting.endpoint">API 端点</label>
                                 <input type="text" id="imageGenEndpoint"
                                     placeholder="https://api.openai.com/v1/images/generations"
                                     class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
@@ -1414,14 +1473,16 @@
 
                             <!-- Image Gen Key -->
                             <div class="space-y-2 mb-3">
-                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300">API 密钥</label>
+                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300"
+                                    data-i18n="setting.key">API 密钥</label>
                                 <input type="password" id="imageGenKey" placeholder="sk-..."
                                     class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
                             </div>
 
                             <!-- Image Gen Model Name -->
                             <div class="space-y-2">
-                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300">模型名称</label>
+                                <label class="text-sm font-medium text-gray-700 dark:text-slate-300"
+                                    data-i18n="setting.model_name">模型名称</label>
                                 <input type="text" id="imageGenModelName" placeholder="dall-e-3"
                                     class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm focus:ring-2 focus:ring-blue-600 outline-none dark:text-gray-200">
                             </div>
@@ -1432,11 +1493,11 @@
                     <div class="flex gap-3">
                         <button id="tagApiTest"
                             class="flex-1 py-2.5 border border-gray-200 dark:border-slate-700 rounded-lg text-sm font-medium text-gray-700 dark:text-slate-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
-                            测试连接
+                            <span data-i18n="setting.btn.test">测试连接</span>
                         </button>
                         <button id="tagApiSave"
                             class="flex-1 py-2.5 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white rounded-lg text-sm font-medium transition-colors">
-                            保存设置
+                            <span data-i18n="setting.btn.save">保存设置</span>
                         </button>
                     </div>
                 </div>
@@ -1453,14 +1514,485 @@
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
                 </path>
             </svg>
-            <span id="statusText" class="text-sm font-medium tracking-wide">处理中...</span>
+            <span id="statusText" class="text-sm font-medium tracking-wide" data-i18n="status.processing">处理中...</span>
         </div>
 
     </main>
 
     <script>
+        // --- Internationalization ---
+        const appTranslations = {
+            "zh-CN": {
+                "title": "影像大师",
+                "brand": "影像大师",
+                "setting.api": "AI API 设置",
+                "setting.title": "AI API 设置",
+                "setting.vision_section": "视觉模型 (标签/文案大师)",
+                "setting.provider": "API 提供商",
+                "setting.provider.openai": "OpenAI (GPT-4 Vision)",
+                "setting.provider.gemini": "Google Gemini",
+                "setting.provider.custom": "自定义",
+                "setting.text_section": "文本生成模型 (Tag/Content)",
+                "setting.image_section": "图像生成模型 (壁纸生成)",
+                "setting.key": "API 密钥",
+                "setting.model_name": "模型名称",
+                "setting.endpoint": "API 端点",
+                "setting.btn.test": "测试连接",
+                "setting.btn.save": "保存设置",
+                "status.processing": "处理中...",
+                "tab.puzzle": "拼图大师",
+                "tab.frame": "边框大师",
+                "tab.watermark": "水印大师",
+                "tab.tag": "标签大师",
+                "tab.content": "文案大师",
+                "tab.wallpaper": "壁纸大师",
+
+                // Common
+                "upload.title": "图片上传",
+                "upload.desc": "点击或拖拽上传图片",
+                "upload.drag": "点击或拖拽上传图片",
+                "upload.sub": "支持 3-12 张图片",
+                "upload.batch": "支持批量处理",
+                "upload.single": "支持单张图片",
+                "quality.label": "导出质量",
+                "btn.download": "下载图片",
+                "btn.download_all": "打包下载全部",
+                "btn.generate": "开始生成",
+                "btn.retry": "重试",
+                "btn.copied": "已复制",
+                "tag.no_tags": "没有可复制的标签",
+
+                // Puzzle
+                "puzzle.layout": "选择版式",
+                "puzzle.ratio": "画布比例",
+                "puzzle.border": "边框设置",
+                "puzzle.border.width": "粗细",
+                "puzzle.border.color": "颜色",
+                "puzzle.custom": "自定义",
+                "puzzle.layout.2_v": "左右分屏",
+                "puzzle.layout.2_h": "上下分屏",
+                "puzzle.layout.3_grid_l": "左1右2",
+                "puzzle.layout.3_grid_r": "左2右1",
+                "puzzle.layout.3_v": "三列并排",
+                "puzzle.layout.3_h": "三行并排",
+                "puzzle.layout.3_hero_top": "顶部大图",
+                "puzzle.layout.3_hero_bottom": "底部大图",
+                "puzzle.layout.4_grid": "田字格",
+                "puzzle.layout.4_v": "四列并排",
+                "puzzle.layout.4_h": "四行并排",
+                "puzzle.layout.4_hero_top": "顶部大图",
+                "puzzle.layout.4_hero_left": "左侧大图",
+                "puzzle.layout.default": "默认",
+                "puzzle.layout.5_v": "五列并排",
+                "puzzle.layout.5_h": "五行并排",
+                "puzzle.layout.5_mosaic_l": "左侧拼贴",
+                "puzzle.layout.5_hero_top": "顶部大图",
+                "puzzle.layout.6_grid_3x2": "3x2",
+                "puzzle.layout.6_grid_2x3": "2x3",
+                "puzzle.layout.6_v": "六列并排",
+                "puzzle.layout.6_h": "六行并排",
+                "puzzle.layout.6_corner": "角落焦点",
+                "puzzle.layout.7_v": "七列并排",
+                "puzzle.layout.7_h": "七行并排",
+                "puzzle.layout.7_hero_top": "顶部大图",
+                "puzzle.layout.8_grid_4x2": "4x2",
+                "puzzle.layout.8_grid_2x4": "2x4",
+                "puzzle.layout.8_v": "八列并排",
+                "puzzle.layout.8_h": "八行并排",
+                "puzzle.layout.8_hero_top_2": "顶部双图",
+                "puzzle.layout.9_grid_3x3": "3x3",
+                "puzzle.layout.9_v": "九列并排",
+                "puzzle.layout.9_h": "九行并排",
+                "puzzle.layout.9_center": "中心大图",
+                "puzzle.layout.10_grid_5x2": "5x2",
+                "puzzle.layout.10_v": "十列并排",
+                "puzzle.layout.10_h": "十行并排",
+                "puzzle.layout.11_v": "11列并排",
+                "puzzle.layout.11_h": "11行并排",
+                "puzzle.layout.12_grid_4x3": "4x3",
+                "puzzle.layout.12_grid_3x4": "3x4",
+                "puzzle.layout.12_v": "12列并排",
+                "puzzle.layout.12_h": "12行并排",
+
+                // Frame
+                "frame.type": "边框类型",
+                "frame.type.blur": "模糊背景",
+                "frame.type.solid": "纯色边框",
+                "frame.type.gradient": "渐变背景",
+                "frame.type.matte": "双层卡纸",
+                "frame.color": "边框颜色",
+                "frame.params": "参数调整",
+                "frame.param.width": "边框宽度",
+                "frame.param.blur": "背景模糊",
+                "frame.param.font": "文字大小",
+                "frame.exif": "显示拍摄参数 (EXIF)",
+
+                // Watermark
+                "wm.upload.sub": "支持多种水印功能",
+                "wm.type.image": "图片",
+                "wm.type.text": "文字",
+                "wm.type.palette": "色卡",
+                "wm.type.histogram": "直方图",
+                "wm.btn.upload": "上传水印图",
+                "wm.text.content": "签名内容",
+                "wm.text.placeholder": "输入签名...",
+                "wm.text.font": "字体风格",
+                "wm.text.color": "颜色",
+                "wm.btn.add": "生成并添加",
+                "wm.btn.save": "保存预设",
+                "wm.btn.export": "导出PNG",
+                "wm.palette.count": "颜色数量",
+                "wm.palette.style": "样式",
+                "wm.palette.circle": "圆形",
+                "wm.palette.square": "方形",
+                "wm.palette.strip": "长条",
+                "wm.btn.generate_palette": "生成色卡",
+                "wm.btn.generate_histogram": "生成直方图",
+                "wm.histogram.rgb": "RGB 重叠",
+                "wm.histogram.luminance": "亮度 (白色)",
+                "wm.histogram.color": "彩色分布",
+                "wm.pos": "位置预设",
+                "wm.size": "大小",
+                "wm.opacity": "不透明度",
+
+                // Tag
+                "tag.settings": "标签设置",
+                "tag.count": "标签数量",
+                "tag.lang": "标签语言",
+                "tag.lang.auto": "自动检测",
+                "tag.lang.zh": "中文",
+                "tag.lang.en": "English",
+                "tag.btn.generate": "生成标签",
+                "tag.batch": "批量操作",
+                "tag.btn.clear": "清空历史",
+                "tag.btn.copy": "复制全部结果",
+                "tag.hint": "已生成标签的图片结果将显示在右侧网格中。",
+
+                // Content
+                "content.info": "补充信息",
+                "content.optional": "(可选)",
+                "content.style": "文案风格",
+                "content.placeholder": "输入关键词、产品信息或想要表达的内容...",
+                "content.style.general": "通用",
+                "content.style.zhongcao": "种草",
+                "content.style.photography": "摄影",
+                "content.style.tutorial": "教程",
+                "content.style.daily": "日常",
+                "content.btn.generate": "生成文案",
+                "content.title": "标题",
+                "content.body": "正文",
+                "content.btn.copy": "复制",
+                "content.btn.copy_all": "复制全部",
+                "content.waiting": "等待生成...",
+
+                // Wallpaper
+                "wp.mode.ai": "AI生成",
+                "wp.mode.custom": "自定义图片",
+                "wp.style": "壁纸风格",
+                "wp.style.nature": "自然风光",
+                "wp.style.cityscape": "城市风光",
+                "wp.style.abstract": "抽象艺术",
+                "wp.style.minimalist": "极简主义",
+                "wp.style.anime": "动漫二次元",
+                "wp.style.space": "宇宙星空",
+                "wp.style.gradient": "渐变色彩",
+                "wp.style.pattern": "几何图案",
+                "wp.ratio": "尺寸比例",
+                "wp.ratio.16_9": "16:9 横屏 (1664×928)",
+                "wp.ratio.4_3": "4:3 横屏 (1472×1140)",
+                "wp.ratio.1_1": "1:1 正方形 (1328×1328)",
+                "wp.ratio.3_4": "3:4 竖屏 (1140×1472)",
+                "wp.ratio.9_16": "9:16 竖屏 (928×1664)",
+                "wp.btn.generate": "生成壁纸",
+                "wp.btn.download": "下载壁纸",
+                "wp.device": "设备尺寸",
+                "wp.device.group.iphone": "iPhone",
+                "wp.device.group.common": "通用尺寸",
+                "wp.device.fhd": "FHD (1080x1920)",
+                "wp.device.qhd": "QHD (1440x2560)",
+                "wp.device.4k": "4K (2160x3840)",
+                "wp.scale": "缩放",
+                "wp.btn.reset": "重置位置",
+                "wp.empty.title": "未生成壁纸",
+                "wp.empty.desc": "选择AI生成或上传自定义图片",
+                "wp.loading": "正在生成壁纸...",
+                "wp.wait": "请稍候",
+                "wp.drag.hint": "支持拖拽缩放调整",
+
+                // Empty States
+                "empty.title": "未选择图片",
+                "empty.desc": "请上传图片开始制作",
+                "empty.hint": "拖拽移动图片 • 滚轮缩放"
+            },
+            "en-US": {
+                "title": "Image Master",
+                "brand": "Image Master",
+                "setting.api": "AI API Settings",
+                "setting.title": "AI API Settings",
+                "setting.vision_section": "Vision Model (Tag/Content)",
+                "setting.provider": "API Provider",
+                "setting.provider.openai": "OpenAI (GPT-4 Vision)",
+                "setting.provider.gemini": "Google Gemini",
+                "setting.provider.custom": "Custom",
+                "setting.text_section": "Text Gen Model (Tag/Content)",
+                "setting.image_section": "Image Gen Model (Wallpaper)",
+                "setting.key": "API Key",
+                "setting.model_name": "Model Name",
+                "setting.endpoint": "API Endpoint",
+                "setting.btn.test": "Test Connection",
+                "setting.btn.save": "Save Settings",
+                "status.processing": "Processing...",
+                "tab.puzzle": "Puzzle Master",
+                "tab.frame": "Frame Master",
+                "tab.watermark": "Watermark Master",
+                "tab.tag": "Tag Master",
+                "tab.content": "Content Master",
+                "tab.wallpaper": "Wallpaper Master",
+
+                // Common
+                "upload.title": "Upload Image",
+                "upload.desc": "Click or drag to upload",
+                "upload.drag": "Click or drag to upload",
+                "upload.sub": "Support 3-12 images",
+                "upload.batch": "Batch processing supported",
+                "upload.single": "Single image supported",
+                "quality.label": "Export Quality",
+                "btn.download": "Download Image",
+                "btn.download_all": "Download All",
+                "btn.generate": "Generate",
+                "btn.retry": "Retry",
+                "btn.copied": "Copied",
+                "tag.no_tags": "No tags to copy",
+
+                // Puzzle
+                "puzzle.layout": "Select Layout",
+                "puzzle.ratio": "Canvas Ratio",
+                "puzzle.border": "Border Settings",
+                "puzzle.border.width": "Thickness",
+                "puzzle.border.color": "Color",
+                "puzzle.custom": "Custom",
+                "puzzle.layout.2_v": "Side by Side",
+                "puzzle.layout.2_h": "Top and Bottom",
+                "puzzle.layout.3_grid_l": "Left 1 Right 2",
+                "puzzle.layout.3_grid_r": "Left 2 Right 1",
+                "puzzle.layout.3_v": "Three Columns",
+                "puzzle.layout.3_h": "Three Rows",
+                "puzzle.layout.3_hero_top": "Hero Top",
+                "puzzle.layout.3_hero_bottom": "Hero Bottom",
+                "puzzle.layout.4_grid": "Grid 2x2",
+                "puzzle.layout.4_v": "Four Columns",
+                "puzzle.layout.4_h": "Four Rows",
+                "puzzle.layout.4_hero_top": "Hero Top",
+                "puzzle.layout.4_hero_left": "Hero Left",
+                "puzzle.layout.default": "Default",
+                "puzzle.layout.5_v": "Five Columns",
+                "puzzle.layout.5_h": "Five Rows",
+                "puzzle.layout.5_mosaic_l": "Mosaic Left",
+                "puzzle.layout.5_hero_top": "Hero Top",
+                "puzzle.layout.6_grid_3x2": "Grid 3x2",
+                "puzzle.layout.6_grid_2x3": "Grid 2x3",
+                "puzzle.layout.6_v": "Six Columns",
+                "puzzle.layout.6_h": "Six Rows",
+                "puzzle.layout.6_corner": "Corner Focus",
+                "puzzle.layout.7_v": "Seven Columns",
+                "puzzle.layout.7_h": "Seven Rows",
+                "puzzle.layout.7_hero_top": "Hero Top",
+                "puzzle.layout.8_grid_4x2": "Grid 4x2",
+                "puzzle.layout.8_grid_2x4": "Grid 2x4",
+                "puzzle.layout.8_v": "Eight Columns",
+                "puzzle.layout.8_h": "Eight Rows",
+                "puzzle.layout.8_hero_top_2": "Twin Top",
+                "puzzle.layout.9_grid_3x3": "Grid 3x3",
+                "puzzle.layout.9_v": "Nine Columns",
+                "puzzle.layout.9_h": "Nine Rows",
+                "puzzle.layout.9_center": "Center Focus",
+                "puzzle.layout.10_grid_5x2": "Grid 5x2",
+                "puzzle.layout.10_v": "Ten Columns",
+                "puzzle.layout.10_h": "Ten Rows",
+                "puzzle.layout.11_v": "11 Columns",
+                "puzzle.layout.11_h": "11 Rows",
+                "puzzle.layout.12_grid_4x3": "Grid 4x3",
+                "puzzle.layout.12_grid_3x4": "Grid 3x4",
+                "puzzle.layout.12_v": "12 Columns",
+                "puzzle.layout.12_h": "12 Rows",
+
+                // Frame
+                "frame.type": "Border Type",
+                "frame.type.blur": "Blur Background",
+                "frame.type.solid": "Solid Color",
+                "frame.type.gradient": "Gradient",
+                "frame.type.matte": "Matte Frame",
+                "frame.color": "Border Color",
+                "frame.params": "Parameters",
+                "frame.param.width": "Width",
+                "frame.param.blur": "Blur",
+                "frame.param.font": "Font Size",
+                "frame.exif": "Show EXIF Data",
+
+                // Watermark
+                "wm.upload.sub": "Various watermark features",
+                "wm.type.image": "Image",
+                "wm.type.text": "Text",
+                "wm.type.palette": "Palette",
+                "wm.type.histogram": "Histogram",
+                "wm.btn.upload": "Upload Watermark",
+                "wm.text.content": "Signature Content",
+                "wm.text.placeholder": "Enter signature...",
+                "wm.text.font": "Font Style",
+                "wm.text.color": "Color",
+                "wm.btn.add": "Generate & Add",
+                "wm.btn.save": "Save Preset",
+                "wm.btn.export": "Export PNG",
+                "wm.palette.count": "Color Count",
+                "wm.palette.style": "Style",
+                "wm.palette.circle": "Circle",
+                "wm.palette.square": "Square",
+                "wm.palette.strip": "Strip",
+                "wm.btn.generate_palette": "Generate Palette",
+                "wm.btn.generate_histogram": "Generate Histogram",
+                "wm.histogram.rgb": "RGB Overlay",
+                "wm.histogram.luminance": "Luminance",
+                "wm.histogram.color": "Color Distribution",
+                "wm.pos": "Position",
+                "wm.size": "Size",
+                "wm.opacity": "Opacity",
+
+                // Tag
+                "tag.settings": "Tag Settings",
+                "tag.count": "Tag Count",
+                "tag.lang": "Tag Language",
+                "tag.lang.auto": "Auto Detect",
+                "tag.lang.zh": "Chinese",
+                "tag.lang.en": "English",
+                "tag.btn.generate": "Generate Tags",
+                "tag.batch": "Batch Actions",
+                "tag.btn.clear": "Clear History",
+                "tag.btn.copy": "Copy All",
+                "tag.hint": "Generated tags will appear in the grid on the right.",
+
+                // Content
+                "content.info": "Additional Info",
+                "content.optional": "(Optional)",
+                "content.style": "Copy Style",
+                "content.placeholder": "Enter keywords, product info or content...",
+                "content.style.general": "General",
+                "content.style.zhongcao": "Marketing",
+                "content.style.photography": "Photography",
+                "content.style.tutorial": "Tutorial",
+                "content.style.daily": "Daily Life",
+                "content.btn.generate": "Generate Copy",
+                "content.title": "Title",
+                "content.body": "Body",
+                "content.btn.copy": "Copy",
+                "content.btn.copy_all": "Copy All",
+                "content.waiting": "Waiting...",
+
+                // Wallpaper
+                "wp.mode.ai": "AI Generation",
+                "wp.mode.custom": "Custom Image",
+                "wp.style": "Wallpaper Style",
+                "wp.style.nature": "Nature",
+                "wp.style.cityscape": "Cityscape",
+                "wp.style.abstract": "Abstract",
+                "wp.style.minimalist": "Minimalist",
+                "wp.style.anime": "Anime",
+                "wp.style.space": "Space",
+                "wp.style.gradient": "Gradient",
+                "wp.style.pattern": "Geometric",
+                "wp.ratio": "Aspect Ratio",
+                "wp.ratio.16_9": "16:9 Landscape (1664×928)",
+                "wp.ratio.4_3": "4:3 Landscape (1472×1140)",
+                "wp.ratio.1_1": "1:1 Square (1328×1328)",
+                "wp.ratio.3_4": "3:4 Portrait (1140×1472)",
+                "wp.ratio.9_16": "9:16 Portrait (928×1664)",
+                "wp.btn.generate": "Generate Wallpaper",
+                "wp.btn.download": "Download Wallpaper",
+                "wp.device": "Device Size",
+                "wp.device.group.iphone": "iPhone",
+                "wp.device.group.common": "Universal Size",
+                "wp.device.fhd": "FHD (1080x1920)",
+                "wp.device.qhd": "QHD (1440x2560)",
+                "wp.device.4k": "4K (2160x3840)",
+                "wp.scale": "Scale",
+                "wp.btn.reset": "Reset Position",
+                "wp.empty.title": "No Wallpaper",
+                "wp.empty.desc": "Select AI Gen or Upload Image",
+                "wp.loading": "Generating Wallpaper...",
+                "wp.wait": "Please wait",
+                "wp.drag.hint": "Support drag and zoom adjustment",
+
+                // Empty States
+                "empty.title": "No Image Selected",
+                "empty.desc": "Please upload image to start",
+                "empty.hint": "Drag to move • Scroll to zoom"
+            }
+        };
+
+        let currentLang = localStorage.getItem('lang') || 'zh-CN';
+
+        function initLanguage() {
+            setLanguage(currentLang);
+
+            const toggleBtn = document.getElementById('langToggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    const newLang = currentLang === 'zh-CN' ? 'en-US' : 'zh-CN';
+                    setLanguage(newLang);
+                });
+            }
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('lang', lang);
+            document.documentElement.lang = lang;
+
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (appTranslations[lang] && appTranslations[lang][key]) {
+                    if (el.tagName === 'INPUT' && (el.type === 'text' || el.type === 'password')) {
+                        el.placeholder = appTranslations[lang][key];
+                    } else if (el.tagName === 'TEXTAREA') {
+                        el.placeholder = appTranslations[lang][key];
+                    } else if (el.tagName === 'OPTGROUP') {
+                        el.label = appTranslations[lang][key];
+                    } else {
+                        // Handle icon inside button (like <i class=".."></i> <span>Text</span>)
+                        // If element has valid key, we assume it's the target.
+                        // If it has children and only text node should be replaced:
+                        if (el.children.length > 0 && el.tagName === 'BUTTON') {
+                            // Find the text node or span inside?
+                            // Assuming common patterns in app.html:
+                            // <button><svg>...</svg> <span>Text</span></button>
+                            // If I put data-i18n on the SPAN inside button, I don't need this logic.
+                            // But for simple buttons I might have put it on the button itself.
+                            // Checking my edits: I put data-i18n on SPANs mostly inside buttons.
+                            // So direct replacement is fine.
+                            el.innerHTML = el.innerHTML.replace(el.innerText.trim(), appTranslations[lang][key]);
+                        } else {
+                            el.innerText = appTranslations[lang][key];
+                        }
+                    }
+                }
+            });
+
+            // Trigger specific updates for dynamic content
+            if (typeof PuzzleApp !== 'undefined' && PuzzleApp.updateAvailableLayouts) {
+                PuzzleApp.updateAvailableLayouts();
+            }
+
+            updateLangButton();
+        }
+
+        function updateLangButton() {
+            const btn = document.getElementById('langToggleText');
+            if (btn) btn.innerText = currentLang === 'zh-CN' ? 'EN' : '中';
+        }
+
         // --- Global Init ---
         function init() {
+            initLanguage();
             setupTabs();
             loadTheme();
             AISettings.init();
@@ -2036,74 +2568,73 @@
 
             LAYOUTS: {
                 2: [
-                    { id: '2-v', name: '左右分屏', icon: 'M4 4h7v16H4zm9 0h7v16h-7z', cols: 2, rows: 1, spans: [] },
-                    { id: '2-h', name: '上下分屏', icon: 'M4 4h16v7H4zm0 9h16v7H4z', cols: 1, rows: 2, spans: [] }
+                    { id: '2-v', name: 'puzzle.layout.2_v', icon: 'M4 4h7v16H4zm9 0h7v16h-7z', cols: 2, rows: 1, spans: [] },
+                    { id: '2-h', name: 'puzzle.layout.2_h', icon: 'M4 4h16v7H4zm0 9h16v7H4z', cols: 1, rows: 2, spans: [] }
                 ],
                 3: [
-                    { id: '3-grid-l', name: '左1右2', icon: 'M4 4h7v16H4zm9 0h7v7h-7zm0 9h7v7h-7z', cols: 2, rows: 2, spans: [{ col: 1, row: 2 }, { col: 1, row: 1 }, { col: 1, row: 1 }] },
-                    { id: '3-grid-r', name: '左2右1', icon: 'M4 4h7v7H4zm0 9h7v7H4zm9-16h7v16h-7z', cols: 2, rows: 2, spans: [{ col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 2 }] },
-                    { id: '3-v', name: '三列并排', icon: 'M4 4h4.6v16H4zm5.6 0h4.8v16H9.6zm5.8 0h4.6v16h-4.6z', cols: 3, rows: 1, spans: [] },
-                    { id: '3-h', name: '三行并排', icon: 'M4 4h16v4.6H4zm0 5.6h16v4.8H4zm0 5.8h16v4.6H4z', cols: 1, rows: 3, spans: [] },
-                    { id: '3-hero-top', name: '顶部大图', icon: 'M4 4h16v10H4zm0 11h8v5H4zm9 0h7v5h-7z', cols: 2, rows: 2, spans: [{ col: 2, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] },
-                    { id: '3-hero-bottom', name: '底部大图', icon: 'M4 4h7v5H4zm9 0h7v5h-7zm-9 6h16v10H4z', cols: 2, rows: 2, spans: [{ col: 1, row: 1 }, { col: 1, row: 1 }, { col: 2, row: 1 }] }
+                    { id: '3-grid-l', name: 'puzzle.layout.3_grid_l', icon: 'M4 4h7v16H4zm9 0h7v7h-7zm0 9h7v7h-7z', cols: 2, rows: 2, spans: [{ col: 1, row: 2 }, { col: 1, row: 1 }, { col: 1, row: 1 }] },
+                    { id: '3-grid-r', name: 'puzzle.layout.3_grid_r', icon: 'M4 4h7v7H4zm0 9h7v7H4zm9-16h7v16h-7z', cols: 2, rows: 2, spans: [{ col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 2 }] },
+                    { id: '3-v', name: 'puzzle.layout.3_v', icon: 'M4 4h4.6v16H4zm5.6 0h4.8v16H9.6zm5.8 0h4.6v16h-4.6z', cols: 3, rows: 1, spans: [] },
+                    { id: '3-h', name: 'puzzle.layout.3_h', icon: 'M4 4h16v4.6H4zm0 5.6h16v4.8H4zm0 5.8h16v4.6H4z', cols: 1, rows: 3, spans: [] },
+                    { id: '3-hero-top', name: 'puzzle.layout.3_hero_top', icon: 'M4 4h16v10H4zm0 11h8v5H4zm9 0h7v5h-7z', cols: 2, rows: 2, spans: [{ col: 2, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] },
+                    { id: '3-hero-bottom', name: 'puzzle.layout.3_hero_bottom', icon: 'M4 4h7v5H4zm9 0h7v5h-7zm-9 6h16v10H4z', cols: 2, rows: 2, spans: [{ col: 1, row: 1 }, { col: 1, row: 1 }, { col: 2, row: 1 }] }
                 ],
                 4: [
-                    { id: '4-grid', name: '田字格', icon: 'M4 4h7v7H4zm9 0h7v7h-7zm-9 9h7v7H4zm9 0h7v7h-7z', cols: 2, rows: 2, spans: [] },
-                    { id: '4-v', name: '四列并排', icon: 'M4 4h3v16H4zm4 0h3v16H8zm4 0h3v16h-3zm4 0h3v16h-3z', cols: 4, rows: 1, spans: [] },
-                    { id: '4-h', name: '四行并排', icon: 'M4 4h16v3H4zm0 4h16v3H4zm0 4h16v3H4zm0 4h16v3H4z', cols: 1, rows: 4, spans: [] },
-                    { id: '4-hero-top', name: '顶部大图', icon: 'M4 4h16v8H4zm0 9h5v7H4zm6 0h4v7h-4zm5 0h5v7h-5z', cols: 3, rows: 2, spans: [{ col: 3, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] },
-                    { id: '4-hero-left', name: '左侧大图', icon: 'M4 4h8v16H4zm9 0h7v5h-7zm0 6h7v5h-7zm0 6h7v4h-7z', cols: 2, rows: 3, spans: [{ col: 1, row: 3 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] }
+                    { id: '4-grid', name: 'puzzle.layout.4_grid', icon: 'M4 4h7v7H4zm9 0h7v7h-7zm-9 9h7v7H4zm9 0h7v7h-7z', cols: 2, rows: 2, spans: [] },
+                    { id: '4-v', name: 'puzzle.layout.4_v', icon: 'M4 4h3v16H4zm4 0h3v16H8zm4 0h3v16h-3zm4 0h3v16h-3z', cols: 4, rows: 1, spans: [] },
+                    { id: '4-h', name: 'puzzle.layout.4_h', icon: 'M4 4h16v3H4zm0 4h16v3H4zm0 4h16v3H4zm0 4h16v3H4z', cols: 1, rows: 4, spans: [] },
+                    { id: '4-hero-top', name: 'puzzle.layout.4_hero_top', icon: 'M4 4h16v8H4zm0 9h5v7H4zm6 0h4v7h-4zm5 0h5v7h-5z', cols: 3, rows: 2, spans: [{ col: 3, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] },
+                    { id: '4-hero-left', name: 'puzzle.layout.4_hero_left', icon: 'M4 4h8v16H4zm9 0h7v5h-7zm0 6h7v5h-7zm0 6h7v4h-7z', cols: 2, rows: 3, spans: [{ col: 1, row: 3 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] }
                 ],
                 5: [
-                    { id: '5-grid', name: '默认', icon: 'M4 4h7v7H4zm9 0h7v7h-7zm-9 9h4.6v7H4zm5.6 0h4.6v7H9.6zm5.6 0h4.8v7h-4.8z', cols: 6, rows: 2, spans: [{ col: 3, row: 1 }, { col: 3, row: 1 }, { col: 2, row: 1 }, { col: 2, row: 1 }, { col: 2, row: 1 }] },
-                    { id: '5-v', name: '五列并排', icon: 'M4 4h2.4v16H4zm3.4 0h2.4v16H7.4zm3.4 0h2.4v16h-2.4zm3.4 0h2.4v16h-2.4zm3.4 0h2.4v16h-2.4z', cols: 5, rows: 1, spans: [] },
-                    { id: '5-h', name: '五行并排', icon: 'M4 4h16v2.4H4zm0 3.4h16v2.4H4zm0 3.4h16v2.4H4zm0 3.4h16v2.4H4zm0 3.4h16v2.4H4z', cols: 1, rows: 5, spans: [] },
-                    { id: '5-mosaic-l', name: '左侧拼贴', icon: 'M4 4h7v16H4zm8 0h4v8h-4zm4 0h4v8h-4zm-4 8h4v8h-4zm4 0h4v8h-4z', cols: 4, rows: 2, spans: [{ col: 2, row: 2 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] },
-                    { id: '5-hero-top', name: '顶部大图', icon: 'M4 4h16v8H4zm0 9h3v7H4zm4 0h3v7H8zm4 0h3v7h-3zm4 0h4v7h-4z', cols: 4, rows: 2, spans: [{ col: 4, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] }
+                    { id: '5-grid', name: 'puzzle.layout.default', icon: 'M4 4h7v7H4zm9 0h7v7h-7zm-9 9h4.6v7H4zm5.6 0h4.6v7H9.6zm5.6 0h4.8v7h-4.8z', cols: 6, rows: 2, spans: [{ col: 3, row: 1 }, { col: 3, row: 1 }, { col: 2, row: 1 }, { col: 2, row: 1 }, { col: 2, row: 1 }] },
+                    { id: '5-v', name: 'puzzle.layout.5_v', icon: 'M4 4h2.4v16H4zm3.4 0h2.4v16H7.4zm3.4 0h2.4v16h-2.4zm3.4 0h2.4v16h-2.4zm3.4 0h2.4v16h-2.4z', cols: 5, rows: 1, spans: [] },
+                    { id: '5-h', name: 'puzzle.layout.5_h', icon: 'M4 4h16v2.4H4zm0 3.4h16v2.4H4zm0 3.4h16v2.4H4zm0 3.4h16v2.4H4zm0 3.4h16v2.4H4z', cols: 1, rows: 5, spans: [] },
+                    { id: '5-mosaic-l', name: 'puzzle.layout.5_mosaic_l', icon: 'M4 4h7v16H4zm8 0h4v8h-4zm4 0h4v8h-4zm-4 8h4v8h-4zm4 0h4v8h-4z', cols: 4, rows: 2, spans: [{ col: 2, row: 2 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] },
+                    { id: '5-hero-top', name: 'puzzle.layout.5_hero_top', icon: 'M4 4h16v8H4zm0 9h3v7H4zm4 0h3v7H8zm4 0h3v7h-3zm4 0h4v7h-4z', cols: 4, rows: 2, spans: [{ col: 4, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] }
                 ],
                 6: [
-                    { id: '6-grid-3x2', name: '3x2', icon: 'M4 4h4.6v7H4zm5.6 0h4.6v7H9.6zm5.8 0h4.6v7h-4.6zm-11.4 9h4.6v7H4zm5.6 0h4.6v7H9.6zm5.8 0h4.6v7h-4.6z', cols: 3, rows: 2, spans: [] },
-                    { id: '6-grid-2x3', name: '2x3', icon: 'M4 4h7v4.6H4zm9 0h7v4.6h-7zm-9 5.6h7v4.6H4zm9 0h7v4.6h-7zm-9 5.8h7v4.6H4zm9 0h7v4.6h-7z', cols: 2, rows: 3, spans: [] },
-                    { id: '6-v', name: '六列并排', icon: 'M4 4h2v16H4zm3 0h2v16H7zm3 0h2v16h-2zm3 0h2v16h-2zm3 0h2v16h-2zm3 0h2v16h-2z', cols: 6, rows: 1, spans: [] },
-                    { id: '6-h', name: '六行并排', icon: 'M4 4h16v2H4zm0 3h16v2H4zm0 3h16v2H4zm0 3h16v2H4zm0 3h16v2H4zm0 3h16v2H4z', cols: 1, rows: 6, spans: [] },
-                    { id: '6-corner', name: '角落焦点', icon: 'M4 4h10v10H4zm11 0h5v5h-5zm0 6h5v5h-5zm-11 5h5v5H4zm6 0h5v5h-5zm6 0h5v5h-5z', cols: 3, rows: 3, spans: [{ col: 2, row: 2 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] }
+                    { id: '6-grid-3x2', name: 'puzzle.layout.6_grid_3x2', icon: 'M4 4h4.6v7H4zm5.6 0h4.6v7H9.6zm5.8 0h4.6v7h-4.6zm-11.4 9h4.6v7H4zm5.6 0h4.6v7H9.6zm5.8 0h4.6v7h-4.6z', cols: 3, rows: 2, spans: [] },
+                    { id: '6-grid-2x3', name: 'puzzle.layout.6_grid_2x3', icon: 'M4 4h7v4.6H4zm9 0h7v4.6h-7zm-9 5.6h7v4.6H4zm9 0h7v4.6h-7zm-9 5.8h7v4.6H4zm9 0h7v4.6h-7z', cols: 2, rows: 3, spans: [] },
+                    { id: '6-v', name: 'puzzle.layout.6_v', icon: 'M4 4h2v16H4zm3 0h2v16H7zm3 0h2v16h-2zm3 0h2v16h-2zm3 0h2v16h-2zm3 0h2v16h-2z', cols: 6, rows: 1, spans: [] },
+                    { id: '6-h', name: 'puzzle.layout.6_h', icon: 'M4 4h16v2H4zm0 3h16v2H4zm0 3h16v2H4zm0 3h16v2H4zm0 3h16v2H4zm0 3h16v2H4z', cols: 1, rows: 6, spans: [] },
+                    { id: '6-corner', name: 'puzzle.layout.6_corner', icon: 'M4 4h10v10H4zm11 0h5v5h-5zm0 6h5v5h-5zm-11 5h5v5H4zm6 0h5v5h-5zm6 0h5v5h-5z', cols: 3, rows: 3, spans: [{ col: 2, row: 2 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] }
                 ],
                 7: [
-                    { id: '7-grid', name: '默认', icon: 'M4 4h3.5v7H4zm4.5 0h3.5v7H8.5zm4.5 0h3.5v7H13zm-9 9h3v7H4zm4 0h3v7H8zm4 0h3v7h-3zm4 0h3v7h-3z', cols: 12, rows: 2, spans: [{ col: 4, row: 1 }, { col: 4, row: 1 }, { col: 4, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }] },
-                    { id: '7-v', name: '七列并排', icon: 'M4 4h1.7v16H4zm2.7 0h1.7v16H6.7zm2.7 0h1.7v16h-1.7zm2.7 0h1.7v16h-1.7zm2.7 0h1.7v16h-1.7zm2.7 0h1.7v16h-1.7zm2.7 0h1.7v16h-1.7z', cols: 7, rows: 1, spans: [] },
-                    { id: '7-h', name: '七行并排', icon: 'M4 4h16v1.7H4zm0 2.7h16v1.7H4zm0 2.7h16v1.7H4zm0 2.7h16v1.7H4zm0 2.7h16v1.7H4zm0 2.7h16v1.7H4zm0 2.7h16v1.7H4z', cols: 1, rows: 7, spans: [] },
-                    { id: '7-hero-top', name: '顶部大图', icon: 'M4 4h16v8H4zm0 9h5v7H4zm5.5 0h5v7h-5zm5.5 0h5v7h-5zm-11 2h5v5-5zm5 0h5 5-5zm5 0h5 5-5z', cols: 3, rows: 3, spans: [{ col: 3, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] }
+                    { id: '7-grid', name: 'puzzle.layout.default', icon: 'M4 4h3.5v7H4zm4.5 0h3.5v7H8.5zm4.5 0h3.5v7H13zm-9 9h3v7H4zm4 0h3v7H8zm4 0h3v7h-3zm4 0h3v7h-3z', cols: 12, rows: 2, spans: [{ col: 4, row: 1 }, { col: 4, row: 1 }, { col: 4, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }] },
+                    { id: '7-v', name: 'puzzle.layout.7_v', icon: 'M4 4h1.7v16H4zm2.7 0h1.7v16H6.7zm2.7 0h1.7v16h-1.7zm2.7 0h1.7v16h-1.7zm2.7 0h1.7v16h-1.7zm2.7 0h1.7v16h-1.7zm2.7 0h1.7v16h-1.7z', cols: 7, rows: 1, spans: [] },
+                    { id: '7-h', name: 'puzzle.layout.7_h', icon: 'M4 4h16v1.7H4zm0 2.7h16v1.7H4zm0 2.7h16v1.7H4zm0 2.7h16v1.7H4zm0 2.7h16v1.7H4zm0 2.7h16v1.7H4zm0 2.7h16v1.7H4z', cols: 1, rows: 7, spans: [] },
+                    { id: '7-hero-top', name: 'puzzle.layout.7_hero_top', icon: 'M4 4h16v8H4zm0 9h5v7H4zm5.5 0h5v7h-5zm5.5 0h5v7h-5zm-11 2h5v5-5zm5 0h5 5-5zm5 0h5 5-5z', cols: 3, rows: 3, spans: [{ col: 3, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] }
                 ],
                 8: [
-                    { id: '8-grid-4x2', name: '4x2', icon: 'M4 4h3v7H4zm4 0h3v7H8zm4 0h3v7h-3zm4 0h3v7h-3zm-12 9h3v7H4zm4 0h3v7H8zm4 0h3v7h-3zm4 0h3v7h-3z', cols: 4, rows: 2, spans: [] },
-                    { id: '8-grid-2x4', name: '2x4', icon: 'M4 4h7v3H4zm9 0h7v3h-7zm-9 4h7v3H4zm9 0h7v3h-7zm-9 4h7v3H4zm9 0h7v3h-7zm-9 4h7v3H4zm9 0h7v3h-7z', cols: 2, rows: 4, spans: [] },
-                    { id: '8-v', name: '八列并排', icon: 'M4 4h1.5v16H4zm2.5 0h1.5v16H6.5zm2.5 0h1.5v16h-1.5zm2.5 0h1.5v16h-1.5zm2.5 0h1.5v16h-1.5zm2.5 0h1.5v16h-1.5zm2.5 0h1.5v16h-1.5zm2.5 0h1.5v16h-1.5z', cols: 8, rows: 1, spans: [] },
-                    { id: '8-h', name: '八行并排', icon: 'M4 4h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4z', cols: 1, rows: 8, spans: [] },
-                    { id: '8-hero-top-2', name: '顶部双图', icon: 'M4 4h8v8H4zm8 0h8v8h-8zm-8 8h2.6v8H4zm2.6 0h2.6v8h-2.6zm2.6 0h2.6v8h-2.6zm2.6 0h2.6v8h-2.6zm2.6 0h2.6v8h-2.6zm2.6 0h2.6v8h-2.6z', cols: 6, rows: 2, spans: [{ col: 3, row: 1 }, { col: 3, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] }
+                    { id: '8-grid-4x2', name: 'puzzle.layout.8_grid_4x2', icon: 'M4 4h3v7H4zm4 0h3v7H8zm4 0h3v7h-3zm4 0h3v7h-3zm-12 9h3v7H4zm4 0h3v7H8zm4 0h3v7h-3zm4 0h3v7h-3z', cols: 4, rows: 2, spans: [] },
+                    { id: '8-grid-2x4', name: 'puzzle.layout.8_grid_2x4', icon: 'M4 4h7v3H4zm9 0h7v3h-7zm-9 4h7v3H4zm9 0h7v3h-7zm-9 4h7v3H4zm9 0h7v3h-7zm-9 4h7v3H4zm9 0h7v3h-7z', cols: 2, rows: 4, spans: [] },
+                    { id: '8-v', name: 'puzzle.layout.8_v', icon: 'M4 4h1.5v16H4zm2.5 0h1.5v16H6.5zm2.5 0h1.5v16h-1.5zm2.5 0h1.5v16h-1.5zm2.5 0h1.5v16h-1.5zm2.5 0h1.5v16h-1.5zm2.5 0h1.5v16h-1.5zm2.5 0h1.5v16h-1.5z', cols: 8, rows: 1, spans: [] },
+                    { id: '8-h', name: 'puzzle.layout.8_h', icon: 'M4 4h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4zm0 2.5h16v1.5H4z', cols: 1, rows: 8, spans: [] },
+                    { id: '8-hero-top-2', name: 'puzzle.layout.8_hero_top_2', icon: 'M4 4h8v8H4zm8 0h8v8h-8zm-8 8h2.6v8H4zm2.6 0h2.6v8h-2.6zm2.6 0h2.6v8h-2.6zm2.6 0h2.6v8h-2.6zm2.6 0h2.6v8h-2.6zm2.6 0h2.6v8h-2.6z', cols: 6, rows: 2, spans: [{ col: 3, row: 1 }, { col: 3, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 1 }] }
                 ],
                 9: [
-                    { id: '9-grid-3x3', name: '3x3', icon: 'M4 4h4.6v4.6H4zm5.6 0h4.6v4.6H9.6zm5.8 0h4.6v4.6h-4.6zm-11.4 5.6h4.6v4.6H4zm5.6 0h4.6v4.6H9.6zm5.8 0h4.6v4.6h-4.6zm-11.4 5.6h4.6v4.6H4zm5.6 0h4.6v4.6H9.6zm5.8 0h4.6v4.6h-4.6z', cols: 3, rows: 3, spans: [] },
-                    { id: '9-v', name: '九列并排', icon: 'M4 4h1.3v16H4zm2.3 0h1.3v16H6.3zm2.3 0h1.3v16h-1.3zm2.3 0h1.3v16h-1.3zm2.3 0h1.3v16h-1.3zm2.3 0h1.3v16h-1.3zm2.3 0h1.3v16h-1.3zm2.3 0h1.3v16h-1.3z', cols: 9, rows: 1, spans: [] },
-                    { id: '9-h', name: '九行并排', icon: 'M4 4h16v1.3H4zm0 2.3h16v1.3H4zm0 2.3h16v1.3H4zm0 2.3h16v1.3H4zm0 2.3h16v1.3H4zm0 2.3h16v1.3H4zm0 2.3h16v1.3H4z', cols: 1, rows: 9, spans: [] },
-                    { id: '9-center', name: '中心大图', icon: 'M4 4h4v4H4zm4 0h8v4H8zm8 0h4v4h-4zm-12 4h4v8H4zm4 0h8v8H8zm8 0h4v8h-4zm-12 8h4v4H4zm4 0h8v4H8zm8 0h4v4h-4z', cols: 4, rows: 4, spans: [{ col: 1, row: 1 }, { col: 2, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 2 }, { col: 2, row: 2 }, { col: 1, row: 2 }, { col: 1, row: 1 }, { col: 2, row: 1 }, { col: 1, row: 1 }] }
+                    { id: '9-grid-3x3', name: 'puzzle.layout.9_grid_3x3', icon: 'M4 4h4.6v4.6H4zm5.6 0h4.6v4.6H9.6zm5.8 0h4.6v4.6h-4.6zm-11.4 5.6h4.6v4.6H4zm5.6 0h4.6v4.6H9.6zm5.8 0h4.6v4.6h-4.6zm-11.4 5.6h4.6v4.6H4zm5.6 0h4.6v4.6H9.6zm5.8 0h4.6v4.6h-4.6z', cols: 3, rows: 3, spans: [] },
+                    { id: '9-v', name: 'puzzle.layout.9_v', icon: 'M4 4h1.3v16H4zm2.3 0h1.3v16H6.3zm2.3 0h1.3v16h-1.3zm2.3 0h1.3v16h-1.3zm2.3 0h1.3v16h-1.3zm2.3 0h1.3v16h-1.3zm2.3 0h1.3v16h-1.3zm2.3 0h1.3v16h-1.3z', cols: 9, rows: 1, spans: [] },
+                    { id: '9-h', name: 'puzzle.layout.9_h', icon: 'M4 4h16v1.3H4zm0 2.3h16v1.3H4zm0 2.3h16v1.3H4zm0 2.3h16v1.3H4zm0 2.3h16v1.3H4zm0 2.3h16v1.3H4zm0 2.3h16v1.3H4z', cols: 1, rows: 9, spans: [] },
+                    { id: '9-center', name: 'puzzle.layout.9_center', icon: 'M4 4h4v4H4zm4 0h8v4H8zm8 0h4v4h-4zm-12 4h4v8H4zm4 0h8v8H8zm8 0h4v8h-4zm-12 8h4v4H4zm4 0h8v4H8zm8 0h4v4h-4z', cols: 4, rows: 4, spans: [{ col: 1, row: 1 }, { col: 2, row: 1 }, { col: 1, row: 1 }, { col: 1, row: 2 }, { col: 2, row: 2 }, { col: 1, row: 2 }, { col: 1, row: 1 }, { col: 2, row: 1 }, { col: 1, row: 1 }] }
                 ],
                 10: [
-                    { id: '10-grid-5x2', name: '5x2', icon: 'M4 4h2.4v7H4zm3.4 0h2.4v7H7.4zm3.4 0h2.4v7h-2.4zm3.4 0h2.4v7h-2.4zm3.4 0h2.4v7h-2.4zm-13.6 9h2.4v7H4zm3.4 0h2.4v7H7.4zm3.4 0h2.4v7h-2.4zm3.4 0h2.4v7h-2.4zm3.4 0h2.4v7h-2.4z', cols: 5, rows: 2, spans: [] },
-                    { id: '10-v', name: '十列并排', icon: 'M4 4h1.2v16H4zm1.2 0h1.2v16h-1.2z', cols: 10, rows: 1, spans: [] },
-                    { id: '10-h', name: '十行并排', icon: 'M4 4h16v1.2H4zm0 1.2h16v1.2H4z', cols: 1, rows: 10, spans: [] }
+                    { id: '10-grid-5x2', name: 'puzzle.layout.10_grid_5x2', icon: 'M4 4h2.4v7H4zm3.4 0h2.4v7H7.4zm3.4 0h2.4v7h-2.4zm3.4 0h2.4v7h-2.4zm3.4 0h2.4v7h-2.4zm-13.6 9h2.4v7H4zm3.4 0h2.4v7H7.4zm3.4 0h2.4v7h-2.4zm3.4 0h2.4v7h-2.4zm3.4 0h2.4v7h-2.4z', cols: 5, rows: 2, spans: [] },
+                    { id: '10-v', name: 'puzzle.layout.10_v', icon: 'M4 4h1.2v16H4zm1.2 0h1.2v16h-1.2z', cols: 10, rows: 1, spans: [] },
+                    { id: '10-h', name: 'puzzle.layout.10_h', icon: 'M4 4h16v1.2H4zm0 1.2h16v1.2H4z', cols: 1, rows: 10, spans: [] }
                 ],
                 11: [
-                    { id: '11-grid', name: '默认', icon: 'M4 4h16v16H4z', cols: 12, rows: 3, spans: [{ col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 4, row: 1 }, { col: 4, row: 1 }, { col: 4, row: 1 }] },
-                    { id: '11-v', name: '11列并排', icon: 'M4 4h1v16H4z', cols: 11, rows: 1, spans: [] },
-                    { id: '11-h', name: '11行并排', icon: 'M4 4h16v1H4z', cols: 1, rows: 11, spans: [] }
+                    { id: '11-grid', name: 'puzzle.layout.default', icon: 'M4 4h16v16H4z', cols: 12, rows: 3, spans: [{ col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 3, row: 1 }, { col: 4, row: 1 }, { col: 4, row: 1 }, { col: 4, row: 1 }] },
+                    { id: '11-v', name: 'puzzle.layout.11_v', icon: 'M4 4h1v16H4z', cols: 11, rows: 1, spans: [] },
+                    { id: '11-h', name: 'puzzle.layout.11_h', icon: 'M4 4h16v1H4z', cols: 1, rows: 11, spans: [] }
                 ],
                 12: [
-                    { id: '12-grid-4x3', name: '4x3', icon: 'M4 4h3v4.6H4zm4 0h3v4.6H8zm4 0h3v4.6h-3zm4 0h3v4.6h-3zm-12 5.6h3v4.6H4zm4 0h3v4.6H8zm4 0h3v4.6h-3zm4 0h3v4.6h-3zm-12 5.8h3v4.6H4zm4 0h3v4.6H8zm4 0h3v4.6h-3zm4 0h3v4.6h-3z', cols: 4, rows: 3, spans: [] },
-                    { id: '12-grid-3x4', name: '3x4', icon: 'M4 4h4.6v3H4zm5.6 0h4.6v3H9.6zm5.8 0h4.6v3h-4.6zm-11.4 4h4.6v3H4z', cols: 3, rows: 4, spans: [] },
-                    { id: '12-v', name: '12列并排', icon: 'M4 4h1v16H4z', cols: 12, rows: 1, spans: [] },
-                    { id: '12-h', name: '12行并排', icon: 'M4 4h16v1H4z', cols: 1, rows: 12, spans: [] }
+                    { id: '12-grid-4x3', name: 'puzzle.layout.12_grid_4x3', icon: 'M4 4h3v4.6H4zm4 0h3v4.6H8zm4 0h3v4.6h-3zm4 0h3v4.6h-3zm-12 5.6h3v4.6H4zm4 0h3v4.6H8zm4 0h3v4.6h-3zm4 0h3v4.6h-3zm-12 5.8h3v4.6H4zm4 0h3v4.6H8zm4 0h3v4.6h-3zm4 0h3v4.6h-3z', cols: 4, rows: 3, spans: [] },
+                    { id: '12-grid-3x4', name: 'puzzle.layout.12_grid_3x4', icon: 'M4 4h4.6v3H4zm5.6 0h4.6v3H9.6zm5.8 0h4.6v3h-4.6zm-11.4 4h4.6v3H4z', cols: 3, rows: 4, spans: [] },
+                    { id: '12-v', name: 'puzzle.layout.12_v', icon: 'M4 4h1v16H4z', cols: 12, rows: 1, spans: [] },
+                    { id: '12-h', name: 'puzzle.layout.12_h', icon: 'M4 4h16v1H4z', cols: 1, rows: 12, spans: [] }
                 ],
-                // Fallback generator for others not explicitly defined
             },
 
             getLayout(n) {
@@ -2151,12 +2682,13 @@
                         ? 'border-violet-500 bg-violet-50 dark:bg-violet-900/20 text-violet-600 dark:text-violet-400 ring-1 ring-violet-500'
                         : 'border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-500'
                         }`;
-                    btn.title = layout.name;
+                    const displayName = (appTranslations[currentLang] && appTranslations[currentLang][layout.name]) || layout.name;
+                    btn.title = displayName;
                     btn.innerHTML = `
                         <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                             <path d="${layout.icon}" />
                         </svg>
-                        <span class="text-[10px] whitespace-nowrap">${layout.name}</span>
+                        <span class="text-[10px] whitespace-nowrap">${displayName}</span>
                     `;
 
                     btn.onclick = () => {
@@ -3861,7 +4393,7 @@
                             tagsArea.appendChild(chip);
                         });
                     } else if (item.status === 'pending') {
-                        tagsArea.innerHTML = '<span class="text-xs text-gray-400 italic">等待生成...</span>';
+                        tagsArea.innerHTML = `<span class="text-xs text-gray-400 italic" data-i18n="content.waiting">${appTranslations[currentLang]['content.waiting']}</span>`;
                     }
 
                     // Actions
@@ -3871,14 +4403,14 @@
                     // Copy Button
                     const copyBtn = document.createElement('button');
                     copyBtn.className = 'text-xs text-gray-500 hover:text-blue-500 flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed';
-                    copyBtn.innerHTML = '<i class="fa-solid fa-copy"></i> 复制';
+                    copyBtn.innerHTML = `<i class="fa-solid fa-copy"></i> <span data-i18n="content.btn.copy">${appTranslations[currentLang]['content.btn.copy']}</span>`;
                     copyBtn.disabled = !item.tags || item.tags.length === 0;
                     copyBtn.onclick = () => this.copyItemTags(item);
 
                     // Retry Button
                     const retryBtn = document.createElement('button');
                     retryBtn.className = 'text-xs text-gray-500 hover:text-blue-500 flex items-center gap-1';
-                    retryBtn.innerHTML = '<i class="fa-solid fa-rotate"></i> 重试';
+                    retryBtn.innerHTML = `<i class="fa-solid fa-rotate"></i> <span data-i18n="btn.retry">${appTranslations[currentLang]['btn.retry']}</span>`;
                     retryBtn.onclick = () => this.generateSingleTag(item);
 
                     actions.appendChild(copyBtn);
@@ -4056,7 +4588,7 @@
             copyAllTags() {
                 const itemsWithTags = this.state.imageList.filter(item => item.tags && item.tags.length > 0);
                 if (itemsWithTags.length === 0) {
-                    alert('没有可复制的标签');
+                    alert((appTranslations[currentLang]['tag.no_tags'] || '没有可复制的标签'));
                     return;
                 }
 
@@ -4068,7 +4600,7 @@
                 navigator.clipboard.writeText(text).then(() => {
                     const btn = this.elements.copyAllBtn;
                     const originalHtml = btn.innerHTML;
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i> ${appTranslations[currentLang]['btn.copied']}`;
                     setTimeout(() => {
                         btn.innerHTML = originalHtml;
                     }, 2000);
@@ -4460,7 +4992,7 @@
                 navigator.clipboard.writeText(this.state.generatedTitle).then(() => {
                     const btn = this.elements.copyTitleBtn;
                     const originalHtml = btn.innerHTML;
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i> ${appTranslations[currentLang]['btn.copied']}`;
                     setTimeout(() => btn.innerHTML = originalHtml, 2000);
                 });
             },
@@ -4470,7 +5002,7 @@
                 navigator.clipboard.writeText(this.state.generatedContent).then(() => {
                     const btn = this.elements.copyContentBtn;
                     const originalHtml = btn.innerHTML;
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i> ${appTranslations[currentLang]['btn.copied']}`;
                     setTimeout(() => btn.innerHTML = originalHtml, 2000);
                 });
             },
@@ -4481,7 +5013,7 @@
                 navigator.clipboard.writeText(text).then(() => {
                     const btn = this.elements.copyAllBtn;
                     const originalHtml = btn.innerHTML;
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i> 已复制';
+                    btn.innerHTML = `<i class="fa-solid fa-check"></i> ${appTranslations[currentLang]['btn.copied']}`;
                     setTimeout(() => btn.innerHTML = originalHtml, 2000);
                 });
             }
