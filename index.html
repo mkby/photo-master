@@ -3564,13 +3564,81 @@
                     ctx.fillStyle = this.state.borderColor;
                     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+                    // Year Mask Background Logic
+                    if (this.state.currentLayoutId === 'year-2025') {
+                         const bw = this.state.borderWidth * scale; // Border width scaled
+                         
+                         // Calculate inner area (same logical area as the CSS absolute div)
+                         const bgX = bw;
+                         const bgY = bw;
+                         const bgW = canvas.width - (bw * 2);
+                         const bgH = canvas.height - (bw * 2);
+                         
+                         ctx.save();
+                         // Clip to inner area
+                         ctx.beginPath();
+                         ctx.rect(bgX, bgY, bgW, bgH);
+                         ctx.clip();
+                         
+                         if (this.state.yearMaskImage) {
+                             const img = new Image();
+                             img.src = this.state.yearMaskImage.src;
+                             await new Promise(r => img.onload = r);
+                             
+                             const { x, y, scale: imgScale } = this.state.yearMaskState;
+                             
+                             // Calculate proper placement (object-fit: cover simulation)
+                             // The CSS uses: transform: translate(x, y) scale(scale) on an absolute img
+                             // The img is w-full h-full (so matches bgW, bgH).
+                             
+                             // 1. Calculate base rendered size (cover)
+                             const imgRatio = img.naturalWidth / img.naturalHeight;
+                             const areaRatio = bgW / bgH;
+                             
+                             let renderW, renderH;
+                             if (areaRatio > imgRatio) {
+                                 renderW = bgW;
+                                 renderH = renderW / imgRatio;
+                             } else {
+                                 renderH = bgH;
+                                 renderW = renderH * imgRatio;
+                             }
+                             
+                             // Center it
+                             const left = bgX + (bgW - renderW) / 2;
+                             const top = bgY + (bgH - renderH) / 2;
+                             
+                             // 2. Apply transforms
+                             ctx.translate(left + renderW/2, top + renderH/2); // Move to center of image
+                             ctx.translate(x * scale, y * scale); // Apply user translation (scaled)
+                             ctx.scale(imgScale, imgScale); // Apply user scale
+                             
+                             ctx.drawImage(img, -renderW/2, -renderH/2, renderW, renderH);
+                             
+                         } else {
+                             // Gradient
+                             const { start, end } = this.state.yearGradientColors;
+                             const gradient = ctx.createLinearGradient(bgX, bgY, bgX + bgW, bgY + bgH);
+                             gradient.addColorStop(0, start);
+                             gradient.addColorStop(1, end);
+                             
+                             ctx.fillStyle = gradient;
+                             ctx.fillRect(bgX, bgY, bgW, bgH);
+                         }
+                         ctx.restore();
+                    }
+
                     const cells = Array.from(this.elements.gridContainer.children);
 
                     for (let i = 0; i < cells.length; i++) {
                         const cell = cells[i];
-                        const imgData = this.state.images[i];
                         const imgEl = cell.querySelector('img');
                         if (!imgEl) continue;
+
+                        // Fix: Use ID to find image data instead of index, as grid cells != image list index in complex layouts
+                        const id = imgEl.dataset.id;
+                        const imgData = this.state.images.find(item => String(item.id) === id);
+                        if (!imgData) continue;
 
                         const cellRect = cell.getBoundingClientRect();
                         const x = (cellRect.left - domRect.left) * scale;
